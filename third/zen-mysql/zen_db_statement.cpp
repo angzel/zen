@@ -23,17 +23,22 @@
 
 namespace Zen {
 
-	struct DBResultInfo
+	std::shared_ptr<DBStatement> DBStatement::Create(std::shared_ptr<DBConnection> c)
 	{
-		std::vector<char> buf;
-		unsigned long length;
-	};
+		return std::shared_ptr<DBStatement>(new DBStatement(c));
+	}
 
 	DBStatement::DBStatement(std::shared_ptr<DBConnection> c)
 	{
 		mMysql = c;
 		mStat = mysql_stmt_init(mMysql->getMYSQL());
 	}
+	
+	DBStatement::~DBStatement()
+	{
+		mysql_stmt_close(mStat);
+	}
+
 	bool DBStatement::prepare(std::string const & s)
 	{
 		if(mysql_stmt_prepare(mStat, s.data(), s.size()) != 0) return false;
@@ -133,51 +138,62 @@ namespace Zen {
 		if(!meta) return false;
 
 		/* Get total columns in the query */
-		auto column_count = mysql_num_fields(meta);
-		result.meta_fields.resize(column_count);
+		auto num_cols = mysql_num_fields(meta);
+		result.meta_fields.resize(num_cols);
 
-		std::vector<DBResultInfo> stores;
+		std::vector<unsigned long> lengths(num_cols);
+		std::vector<char> buffer;
 		std::vector<MYSQL_BIND> binds;
 
-		binds.resize(column_count);
-		stores.resize(column_count);
-		
-		for(size_t i = 0; i < column_count; ++i)
+		binds.resize(num_cols);
+
+		auto fields = mysql_fetch_fields(meta);
+
+		for(size_t i = 0; i < num_cols; ++i)
 		{
 			auto & field = result.meta_fields[i];
-			auto f = mysql_fetch_field(meta);
-			if(!f) return false;
+			auto f = &fields[i];
 
 			field.name = f->name;
 			field.type = f->type;
-			field.length = (int)f->length;
-
-			auto & d = stores[i];
-			stores[i].buf.resize(f->length);
+			field.data_length = (int)f->length;
 
 			auto & b = binds[i];
 			::memset(&b, 0, sizeof(b));
 			b.buffer_type = MYSQL_TYPE_BLOB;
-			b.buffer= (char *)d.buf.data();
-			b.buffer_length = d.buf.size();
-			b.length= &d.length;
+			b.buffer= 0;
+			b.buffer_length = 0;
+			b.length= &lengths[i];
 		}
 		mysql_free_result(meta);
 
 		if(mysql_stmt_bind_result(mStat, binds.data()) != 0) return false;
+
 		if(mysql_stmt_store_result(mStat) != 0) return false;
 
 		result.rows.resize(mysql_stmt_affected_rows(mStat));
+
+		MYSQL_BIND column;
+		::memset(&column, 0, sizeof(column));
+		column.buffer_type = MYSQL_TYPE_BLOB;
+
 		for(auto & row : result.rows)
 		{
-			row.resize(column_count);
-			if(mysql_stmt_fetch(mStat) != 0) return false;
+			row.resize(num_cols);
+			
+			mysql_stmt_fetch(mStat);
 
-			for(size_t i = 0; i < column_count; ++i)
+			for(size_t i = 0; i < num_cols; ++i)
 			{
-				row[i].assign(stores[i].buf.begin(), stores[i].buf.begin() + stores[i].length);
+				auto length = lengths[i];
+				row[i].resize(length);
+				column.buffer = row[i].data();
+				column.buffer_length = length;
+				mysql_stmt_fetch_column(mStat, &column, (unsigned int)i, 0);
 			}
 		}
+		mysql_stmt_free_result(mStat);
+
 		return true;
 	}
 	

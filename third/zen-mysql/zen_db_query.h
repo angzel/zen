@@ -26,9 +26,11 @@
 namespace Zen {
 	class DBQuery
 	{
-		DBQuery() = default;
-	public:
 		DBQuery(std::shared_ptr<DBConnection>);
+	public:
+		static std::shared_ptr<DBQuery> Create(std::shared_ptr<DBConnection>);
+
+		~DBQuery();
 
 		void setQueryString(std::string const & s);
 		

@@ -66,9 +66,11 @@ namespace Zen {
 
 	class DBStatement
 	{
-		DBStatement() = default;
-	public:
 		DBStatement(std::shared_ptr<DBConnection>);
+	public:
+		static std::shared_ptr<DBStatement> Create(std::shared_ptr<DBConnection>);
+
+		~DBStatement();
 
 		bool prepare(std::string const & s);
 

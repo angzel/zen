@@ -22,11 +22,19 @@
 #include "zen_db_query.h"
 
 namespace Zen {
+	std::shared_ptr<DBQuery> DBQuery::Create(std::shared_ptr<DBConnection> c)
+	{
+		return std::shared_ptr<DBQuery>(new DBQuery(c));
+	}
 
 	DBQuery::DBQuery(std::shared_ptr<DBConnection> c)
 	{
 		mMysql = c;
 	}
+	DBQuery::~DBQuery()
+	{
+	}
+
 	void DBQuery::setQueryString(std::string const & s)
 	{
 		mQueryString = s;
@@ -48,33 +56,33 @@ namespace Zen {
 		MYSQL_RES * r = mysql_store_result(mMysql->getMYSQL());
 		if(r == nullptr) return false;
 
-		size_t num_row = mysql_num_rows(r);
-		size_t num_fields = mysql_num_fields(r);
+		size_t num_rows = mysql_num_rows(r);
+		size_t num_cols = mysql_num_fields(r);
 
-		result.meta_fields.resize(num_fields);
-		for(size_t i = 0; i < num_fields; ++i)
+		auto fields = mysql_fetch_fields(r);
+
+		result.meta_fields.resize(num_cols);
+		for(size_t i = 0; i < num_cols; ++i)
 		{
 			auto & field = result.meta_fields[i];
-			auto f = mysql_fetch_field(r);
-			if(!f) return false;
+			auto f = &fields[i];
 			field.name = f->name;
 			field.type = f->type;
-			field.length = (int)f->length;
+			field.data_length = (int)f->length;
 		}
 
-		result.rows.resize(num_row);
-		for(size_t i = 0; i < num_row; ++i)
+		result.rows.resize(num_rows);
+
+		for(auto & row : result.rows)
 		{
-			auto & row = result.rows[i];
-			auto data = mysql_fetch_row(r);
-			auto lens = mysql_fetch_lengths(r);
-			if(!data) return false;
-			row.resize(num_fields);
-			for(size_t j = 0; j < num_fields; ++j)
+			row.resize(num_cols);
+
+			auto src = mysql_fetch_row(r);
+			auto lengths = mysql_fetch_lengths(r);
+			for(size_t i = 0; i < num_cols; ++i)
 			{
-				auto b = data[j];
-				auto e = b + lens[j];
-				row[j].assign(b, e);
+				auto col = src[i];
+				row[i].assign(col, col + lengths[i]);
 			}
 		}
 		mysql_free_result(r);

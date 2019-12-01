@@ -32,7 +32,7 @@ namespace Zen {
 	struct DBMetaItem {
 		std::string name;
 		enum_field_types type;
-		int length;
+		int data_length;
 	};
 	
 	typedef std::vector<std::vector<char> > DBRow;
