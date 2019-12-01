@@ -1251,7 +1251,7 @@ inline Zen::Matrix4 operator/(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 	return m;
 }
 
-std::ostream & operator << (std::ostream & o, Zen::Matrix3 const & m)
+inline std::ostream & operator << (std::ostream & o, Zen::Matrix3 const & m)
 {
 	for(int i = 0; i < 3; ++i)
 	{
@@ -1265,7 +1265,7 @@ std::ostream & operator << (std::ostream & o, Zen::Matrix3 const & m)
 	return o;
 }
 
-std::ostream & operator << (std::ostream & o, Zen::Matrix4 const & m)
+inline std::ostream & operator << (std::ostream & o, Zen::Matrix4 const & m)
 {
 	for(int i = 0; i < 4; ++i)
 	{

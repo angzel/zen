@@ -22,7 +22,6 @@
 
 #include <string>
 #include <cstdint>
-#include "zen_cast.h"
 
 namespace Zen {
 	/**

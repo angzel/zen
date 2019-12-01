@@ -32,12 +32,12 @@ namespace Zen {
 
 	
 	template<typename _ValueType, _ValueType VMask>
-	class Safety
+	class EncryptedInt
 	{
 	protected:
 		_ValueType mValue;
 	public:
-		Safety(_ValueType value = 0)
+		EncryptedInt(_ValueType value = 0)
 		{
 			mValue = value ^ VMask;
 		}
@@ -45,37 +45,37 @@ namespace Zen {
 		{
 			return mValue ^ VMask;
 		}
-		Safety & operator = (Safety const & other)
+		EncryptedInt & operator = (EncryptedInt const & other)
 		{
 			mValue = other.mValue;
 			return *this;
 		}
-		Safety & operator *= (_ValueType value)
+		EncryptedInt & operator *= (_ValueType value)
 		{
 			mValue = ((mValue ^ VMask) * value) ^ VMask;
 			return *this;
 		}
-		Safety & operator /= (_ValueType value)
+		EncryptedInt & operator /= (_ValueType value)
 		{
 			mValue = ((mValue ^ VMask) / value) ^ VMask;
 			return *this;
 		}
-		Safety & operator += (_ValueType value)
+		EncryptedInt & operator += (_ValueType value)
 		{
 			mValue = ((mValue ^ VMask) + value) ^ VMask;
 			return *this;
 		}
-		Safety & operator -= (_ValueType value)
+		EncryptedInt & operator -= (_ValueType value)
 		{
 			mValue = ((mValue ^ VMask) - value) ^ VMask;
 			return *this;
 		}
-		Safety & operator --()
+		EncryptedInt & operator --()
 		{
 			mValue = ((mValue ^ VMask) - 1) ^ VMask;
 			return *this;
 		}
-		Safety & operator ++()
+		EncryptedInt & operator ++()
 		{
 			mValue = ((mValue ^ VMask) + 1) ^ VMask;
 			return *this;
@@ -94,19 +94,19 @@ namespace Zen {
 		}
 	};
 	
-	typedef Safety<int64_t, (int64_t)SafetyCode> Int64s;
+	typedef EncryptedInt<int64_t, (int64_t)SafetyCode> Int64s;
 	
-	typedef Safety<uint64_t, (uint64_t)SafetyCode> UInt64s;
+	typedef EncryptedInt<uint64_t, (uint64_t)SafetyCode> UInt64s;
 	
-	typedef Safety<int32_t, (int32_t)SafetyCode> Int32s;
+	typedef EncryptedInt<int32_t, (int32_t)SafetyCode> Int32s;
 	
-	typedef Safety<uint32_t, (uint32_t)SafetyCode> UInt32s;
+	typedef EncryptedInt<uint32_t, (uint32_t)SafetyCode> UInt32s;
 	
-	typedef Safety<int16_t, (int16_t)SafetyCode> Int16s;
+	typedef EncryptedInt<int16_t, (int16_t)SafetyCode> Int16s;
 	
-	typedef Safety<uint16_t, (uint16_t)SafetyCode> UInt16s;
+	typedef EncryptedInt<uint16_t, (uint16_t)SafetyCode> UInt16s;
 	
-	typedef Safety<int8_t, (int8_t)SafetyCode> Int8s;
+	typedef EncryptedInt<int8_t, (int8_t)SafetyCode> Int8s;
 	
-	typedef Safety<uint8_t, (uint8_t)SafetyCode> UInt8s;
+	typedef EncryptedInt<uint8_t, (uint8_t)SafetyCode> UInt8s;
 }

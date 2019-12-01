@@ -23,7 +23,6 @@
 
 #include <cmath>
 #include <functional>
-#include "zen_numerical.h"
 
 namespace Zen {
 	union Vector2 {
@@ -572,14 +571,20 @@ inline bool operator==(Zen::Vector4 vector, float value)
     return compare;
 }
 
-std::ostream & operator << (std::ostream & o, Zen::Vector4 const & m)
+inline std::ostream & operator << (std::ostream & o, Zen::Vector4 const & m)
 {
 	o << m.v[0] << ',' << m.v[1] << ',' << m.v[2] << ',' << m.v[3];
 	return o;
 }
-std::ostream & operator << (std::ostream & o, Zen::Vector3 const & m)
+inline std::ostream & operator << (std::ostream & o, Zen::Vector3 const & m)
 {
 	o << m.v[0] << ',' << m.v[1] << ',' << m.v[2];
 	return o;
 }
+inline std::ostream & operator << (std::ostream & o, Zen::Vector2 const & m)
+{
+	o << m.v[0] << ',' << m.v[1];
+	return o;
+}
+
 

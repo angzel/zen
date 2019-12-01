@@ -26,27 +26,24 @@
 #include "zen_numerical.h"
 
 namespace Zen {
-	template<typename _ValueType>
 	class Fraction
 	{
 	public:
-		typedef _ValueType ValueType;
-		
-		ValueType num = 0;
-		ValueType den = 1;
+		int num = 0;
+		int den = 1;
 		Fraction() = default;
 		Fraction(Fraction const &) = default;
 		Fraction & operator = (Fraction const &) = default;
 		
-		Fraction(ValueType const & num)
+		Fraction(int const & num)
 		{
 			set(num, 1);
 		}
-		Fraction(ValueType const & num, ValueType const & den)
+		Fraction(int const & num, int const & den)
 		{
 			set(num, den);
 		}
-		void set(ValueType const & num, ValueType const & den = 1)
+		void set(int const & num, int const & den = 1)
 		{
 			this->num = num;
 			this->den = den;
@@ -60,21 +57,7 @@ namespace Zen {
 		{
 			return !(*this == o);
 		}
-		
-#define FRACTION_COMPARE(op) \
-bool operator op (Fraction const & o) const \
-{ \
-if(den == o.den) return num op o.num; \
-else if(num == o.num) return o.den op den; \
-else return (num * o.den) op (o.num * den); \
-}
-		
-		FRACTION_COMPARE(>);
-		FRACTION_COMPARE(<);
-		FRACTION_COMPARE(>=);
-		FRACTION_COMPARE(<=);
-		
-#undef FRACTION_COMPARE
+
 		Fraction operator + (Fraction const & o) const
 		{
 			if(den == o.den)
@@ -99,8 +82,8 @@ else return (num * o.den) op (o.num * den); \
 			}
 			return *this;
 		}
-		// end add
-		
+			// end add
+
 		Fraction operator - (Fraction const & o) const
 		{
 			if(den == o.den)
@@ -125,8 +108,8 @@ else return (num * o.den) op (o.num * den); \
 			}
 			return *this;
 		}
-		// end minus
-		
+			// end minus
+
 		Fraction operator * (Fraction const & o) const
 		{
 			return Fraction(num * o.num, den * o.den);
@@ -149,7 +132,7 @@ else return (num * o.den) op (o.num * den); \
 		}
 		Fraction & reduce()
 		{
-			ValueType gcd = Zen::GetGCD(num, den);
+			int gcd = Zen::GetGCD(num, den);
 			if(gcd > 1)
 			{
 				num /= gcd;
@@ -161,28 +144,47 @@ else return (num * o.den) op (o.num * den); \
 		{
 			return (double)num/(double)den;
 		}
-		inline friend Fraction operator + (ValueType const & a, Fraction const & o)
+		inline friend Fraction operator + (int const & a, Fraction const & o)
 		{
 			return Fraction(a) + o;
 		}
-		inline friend Fraction operator - (ValueType const & a, Fraction const & o)
+		inline friend Fraction operator - (int const & a, Fraction const & o)
 		{
 			return Fraction(a) - o;
 		}
-		inline friend Fraction operator * (ValueType const & a, Fraction const & o)
+		inline friend Fraction operator * (int const & a, Fraction const & o)
 		{
 			return Fraction(a) * o;
 		}
-		inline friend Fraction operator / (ValueType const & a, Fraction const & o)
+		inline friend Fraction operator / (int const & a, Fraction const & o)
 		{
 			return Fraction(a) / o;
 		}
 	};
 }
 
-template<typename _ValueType>
-std::ostream & operator << (std::ostream & os, Zen::Fraction<_ValueType> const & frac)
+inline bool operator > (Zen::Fraction const & left, Zen::Fraction const & right)
+{
+	if(left.den == right.den) return left.num > right.num;
+	else if(left.num == right.num) return right.den > left.den;
+	else return (left.num * right.den) > (right.num * left.den);
+}
+inline bool operator < (Zen::Fraction const & left, Zen::Fraction const & right)
+{
+	return right > left;
+}
+inline bool operator >= (Zen::Fraction const & left, Zen::Fraction const & right)
+{
+	return !(right > left);
+}
+inline bool operator <= (Zen::Fraction const & left, Zen::Fraction const & right)
+{
+	return !(left > right);
+}
+
+inline std::ostream & operator << (std::ostream & os, Zen::Fraction const & frac)
 {
 	os << frac.num << '/' << frac.den;
 	return os;
 }
+
