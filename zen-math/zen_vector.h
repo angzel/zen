@@ -28,15 +28,21 @@
 namespace Zen {
 	union Vector2 {
 		float v[2];
-		float x, y;
+		struct {
+			float x, y;
+		} s;
 	};
 	union Vector3 {
 		float v[3];
-		float x, y, z;
+		struct {
+			float x, y, z;
+		} s;
 	};
 	union Vector4 {
 		float v[4];
-		float x, y, z, w;
+		struct {
+			float x, y, z, w;
+		} s;
 	};
 }
 
@@ -51,10 +57,6 @@ inline Zen::Vector2 operator*(Zen::Vector2 vector, float value);
 inline Zen::Vector2 operator/(Zen::Vector2 vector, float value);
 inline bool operator==(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
 inline bool operator==(Zen::Vector2 vector, float value);
-inline bool operator>(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
-inline bool operator>(Zen::Vector2 vector, float value);
-inline bool operator>=(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
-inline bool operator>=(Zen::Vector2 vector, float value);
 
 inline Zen::Vector3 operator-(Zen::Vector3 vector);
 inline Zen::Vector3 operator+(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
@@ -67,10 +69,6 @@ inline Zen::Vector3 operator*(Zen::Vector3 vector, float value);
 inline Zen::Vector3 operator/(Zen::Vector3 vector, float value);
 inline bool operator==(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
 inline bool operator==(Zen::Vector3 vector, float value);
-inline bool operator>(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
-inline bool operator>(Zen::Vector3 vector, float value);
-inline bool operator>=(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
-inline bool operator>=(Zen::Vector3 vector, float value);
 
 inline Zen::Vector4 operator-(Zen::Vector4 vector);
 inline Zen::Vector4 operator+(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
@@ -83,10 +81,6 @@ inline Zen::Vector4 operator*(Zen::Vector4 vector, float value);
 inline Zen::Vector4 operator/(Zen::Vector4 vector, float value);
 inline bool operator==(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
 inline bool operator==(Zen::Vector4 vector, float value);
-inline bool operator>(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
-inline bool operator>(Zen::Vector4 vector, float value);
-inline bool operator>=(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
-inline bool operator>=(Zen::Vector4 vector, float value);
 
 namespace Zen {
 
@@ -132,14 +126,8 @@ namespace Zen {
 
 	inline Vector2 Vector2Make(float * values /* [2] */)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		__m128 v;
-		v = _mm_loadl_pi(v, (__m64 *)values);
-		return *(Vector2 *)&v;
-	#else
 		Vector2 v = { values[0], values[1] };
 		return v;
-	#endif
 	}
 
 	inline Vector2 Vector2Normalize(Vector2 vector)
@@ -246,13 +234,8 @@ namespace Zen {
 
 	inline Vector4 Vector4Make(float * values /*[4]*/)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		__m128 v = _mm_load_ps(values);
-		return *(Vector4 *)&v;
-	#else
 		Vector4 v = { values[0], values[1], values[2], values[3] };
 		return v;
-	#endif
 	}
 
 	inline Vector4 Vector4Make(Vector3 vector, float w)
@@ -270,31 +253,18 @@ namespace Zen {
 
 	inline float Vector4DotProduct(Vector4 vectorLeft, Vector4 vectorRight)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		const __m128 product = _mm_load_ps(&vectorLeft.v[0]) * _mm_load_ps(&vectorRight.v[0]);
-		const __m128 halfsum = _mm_hadd_ps(product, product);
-		return _mm_cvtss_f32(_mm_hadd_ps(halfsum, halfsum));
-	#else
 		return vectorLeft.v[0] * vectorRight.v[0] +
 			   vectorLeft.v[1] * vectorRight.v[1] +
 			   vectorLeft.v[2] * vectorRight.v[2] +
 			   vectorLeft.v[3] * vectorRight.v[3];
-	#endif
 	}
 
 	inline float Vector4Length(Vector4 vector)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		const __m128 q = _mm_load_ps(&vector.v[0]);
-		const __m128 product = q * q;
-		const __m128 halfsum = _mm_hadd_ps(product, product);
-		return _mm_cvtss_f32(_mm_sqrt_ss(_mm_hadd_ps(halfsum, halfsum)));
-	#else
 		return sqrt(vector.v[0] * vector.v[0] +
 					vector.v[1] * vector.v[1] +
 					vector.v[2] * vector.v[2] +
 					vector.v[3] * vector.v[3]);
-	#endif
 	}
 
 	inline float Vector4Distance(Vector4 vectorStart, Vector4 vectorEnd)
@@ -304,43 +274,20 @@ namespace Zen {
 
 	inline Vector4 Vector4Lerp(Vector4 vectorStart, Vector4 vectorEnd, float t)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		const __m128 s =  _mm_load_ps(&vectorStart.v[0]);
-		const __m128 v = s + (_mm_load_ps(&vectorEnd.v[0]) - s) * _mm_set1_ps(t);
-		return *(Vector4 *)&v;
-	#else
 		Vector4 v = { vectorStart.v[0] + ((vectorEnd.v[0] - vectorStart.v[0]) * t),
 						 vectorStart.v[1] + ((vectorEnd.v[1] - vectorStart.v[1]) * t),
 						 vectorStart.v[2] + ((vectorEnd.v[2] - vectorStart.v[2]) * t),
 						 vectorStart.v[3] + ((vectorEnd.v[3] - vectorStart.v[3]) * t) };
 		return v;
-	#endif
 	}
 
 	inline Vector4 Vector4CrossProduct(Vector4 vectorLeft, Vector4 vectorRight)
 	{
-	#if defined(_SSE3_INTRINSICS)
-		const __m128 vl = _mm_load_ps(&vectorLeft.v[0]);
-		const __m128 vr = _mm_load_ps(&vectorRight.v[0]);
-
-		__m128 vLeft1  = _mm_shuffle_ps(vl, vl, _MM_SHUFFLE(3, 0, 2, 1));
-		__m128 vRight1 = _mm_shuffle_ps(vr, vr, _MM_SHUFFLE(3, 1, 0, 2));
-		__m128 vLeft2  = _mm_shuffle_ps(vl, vl, _MM_SHUFFLE(3, 1, 0, 2));
-		__m128 vRight2 = _mm_shuffle_ps(vr, vr, _MM_SHUFFLE(3, 0, 2, 1));
-		vLeft1 = vLeft1 * vRight1;
-		vLeft2 = vLeft2 * vRight2;
-		vLeft1 = vLeft1 - vLeft2;
-		//Set last element to 0
-		uint32_t mask[4] __attribute__((aligned(16))) = {0xffffffff, 0xffffffff, 0xffffffff, 0x0};
-		vLeft1 = _mm_and_ps(vLeft1, _mm_load_ps((float *)mask));
-		return *(Vector4 *)&vLeft1;
-	#else
 		Vector4 v = { vectorLeft.v[1] * vectorRight.v[2] - vectorLeft.v[2] * vectorRight.v[1],
 						 vectorLeft.v[2] * vectorRight.v[0] - vectorLeft.v[0] * vectorRight.v[2],
 						 vectorLeft.v[0] * vectorRight.v[1] - vectorLeft.v[1] * vectorRight.v[0],
 						 0.0f };
 		return v;
-	#endif
 	}
 
 	inline Vector4 Vector4Project(Vector4 vectorToProject, Vector4 projectionVector)
@@ -355,118 +302,64 @@ namespace Zen {
 
 inline Zen::Vector2 operator-(Zen::Vector2 vector)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_sub_ps(_mm_setzero_ps(), _mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vector));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { -vector.v[0] , -vector.v[1] };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator+(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_add_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorLeft), _mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorRight));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vectorLeft.v[0] + vectorRight.v[0],
                      vectorLeft.v[1] + vectorRight.v[1] };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator-(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_sub_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorLeft), _mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorRight));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vectorLeft.v[0] - vectorRight.v[0],
                      vectorLeft.v[1] - vectorRight.v[1] };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator*(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_mul_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorLeft), _mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorRight));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vectorLeft.v[0] * vectorRight.v[0],
                      vectorLeft.v[1] * vectorRight.v[1] };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator/(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_div_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorLeft), _mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vectorRight));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vectorLeft.v[0] / vectorRight.v[0],
                      vectorLeft.v[1] / vectorRight.v[1] };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator+(Zen::Vector2 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_add_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vector), _mm_set1_ps(value));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vector.v[0] + value,
                      vector.v[1] + value };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator-(Zen::Vector2 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_sub_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vector), _mm_set1_ps(value));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vector.v[0] - value,
                      vector.v[1] - value };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator*(Zen::Vector2 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_mul_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vector), _mm_set1_ps(value));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vector.v[0] * value,
                      vector.v[1] * value };
     return v;
-#endif
 }
 
 inline Zen::Vector2 operator/(Zen::Vector2 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v;
-    v = _mm_div_ps(_mm_loadl_pi(_mm_setzero_ps(), (__m64 *)&vector), _mm_set1_ps(value));
-    return *(Zen::Vector2 *)&v;
-#else
     Zen::Vector2 v = { vector.v[0] / value,
                      vector.v[1] / value };
     return v;
-#endif
 }
 
 inline bool operator==(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
@@ -483,42 +376,6 @@ inline bool operator==(Zen::Vector2 vector, float value)
     bool compare = false;
     if (vector.v[0] == value &&
         vector.v[1] == value)
-        compare = true;
-    return compare;
-}
-
-inline bool operator>(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
-{
-    bool compare = false;
-    if (vectorLeft.v[0] > vectorRight.v[0] &&
-        vectorLeft.v[1] > vectorRight.v[1])
-        compare = true;
-    return compare;
-}
-
-inline bool operator>(Zen::Vector2 vector, float value)
-{
-    bool compare = false;
-    if (vector.v[0] > value &&
-        vector.v[1] > value)
-        compare = true;
-    return compare;
-}
-
-inline bool operator>=(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
-{
-    bool compare = false;
-    if (vectorLeft.v[0] >= vectorRight.v[0] &&
-        vectorLeft.v[1] >= vectorRight.v[1])
-        compare = true;
-    return compare;
-}
-
-inline bool operator>=(Zen::Vector2 vector, float value)
-{
-    bool compare = false;
-    if (vector.v[0] >= value &&
-        vector.v[1] >= value)
         compare = true;
     return compare;
 }
@@ -615,175 +472,86 @@ inline bool operator==(Zen::Vector3 vector, float value)
 	return compare;
 }
 
-inline bool operator>(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight)
-{
-	bool compare = false;
-	if (vectorLeft.v[0] > vectorRight.v[0] &&
-		vectorLeft.v[1] > vectorRight.v[1] &&
-		vectorLeft.v[2] > vectorRight.v[2])
-		compare = true;
-	return compare;
-}
-
-inline bool operator>(Zen::Vector3 vector, float value)
-{
-	bool compare = false;
-	if (vector.v[0] > value &&
-		vector.v[1] > value &&
-		vector.v[2] > value)
-		compare = true;
-	return compare;
-}
-
-inline bool operator>=(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight)
-{
-	bool compare = false;
-	if (vectorLeft.v[0] >= vectorRight.v[0] &&
-		vectorLeft.v[1] >= vectorRight.v[1] &&
-		vectorLeft.v[2] >= vectorRight.v[2])
-		compare = true;
-	return compare;
-}
-
-inline bool operator>=(Zen::Vector3 vector, float value)
-{
-	bool compare = false;
-	if (vector.v[0] >= value &&
-		vector.v[1] >= value &&
-		vector.v[2] >= value)
-		compare = true;
-	return compare;
-}
-
-
 inline Zen::Vector4 operator-(Zen::Vector4 vector)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_set1_ps(0) - _mm_load_ps(&vector.v[0]);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { -vector.v[0], -vector.v[1], -vector.v[2], -vector.v[3] };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator+(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vectorLeft.v[0]) + _mm_load_ps(&vectorRight.v[0]);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vectorLeft.v[0] + vectorRight.v[0],
                      vectorLeft.v[1] + vectorRight.v[1],
                      vectorLeft.v[2] + vectorRight.v[2],
                      vectorLeft.v[3] + vectorRight.v[3] };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator-(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vectorLeft.v[0]) - _mm_load_ps(&vectorRight.v[0]);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vectorLeft.v[0] - vectorRight.v[0],
                      vectorLeft.v[1] - vectorRight.v[1],
                      vectorLeft.v[2] - vectorRight.v[2],
                      vectorLeft.v[3] - vectorRight.v[3] };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator*(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vectorLeft.v[0]) * _mm_load_ps(&vectorRight.v[0]);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vectorLeft.v[0] * vectorRight.v[0],
                      vectorLeft.v[1] * vectorRight.v[1],
                      vectorLeft.v[2] * vectorRight.v[2],
                      vectorLeft.v[3] * vectorRight.v[3] };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator/(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vectorLeft.v[0]) / _mm_load_ps(&vectorRight.v[0]);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vectorLeft.v[0] / vectorRight.v[0],
                      vectorLeft.v[1] / vectorRight.v[1],
                      vectorLeft.v[2] / vectorRight.v[2],
                      vectorLeft.v[3] / vectorRight.v[3] };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator+(Zen::Vector4 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vector.v[0]) + _mm_set1_ps(value);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vector.v[0] + value,
                      vector.v[1] + value,
                      vector.v[2] + value,
                      vector.v[3] + value };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator-(Zen::Vector4 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vector.v[0]) - _mm_set1_ps(value);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vector.v[0] - value,
                      vector.v[1] - value,
                      vector.v[2] - value,
                      vector.v[3] - value };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator*(Zen::Vector4 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vector.v[0]) * _mm_set1_ps(value);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vector.v[0] * value,
                      vector.v[1] * value,
                      vector.v[2] * value,
                      vector.v[3] * value };
     return v;
-#endif
 }
 
 inline Zen::Vector4 operator/(Zen::Vector4 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    __m128 v = _mm_load_ps(&vector.v[0]) / _mm_set1_ps(value);
-    return *(Zen::Vector4 *)&v;
-#else
     Zen::Vector4 v = { vector.v[0] / value,
                      vector.v[1] / value,
                      vector.v[2] / value,
                      vector.v[3] / value };
     return v;
-#endif
 }
 
 inline bool operator==(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-    return _mm_movemask_ps(_mm_cmpeq_ps(_mm_load_ps(&vectorLeft.v[0]), _mm_load_ps(&vectorRight.v[0]))) == 0xF;
-#else
     bool compare = false;
     if (vectorLeft.v[0] == vectorRight.v[0] &&
         vectorLeft.v[1] == vectorRight.v[1] &&
@@ -791,14 +559,10 @@ inline bool operator==(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
         vectorLeft.v[3] == vectorRight.v[3])
         compare = true;
     return compare;
-#endif
 }
 
 inline bool operator==(Zen::Vector4 vector, float value)
 {
-#if   defined(_SSE3_INTRINSICS)
-    return _mm_movemask_ps(_mm_cmpeq_ps(_mm_load_ps(&vector.v[0]), _mm_set1_ps(value))) == 0xF;
-#else
     bool compare = false;
     if (vector.v[0] == value &&
         vector.v[1] == value &&
@@ -806,65 +570,16 @@ inline bool operator==(Zen::Vector4 vector, float value)
         vector.v[3] == value)
         compare = true;
     return compare;
-#endif
 }
 
-inline bool operator>(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
+std::ostream & operator << (std::ostream & o, Zen::Vector4 const & m)
 {
-#if   defined(_SSE3_INTRINSICS)
-    return _mm_movemask_ps(_mm_cmpgt_ps(_mm_load_ps(&vectorLeft.v[0]), _mm_load_ps(&vectorRight.v[0]))) == 0xF;
-#else
-    bool compare = false;
-    if (vectorLeft.v[0] > vectorRight.v[0] &&
-        vectorLeft.v[1] > vectorRight.v[1] &&
-        vectorLeft.v[2] > vectorRight.v[2] &&
-        vectorLeft.v[3] > vectorRight.v[3])
-        compare = true;
-    return compare;
-#endif
+	o << m.v[0] << ',' << m.v[1] << ',' << m.v[2] << ',' << m.v[3];
+	return o;
+}
+std::ostream & operator << (std::ostream & o, Zen::Vector3 const & m)
+{
+	o << m.v[0] << ',' << m.v[1] << ',' << m.v[2];
+	return o;
 }
 
-inline bool operator>(Zen::Vector4 vector, float value)
-{
-#if   defined(_SSE3_INTRINSICS)
-    return _mm_movemask_ps(_mm_cmpgt_ps(_mm_load_ps(&vector.v[0]), _mm_set1_ps(value))) == 0xF;
-#else
-    bool compare = false;
-    if (vector.v[0] > value &&
-        vector.v[1] > value &&
-        vector.v[2] > value &&
-        vector.v[3] > value)
-        compare = true;
-    return compare;
-#endif
-}
-
-inline bool operator>=(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
-{
-#if   defined(_SSE3_INTRINSICS)
-    return _mm_movemask_ps(_mm_cmpge_ps(_mm_load_ps(&vectorLeft.v[0]), _mm_load_ps(&vectorRight.v[0]))) == 0xF;
-#else
-    bool compare = false;
-    if (vectorLeft.v[0] >= vectorRight.v[0] &&
-        vectorLeft.v[1] >= vectorRight.v[1] &&
-        vectorLeft.v[2] >= vectorRight.v[2] &&
-        vectorLeft.v[3] >= vectorRight.v[3])
-        compare = true;
-    return compare;
-#endif
-}
-
-inline bool operator>=(Zen::Vector4 vector, float value)
-{
-#if   defined(_SSE3_INTRINSICS)
-    return _mm_movemask_ps(_mm_cmpge_ps(_mm_load_ps(&vector.v[0]), _mm_set1_ps(value))) == 0xF;
-#else
-    bool compare = false;
-    if (vector.v[0] >= value &&
-        vector.v[1] >= value &&
-        vector.v[2] >= value &&
-        vector.v[3] >= value)
-        compare = true;
-    return compare;
-#endif
-}

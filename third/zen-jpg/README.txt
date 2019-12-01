@@ -1,0 +1,1 @@
+require library: libpng, libjpeg

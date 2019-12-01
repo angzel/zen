@@ -350,7 +350,6 @@ namespace Zen {
 			column2.v[0], column2.v[1], column2.v[2] };
 		return m;
 	}
-#if 0
 	inline Matrix3 Matrix3MakeWithQuaternion(Quaternion quaternion)
 	{
 		quaternion = QuaternionNormalize(quaternion);
@@ -379,7 +378,6 @@ namespace Zen {
 		
 		return m;
 	}
-#endif
 	
 	inline Matrix3 Matrix3MakeScale(float sx, float sy, float sz)
 	{
@@ -495,39 +493,6 @@ namespace Zen {
 	
 	inline Matrix3 Matrix3Multiply(Matrix3 matrixLeft, Matrix3 matrixRight)
 	{
-#if   defined(GLK_SSE3_INTRINSICS)
-		struct {
-			Matrix3 m;
-			char pad[16*4 - sizeof(Matrix3)];
-		} ret;
-		
-		const __m128 iMatrixLeft0 = _mm_loadu_ps(&matrixLeft.m[0]); // 0 1 2 3 // unaligned load
-		const __m128 iMatrixLeft1 = _mm_loadu_ps(&matrixLeft.m[3]); // 3 4 5 6 // unaligned load
-		const __m128 iMatrixLeft2Tmp = _mm_loadu_ps(&matrixLeft.m[5]); // 5 6 7 8 // unaligned load
-		const __m128 iMatrixLeft2 = _mm_shuffle_ps(iMatrixLeft2Tmp, iMatrixLeft2Tmp, _MM_SHUFFLE(0, 3, 2, 1)); // 6 7 8 x
-		
-		const __m128 iMatrixRight0 = _mm_loadu_ps(&matrixRight.m[0]);
-		const __m128 iMatrixRight1 = _mm_loadu_ps(&matrixRight.m[3]);
-		const __m128 iMatrixRight2 = _mm_loadu_ps(&matrixRight.m[5]);
-		
-		const __m128 mm0 = iMatrixLeft0 * _mm_shuffle_ps(iMatrixRight0, iMatrixRight0, _MM_SHUFFLE(0, 0, 0, 0))  // mm0 = L0*R0 L1*R0 L2*R0 L3*R0
-		+ iMatrixLeft1 * _mm_shuffle_ps(iMatrixRight0, iMatrixRight0, _MM_SHUFFLE(1, 1, 1, 1))  // mm0 = L0*R0+L3*R1 L1*R0+L4*R1 L2*R0+L5*R1 L3*R0+L6*R1
-		+ iMatrixLeft2 * _mm_shuffle_ps(iMatrixRight0, iMatrixRight0, _MM_SHUFFLE(2, 2, 2, 2));
-		
-		const __m128 mm1 = iMatrixLeft0 * _mm_shuffle_ps(iMatrixRight0, iMatrixRight0, _MM_SHUFFLE(3, 3, 3, 3))  // mm1 = L0*R3 L1*R3 L2*R3 L3*R3
-		+ iMatrixLeft1 * _mm_shuffle_ps(iMatrixRight1, iMatrixRight1, _MM_SHUFFLE(1, 1, 1, 1))  // mm1 = L0*R3+L3*R4 L1*R3+L4*R4 L2*R3+L5*R4 L3*R3+
-		+ iMatrixLeft2 * _mm_shuffle_ps(iMatrixRight1, iMatrixRight1, _MM_SHUFFLE(2, 2, 2, 2));
-		
-		const __m128 mm2 = iMatrixLeft0 * _mm_shuffle_ps(iMatrixRight1, iMatrixRight1, _MM_SHUFFLE(3, 3, 3, 3)) // mm2 = L0*R6 L1*R6 L2*R6 L3*R6
-		+ iMatrixLeft1 * _mm_shuffle_ps(iMatrixRight2, iMatrixRight2, _MM_SHUFFLE(2, 2, 2, 2))
-		+ iMatrixLeft2 * _mm_shuffle_ps(iMatrixRight2, iMatrixRight2, _MM_SHUFFLE(3, 3, 3, 3));
-		
-		_mm_storeu_ps(&ret.m.m[0], mm0); //unaligned store to indices: 0 1 2 3
-		_mm_storeu_ps(&ret.m.m[3], mm1); //unaligned store to indices: 3 4 5 6
-		_mm_storeu_ps(&ret.m.m[6], mm2); //unaligned store to indices: 6 7 8
-		
-		return ret.m;
-#else
 		Matrix3 m;
 		
 		m.m[0] = matrixLeft.m[0] * matrixRight.m[0] + matrixLeft.m[3] * matrixRight.m[1] + matrixLeft.m[6] * matrixRight.m[2];
@@ -543,7 +508,6 @@ namespace Zen {
 		m.m[8] = matrixLeft.m[2] * matrixRight.m[6] + matrixLeft.m[5] * matrixRight.m[7] + matrixLeft.m[8] * matrixRight.m[8];
 		
 		return m;
-#endif
 	}
 	
 	inline Matrix3 Matrix3Scale(Matrix3 matrix, float sx, float sy, float sz)
@@ -675,20 +639,11 @@ namespace Zen {
 										  Vector4 column2,
 										  Vector4 column3)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		Matrix4 m;
-		*((__m128*)&m.m[0])  = *(__m128*)&column0;
-		*((__m128*)&m.m[4])  = *(__m128*)&column1;
-		*((__m128*)&m.m[8])  = *(__m128*)&column2;
-		*((__m128*)&m.m[12]) = *(__m128*)&column3;
-		return m;
-	#else
 		Matrix4 m = { column0.v[0], column0.v[1], column0.v[2], column0.v[3],
 			column1.v[0], column1.v[1], column1.v[2], column1.v[3],
 			column2.v[0], column2.v[1], column2.v[2], column2.v[3],
 			column3.v[0], column3.v[1], column3.v[2], column3.v[3] };
 		return m;
-	#endif
 	}
 
 	inline Matrix4 Matrix4MakeWithQuaternion(Quaternion quaternion)
@@ -904,13 +859,8 @@ namespace Zen {
 
 	inline Vector4 Matrix4GetColumn(Matrix4 matrix, int column)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		__m128 v = _mm_load_ps(&matrix.m[column * 4]);
-		return *(Vector4 *)&v;
-	#else
 		Vector4 v = { matrix.m[column * 4 + 0], matrix.m[column * 4 + 1], matrix.m[column * 4 + 2], matrix.m[column * 4 + 3] };
 		return v;
-	#endif
 	}
 
 	inline Matrix4 Matrix4SetRow(Matrix4 matrix, int row, Vector4 vector)
@@ -925,17 +875,12 @@ namespace Zen {
 
 	inline Matrix4 Matrix4SetColumn(Matrix4 matrix, int column, Vector4 vector)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		*((__m128*)&matrix.m[column*4]) = *(__m128*)&vector;
-		return matrix;
-	#else
 		matrix.m[column * 4 + 0] = vector.v[0];
 		matrix.m[column * 4 + 1] = vector.v[1];
 		matrix.m[column * 4 + 2] = vector.v[2];
 		matrix.m[column * 4 + 3] = vector.v[3];
 
 		return matrix;
-	#endif
 	}
 
 	inline Matrix4 Matrix4Transpose(Matrix4 matrix)
@@ -949,46 +894,6 @@ namespace Zen {
 
 	inline Matrix4 Matrix4Multiply(Matrix4 matrixLeft, Matrix4 matrixRight)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-
-		const __m128 l0 = _mm_load_ps(&matrixLeft.m[0]);
-		const __m128 l1 = _mm_load_ps(&matrixLeft.m[4]);
-		const __m128 l2 = _mm_load_ps(&matrixLeft.m[8]);
-		const __m128 l3 = _mm_load_ps(&matrixLeft.m[12]);
-
-		const __m128 r0 = _mm_load_ps(&matrixRight.m[0]);
-		const __m128 r1 = _mm_load_ps(&matrixRight.m[4]);
-		const __m128 r2 = _mm_load_ps(&matrixRight.m[8]);
-		const __m128 r3 = _mm_load_ps(&matrixRight.m[12]);
-
-		const __m128 m0 = l0 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(0, 0, 0, 0))
-		+ l1 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(1, 1, 1, 1))
-		+ l2 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(2, 2, 2, 2))
-		+ l3 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(3, 3, 3, 3));
-
-		const __m128 m1 = l0 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(0, 0, 0, 0))
-		+ l1 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(1, 1, 1, 1))
-		+ l2 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(2, 2, 2, 2))
-		+ l3 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(3, 3, 3, 3));
-
-		const __m128 m2 = l0 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(0, 0, 0, 0))
-		+ l1 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(1, 1, 1, 1))
-		+ l2 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(2, 2, 2, 2))
-		+ l3 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(3, 3, 3, 3));
-
-		const __m128 m3 = l0 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(0, 0, 0, 0))
-		+ l1 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(1, 1, 1, 1))
-		+ l2 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(2, 2, 2, 2))
-		+ l3 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(3, 3, 3, 3));
-
-		Matrix4 m;
-		_mm_store_ps(&m.m[0], m0);
-		_mm_store_ps(&m.m[4], m1);
-		_mm_store_ps(&m.m[8], m2);
-		_mm_store_ps(&m.m[12], m3);
-		return m;
-
-	#else
 		Matrix4 m;
 
 		m.m[0]  = matrixLeft.m[0] * matrixRight.m[0]  + matrixLeft.m[4] * matrixRight.m[1]  + matrixLeft.m[8] * matrixRight.m[2]   + matrixLeft.m[12] * matrixRight.m[3];
@@ -1012,7 +917,6 @@ namespace Zen {
 		m.m[15] = matrixLeft.m[3] * matrixRight.m[12] + matrixLeft.m[7] * matrixRight.m[13] + matrixLeft.m[11] * matrixRight.m[14] + matrixLeft.m[15] * matrixRight.m[15];
 
 		return m;
-	#endif
 	}
 
 	inline Matrix4 Matrix4Translate(Matrix4 matrix, float tx, float ty, float tz)
@@ -1053,62 +957,29 @@ namespace Zen {
 
 	inline Matrix4 Matrix4Scale(Matrix4 matrix, float sx, float sy, float sz)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		Matrix4 m;
-
-		_mm_store_ps(&m.m[0],  _mm_load_ps(&matrix.m[0])  * _mm_load1_ps(&sx));
-		_mm_store_ps(&m.m[4],  _mm_load_ps(&matrix.m[4])  * _mm_load1_ps(&sy));
-		_mm_store_ps(&m.m[8],  _mm_load_ps(&matrix.m[8])  * _mm_load1_ps(&sz));
-		_mm_store_ps(&m.m[12], _mm_load_ps(&matrix.m[12]));
-
-		return m;
-	#else
 		Matrix4 m = { matrix.m[0] * sx, matrix.m[1] * sx, matrix.m[2] * sx, matrix.m[3] * sx,
 			matrix.m[4] * sy, matrix.m[5] * sy, matrix.m[6] * sy, matrix.m[7] * sy,
 			matrix.m[8] * sz, matrix.m[9] * sz, matrix.m[10] * sz, matrix.m[11] * sz,
 			matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
 		return m;
-	#endif
 	}
 
 	inline Matrix4 Matrix4ScaleWithVector3(Matrix4 matrix, Vector3 scaleVector)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		Matrix4 m;
-
-		_mm_store_ps(&m.m[0],  _mm_load_ps(&matrix.m[0])  * _mm_load1_ps(&scaleVector.v[0]));
-		_mm_store_ps(&m.m[4],  _mm_load_ps(&matrix.m[4])  * _mm_load1_ps(&scaleVector.v[1]));
-		_mm_store_ps(&m.m[8],  _mm_load_ps(&matrix.m[8])  * _mm_load1_ps(&scaleVector.v[2]));
-		_mm_store_ps(&m.m[12], _mm_load_ps(&matrix.m[12]));
-
-		return m;
-	#else
 		Matrix4 m = { matrix.m[0] * scaleVector.v[0], matrix.m[1] * scaleVector.v[0], matrix.m[2] * scaleVector.v[0], matrix.m[3] * scaleVector.v[0],
 			matrix.m[4] * scaleVector.v[1], matrix.m[5] * scaleVector.v[1], matrix.m[6] * scaleVector.v[1], matrix.m[7] * scaleVector.v[1],
 			matrix.m[8] * scaleVector.v[2], matrix.m[9] * scaleVector.v[2], matrix.m[10] * scaleVector.v[2], matrix.m[11] * scaleVector.v[2],
 			matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
 		return m;
-	#endif
 	}
 
 	inline Matrix4 Matrix4ScaleWithVector4(Matrix4 matrix, Vector4 scaleVector)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		Matrix4 m;
-
-		_mm_store_ps(&m.m[0],  _mm_load_ps(&matrix.m[0])  * _mm_load1_ps(&scaleVector.v[0]));
-		_mm_store_ps(&m.m[4],  _mm_load_ps(&matrix.m[4])  * _mm_load1_ps(&scaleVector.v[1]));
-		_mm_store_ps(&m.m[8],  _mm_load_ps(&matrix.m[8])  * _mm_load1_ps(&scaleVector.v[2]));
-		_mm_store_ps(&m.m[12], _mm_load_ps(&matrix.m[12]));
-
-		return m;
-	#else
 		Matrix4 m = { matrix.m[0] * scaleVector.v[0], matrix.m[1] * scaleVector.v[0], matrix.m[2] * scaleVector.v[0], matrix.m[3] * scaleVector.v[0],
 			matrix.m[4] * scaleVector.v[1], matrix.m[5] * scaleVector.v[1], matrix.m[6] * scaleVector.v[1], matrix.m[7] * scaleVector.v[1],
 			matrix.m[8] * scaleVector.v[2], matrix.m[9] * scaleVector.v[2], matrix.m[10] * scaleVector.v[2], matrix.m[11] * scaleVector.v[2],
 			matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
 		return m;
-	#endif
 	}
 
 	inline Matrix4 Matrix4Rotate(Matrix4 matrix, float radians, float x, float y, float z)
@@ -1181,24 +1052,11 @@ namespace Zen {
 
 	inline Vector4 Matrix4MultiplyVector4(Matrix4 matrixLeft, Vector4 vectorRight)
 	{
-	#if   defined(_SSE3_INTRINSICS)
-		const __m128 v = _mm_load_ps(&vectorRight.v[0]);
-
-		const __m128 r = _mm_load_ps(&matrixLeft.m[0])  * _mm_shuffle_ps(v, v, _MM_SHUFFLE(0, 0, 0, 0))
-		+ _mm_load_ps(&matrixLeft.m[4])  * _mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1))
-		+ _mm_load_ps(&matrixLeft.m[8])  * _mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2))
-		+ _mm_load_ps(&matrixLeft.m[12]) * _mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 3, 3, 3));
-
-		Vector4 ret;
-		*(__m128*)&ret = r;
-		return ret;
-	#else
 		Vector4 v = { matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[4] * vectorRight.v[1] + matrixLeft.m[8] * vectorRight.v[2] + matrixLeft.m[12] * vectorRight.v[3],
 			matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[5] * vectorRight.v[1] + matrixLeft.m[9] * vectorRight.v[2] + matrixLeft.m[13] * vectorRight.v[3],
 			matrixLeft.m[2] * vectorRight.v[0] + matrixLeft.m[6] * vectorRight.v[1] + matrixLeft.m[10] * vectorRight.v[2] + matrixLeft.m[14] * vectorRight.v[3],
 			matrixLeft.m[3] * vectorRight.v[0] + matrixLeft.m[7] * vectorRight.v[1] + matrixLeft.m[11] * vectorRight.v[2] + matrixLeft.m[15] * vectorRight.v[3] };
 		return v;
-	#endif
 	}
 
 	inline void Matrix4MultiplyVector4Array(Matrix4 matrix, Vector4 *__nonnull vectors, size_t vectorCount)
@@ -1212,15 +1070,6 @@ namespace Zen {
 
 inline Zen::Matrix3 operator+(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 {
-#if defined(GLK_SSE3_INTRINSICS)
-	Zen::Matrix3 m;
-
-	_mm_storeu_ps(&m.m[0], _mm_loadu_ps(&matrixLeft.m[0]) + _mm_loadu_ps(&matrixRight.m[0]));
-	_mm_storeu_ps(&m.m[4], _mm_loadu_ps(&matrixLeft.m[4]) + _mm_loadu_ps(&matrixRight.m[4]));
-	m.m[8] = matrixLeft.m[8] + matrixRight.m[8];
-
-	return m;
-#else
 	Zen::Matrix3 m;
 
 	m.m[0] = matrixLeft.m[0] + matrixRight.m[0];
@@ -1236,20 +1085,10 @@ inline Zen::Matrix3 operator+(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 	m.m[8] = matrixLeft.m[8] + matrixRight.m[8];
 
 	return m;
-#endif
 }
 
 inline Zen::Matrix3 operator-(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 {
-#if defined(GLK_SSE3_INTRINSICS)
-	Zen::Matrix3 m;
-
-	_mm_storeu_ps(&m.m[0], _mm_loadu_ps(&matrixLeft.m[0]) - _mm_loadu_ps(&matrixRight.m[0]));
-	_mm_storeu_ps(&m.m[4], _mm_loadu_ps(&matrixLeft.m[4]) - _mm_loadu_ps(&matrixRight.m[4]));
-	m.m[8] = matrixLeft.m[8] - matrixRight.m[8];
-
-	return m;
-#else
 	Zen::Matrix3 m;
 
 	m.m[0] = matrixLeft.m[0] - matrixRight.m[0];
@@ -1265,19 +1104,9 @@ inline Zen::Matrix3 operator-(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 	m.m[8] = matrixLeft.m[8] - matrixRight.m[8];
 
 	return m;
-#endif
 }
 inline Zen::Matrix3 operator*(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 {
-#if defined(GLK_SSE3_INTRINSICS)
-	Zen::Matrix3 m;
-
-	_mm_storeu_ps(&m.m[0], _mm_loadu_ps(&matrixLeft.m[0]) * _mm_loadu_ps(&matrixRight.m[0]));
-	_mm_storeu_ps(&m.m[4], _mm_loadu_ps(&matrixLeft.m[4]) * _mm_loadu_ps(&matrixRight.m[4]));
-	m.m[8] = matrixLeft.m[8] * matrixRight.m[8];
-
-	return m;
-#else
 	Zen::Matrix3 m;
 
 	m.m[0] = matrixLeft.m[0] * matrixRight.m[0];
@@ -1293,20 +1122,10 @@ inline Zen::Matrix3 operator*(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 	m.m[8] = matrixLeft.m[8] * matrixRight.m[8];
 
 	return m;
-#endif
 }
 
 inline Zen::Matrix3 operator/(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 {
-#if defined(GLK_SSE3_INTRINSICS)
-	Zen::Matrix3 m;
-
-	_mm_storeu_ps(&m.m[0], _mm_loadu_ps(&matrixLeft.m[0]) / _mm_loadu_ps(&matrixRight.m[0]));
-	_mm_storeu_ps(&m.m[4], _mm_loadu_ps(&matrixLeft.m[4]) / _mm_loadu_ps(&matrixRight.m[4]));
-	m.m[8] = matrixLeft.m[8] / matrixRight.m[8];
-
-	return m;
-#else
 	Zen::Matrix3 m;
 
 	m.m[0] = matrixLeft.m[0] / matrixRight.m[0];
@@ -1322,21 +1141,10 @@ inline Zen::Matrix3 operator/(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
 	m.m[8] = matrixLeft.m[8] / matrixRight.m[8];
 
 	return m;
-#endif
 }
 
 inline Zen::Matrix4 operator+(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-	Zen::Matrix4 m;
-
-	_mm_store_ps(&m.m[0],  _mm_load_ps(&matrixLeft.m[0])  + _mm_load_ps(&matrixRight.m[0]));
-	_mm_store_ps(&m.m[4],  _mm_load_ps(&matrixLeft.m[4])  + _mm_load_ps(&matrixRight.m[4]));
-	_mm_store_ps(&m.m[8],  _mm_load_ps(&matrixLeft.m[8])  + _mm_load_ps(&matrixRight.m[8]));
-	_mm_store_ps(&m.m[12], _mm_load_ps(&matrixLeft.m[12]) + _mm_load_ps(&matrixRight.m[12]));
-
-	return m;
-#else
 	Zen::Matrix4 m;
 
 	m.m[0] = matrixLeft.m[0] + matrixRight.m[0];
@@ -1360,21 +1168,10 @@ inline Zen::Matrix4 operator+(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 	m.m[15] = matrixLeft.m[15] + matrixRight.m[15];
 
 	return m;
-#endif
 }
 
 inline Zen::Matrix4 operator-(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-	Zen::Matrix4 m;
-
-	_mm_store_ps(&m.m[0],  _mm_load_ps(&matrixLeft.m[0])  - _mm_load_ps(&matrixRight.m[0]));
-	_mm_store_ps(&m.m[4],  _mm_load_ps(&matrixLeft.m[4])  - _mm_load_ps(&matrixRight.m[4]));
-	_mm_store_ps(&m.m[8],  _mm_load_ps(&matrixLeft.m[8])  - _mm_load_ps(&matrixRight.m[8]));
-	_mm_store_ps(&m.m[12], _mm_load_ps(&matrixLeft.m[12]) - _mm_load_ps(&matrixRight.m[12]));
-
-	return m;
-#else
 	Zen::Matrix4 m;
 
 	m.m[0] = matrixLeft.m[0] - matrixRight.m[0];
@@ -1398,21 +1195,10 @@ inline Zen::Matrix4 operator-(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 	m.m[15] = matrixLeft.m[15] - matrixRight.m[15];
 
 	return m;
-#endif
 }
 
 inline Zen::Matrix4 operator*(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-	Zen::Matrix4 m;
-
-	_mm_store_ps(&m.m[0],  _mm_load_ps(&matrixLeft.m[0])  * _mm_load_ps(&matrixRight.m[0]));
-	_mm_store_ps(&m.m[4],  _mm_load_ps(&matrixLeft.m[4])  * _mm_load_ps(&matrixRight.m[4]));
-	_mm_store_ps(&m.m[8],  _mm_load_ps(&matrixLeft.m[8])  * _mm_load_ps(&matrixRight.m[8]));
-	_mm_store_ps(&m.m[12], _mm_load_ps(&matrixLeft.m[12]) * _mm_load_ps(&matrixRight.m[12]));
-
-	return m;
-#else
 	Zen::Matrix4 m;
 
 	m.m[0] = matrixLeft.m[0] * matrixRight.m[0];
@@ -1436,21 +1222,10 @@ inline Zen::Matrix4 operator*(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 	m.m[15] = matrixLeft.m[15] * matrixRight.m[15];
 
 	return m;
-#endif
 }
 
 inline Zen::Matrix4 operator/(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 {
-#if   defined(_SSE3_INTRINSICS)
-	Zen::Matrix4 m;
-
-	_mm_store_ps(&m.m[0],  _mm_load_ps(&matrixLeft.m[0])  / _mm_load_ps(&matrixRight.m[0]));
-	_mm_store_ps(&m.m[4],  _mm_load_ps(&matrixLeft.m[4])  / _mm_load_ps(&matrixRight.m[4]));
-	_mm_store_ps(&m.m[8],  _mm_load_ps(&matrixLeft.m[8])  / _mm_load_ps(&matrixRight.m[8]));
-	_mm_store_ps(&m.m[12], _mm_load_ps(&matrixLeft.m[12]) / _mm_load_ps(&matrixRight.m[12]));
-
-	return m;
-#else
 	Zen::Matrix4 m;
 
 	m.m[0] = matrixLeft.m[0] / matrixRight.m[0];
@@ -1474,6 +1249,32 @@ inline Zen::Matrix4 operator/(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
 	m.m[15] = matrixLeft.m[15] / matrixRight.m[15];
 
 	return m;
-#endif
 }
 
+std::ostream & operator << (std::ostream & o, Zen::Matrix3 const & m)
+{
+	for(int i = 0; i < 3; ++i)
+	{
+		o << m.c[i][0];
+		for(int j = 1; j < 3; ++j)
+		{
+			o << m.c[i][j] << ',';
+		}
+		o << '\n';
+	}
+	return o;
+}
+
+std::ostream & operator << (std::ostream & o, Zen::Matrix4 const & m)
+{
+	for(int i = 0; i < 4; ++i)
+	{
+		o << m.c[i][0];
+		for(int j = 1; j < 4; ++j)
+		{
+			o << m.c[i][j] << ',';
+		}
+		o << '\n';
+	}
+	return o;
+}
