@@ -62,7 +62,11 @@ namespace Zen {
 			if(iter != mAudioCache.end()) return iter->second;
 
 			auto data = Zen::System::LoadResourceContent(file);
-			if(data.size() == 0) return nullptr;
+			if(data.size() == 0)
+			{
+				data = Zen::System::LoadDocumentContent(file);
+				if(data.empty()) return nullptr;
+			}
 
 			Zen::AudioData audio;
 			int type = 0;
