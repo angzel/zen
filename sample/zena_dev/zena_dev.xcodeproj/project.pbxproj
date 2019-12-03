@@ -52,6 +52,9 @@
 		8DEBCBF72394CEB100D4B395 /* libprotobuf-lite.3.6.1.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 8D5266CD2394224B006145A5 /* libprotobuf-lite.3.6.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8DEBCBF82394CEB100D4B395 /* libprotobuf.3.6.1.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 8D5266CC2394224B006145A5 /* libprotobuf.3.6.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8DEBCBF92394CEB100D4B395 /* libssl.1.1.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 8D5266D52394224C006145A5 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		8DEBCC0523964C6C00D4B395 /* zen_poll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC0023964C6C00D4B395 /* zen_poll.cpp */; };
+		8DEBCC0623964C6C00D4B395 /* zen_socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC0223964C6C00D4B395 /* zen_socket.cpp */; };
+		8DEBCC0723964C6C00D4B395 /* zen_ip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC0323964C6C00D4B395 /* zen_ip.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -107,10 +110,9 @@
 		8D19875E239236BA00515178 /* zen_audio_raw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio_raw.h; sourceTree = "<group>"; };
 		8D19875F239236BA00515178 /* zen_audio_wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio_wav.h; sourceTree = "<group>"; };
 		8D198760239236BA00515178 /* zen_audio_raw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_audio_raw.cpp; sourceTree = "<group>"; };
-		8D198761239236BA00515178 /* zen_audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio.h; sourceTree = "<group>"; };
 		8D198762239236BA00515178 /* zen_audio_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_audio_player.cpp; sourceTree = "<group>"; };
 		8D198763239236BA00515178 /* zen_audio_wav.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_audio_wav.cpp; sourceTree = "<group>"; };
-		8D198764239236BA00515178 /* zen_audio_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio_common.h; sourceTree = "<group>"; };
+		8D198764239236BA00515178 /* zen_audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio.h; sourceTree = "<group>"; };
 		8D198767239236BA00515178 /* zen_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image.h; sourceTree = "<group>"; };
 		8D19876D239236BA00515178 /* zen_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_color.h; sourceTree = "<group>"; };
 		8D19876E239236BA00515178 /* zen_image_raw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_raw.cpp; sourceTree = "<group>"; };
@@ -186,6 +188,15 @@
 		8D8BC15823916CA000B1DCD6 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8DEBCBF12394CCE000D4B395 /* zen_ticker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_ticker.h; sourceTree = "<group>"; };
 		8DEBCBFB2394CEF700D4B395 /* math_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_debug.cpp; sourceTree = "<group>"; };
+		8DEBCBFD23964C6C00D4B395 /* zen_poll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_poll.h; sourceTree = "<group>"; };
+		8DEBCBFE23964C6C00D4B395 /* zen_ip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ip.h; sourceTree = "<group>"; };
+		8DEBCBFF23964C6C00D4B395 /* zen_net_define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_net_define.h; sourceTree = "<group>"; };
+		8DEBCC0023964C6C00D4B395 /* zen_poll.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_poll.cpp; sourceTree = "<group>"; };
+		8DEBCC0123964C6C00D4B395 /* zen_net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_net.h; sourceTree = "<group>"; };
+		8DEBCC0223964C6C00D4B395 /* zen_socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_socket.cpp; sourceTree = "<group>"; };
+		8DEBCC0323964C6C00D4B395 /* zen_ip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_ip.cpp; sourceTree = "<group>"; };
+		8DEBCC0423964C6C00D4B395 /* zen_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_socket.h; sourceTree = "<group>"; };
+		8DEBCC0823964CA000D4B395 /* bez_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bez_debug.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,10 +270,9 @@
 				8D19875E239236BA00515178 /* zen_audio_raw.h */,
 				8D19875F239236BA00515178 /* zen_audio_wav.h */,
 				8D198760239236BA00515178 /* zen_audio_raw.cpp */,
-				8D198761239236BA00515178 /* zen_audio.h */,
 				8D198762239236BA00515178 /* zen_audio_player.cpp */,
 				8D198763239236BA00515178 /* zen_audio_wav.cpp */,
-				8D198764239236BA00515178 /* zen_audio_common.h */,
+				8D198764239236BA00515178 /* zen_audio.h */,
 			);
 			name = "zen-audio";
 			path = "../../zen-audio";
@@ -394,6 +404,7 @@
 		8D8BC12E2391497C00B1DCD6 = {
 			isa = PBXGroup;
 			children = (
+				8DEBCBFC23964C6C00D4B395 /* zen-net */,
 				8D5266F723942F3A006145A5 /* zen-cpp */,
 				8D1987AB2392378000515178 /* third */,
 				8D19875C239236BA00515178 /* zen-audio */,
@@ -419,6 +430,7 @@
 			isa = PBXGroup;
 			children = (
 				8D8BC13A2391497C00B1DCD6 /* main.mm */,
+				8DEBCC0823964CA000D4B395 /* bez_debug.cpp */,
 				8DEBCBFB2394CEF700D4B395 /* math_debug.cpp */,
 				8D5266EA239428CE006145A5 /* mysql_debug.cpp */,
 				8D1987C023923DD700515178 /* font_debug.cpp */,
@@ -458,6 +470,22 @@
 				8D8BC15823916CA000B1DCD6 /* GLKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8DEBCBFC23964C6C00D4B395 /* zen-net */ = {
+			isa = PBXGroup;
+			children = (
+				8DEBCBFD23964C6C00D4B395 /* zen_poll.h */,
+				8DEBCBFE23964C6C00D4B395 /* zen_ip.h */,
+				8DEBCBFF23964C6C00D4B395 /* zen_net_define.h */,
+				8DEBCC0023964C6C00D4B395 /* zen_poll.cpp */,
+				8DEBCC0123964C6C00D4B395 /* zen_net.h */,
+				8DEBCC0223964C6C00D4B395 /* zen_socket.cpp */,
+				8DEBCC0323964C6C00D4B395 /* zen_ip.cpp */,
+				8DEBCC0423964C6C00D4B395 /* zen_socket.h */,
+			);
+			name = "zen-net";
+			path = "../../zen-net";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -527,13 +555,16 @@
 				8D198799239236BA00515178 /* zen_audio_raw.cpp in Sources */,
 				8D198788239236BA00515178 /* zen_system.mm in Sources */,
 				8D19879A239236BA00515178 /* zen_audio_player.cpp in Sources */,
+				8DEBCC0723964C6C00D4B395 /* zen_ip.cpp in Sources */,
 				8D5266842393E234006145A5 /* zen_image_png.cpp in Sources */,
 				8D5266F42394290C006145A5 /* zen_db_connection.cpp in Sources */,
 				8D5266852393E234006145A5 /* zen_image_jpg.cpp in Sources */,
+				8DEBCC0623964C6C00D4B395 /* zen_socket.cpp in Sources */,
 				8D8BC13B2391497C00B1DCD6 /* main.mm in Sources */,
 				8D19879F239236BA00515178 /* zen_md5.cpp in Sources */,
 				8D52668D2393E255006145A5 /* zen_ft_render.cpp in Sources */,
 				8D52668E2393E255006145A5 /* zen_ft_library.cpp in Sources */,
+				8DEBCC0523964C6C00D4B395 /* zen_poll.cpp in Sources */,
 				8D5266F52394290C006145A5 /* zen_db_query.cpp in Sources */,
 				8D1987A0239236BA00515178 /* zen_urlcoding.cpp in Sources */,
 			);

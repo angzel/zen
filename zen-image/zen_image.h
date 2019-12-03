@@ -56,7 +56,7 @@ namespace Zen {
 		}
 	}
 	
-	inline void ImageCreate(ImageData & data, EImageFormat format, int width, int height)
+	inline void ImageGenerate(ImageData & data, EImageFormat format, int width, int height)
 	{
 		data.format = format;
 		data.width = width;

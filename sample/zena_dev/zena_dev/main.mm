@@ -8,36 +8,64 @@
 
 #include <iostream>
 #include <string>
-#include "zen_bezier.h"
-#include "zen_fraction.h"
-#include "zen_ticker.h"
+#include "zen_net.h"
+
+class MyO {
+} o;
 
 using namespace std;
-int main(int argc, const char * argv[]) {
-	Zen::Fraction f;
-	f.set(2, 3);
-	cout << f << endl;
-	cout << f.value() << endl;
 
-	Zen::Ticker ticker;
-	ticker.restart();
+template<typename Type>
+inline std::ostream & operator << (MyO const & o, Type const & v)
+{
+	cout << v << endl;
+	return cout;
+}
 
-	Zen::Vector2 v{0, 0};
+void listen()
+{
+	Zen::IPInfo ip;
+	ip.setHostAddress("localhost");
+	auto lis = Zen::SocketListener::Create();
+	o << "open:" << lis->open();
+	o << "bind:" << lis->bind(ip, 2200);
+	lis->setReuseable(true);
+	auto sock = lis->accept();
+	char buf[1];
+	while(sock->recv(buf, 1))
 	{
-		Zen::Bezier2_4 b;
-		b.controls[0] = {0, 0};
-		b.controls[1] = {0, 1};
-		b.controls[2] = {1, 1};
-		b.controls[3] = {2, 2};
-		for(float i = 0; i < 1.0f; i+= 0.00005f)
+		cout << buf;
+		cout.flush();
+	}
+}
+int main(int argc, const char * argv[]) {
+	if(argc >= 2 && std::string(argv[1]) == "server")
+	{
+		listen();
+		return 0;
+	}
+
+	auto con = Zen::SocketConnector::Create();
+	Zen::IPInfo ip;
+	ip.setHostAddress("www.baidu.com");
+	o << con->connect(ip, 80);
+	std::string header = "GET / HTTP/1.1\n\n";
+	o << con->send(header.data(), header.size());
+	o << con->couldReadBytes();
+	char buf[1024];
+	while(true)
+	{
+		auto rs = con->recv(buf, 1024);
+		o << rs;
+		if(rs)
 		{
-			auto p = Zen::BezierGetPoint(b, i);
-			v = v + p;
+			buf[rs] = 0;
+			o << buf;
+		}
+		else
+		{
+			break;
 		}
 	}
-	ticker.pause();
-	auto sec = ticker.getRunningDuration();
-	cout << Zen::ToSeconds(sec) << endl;
-	cout << v << endl;
 	return 0;
 }

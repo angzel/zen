@@ -21,6 +21,60 @@
 
 #pragma once
 
-#include "zen_audio_wav.h"
-#include "zen_audio_raw.h"
-#include "zen_audio_player.h"
+#include <vector>
+#include "zen_object.h"
+
+namespace Zen {
+	enum class EAudioFormat
+	{
+		None,
+		Mono8,
+		Mono16,
+		Stereo8,
+		Stereo16,
+	};
+	inline int GetBytesOfAudioFormat(EAudioFormat format)
+	{
+		switch (format) {
+			case EAudioFormat::Mono8: return 1;
+			case EAudioFormat::Mono16: return 2;
+			case EAudioFormat::Stereo8: return 2;
+			case EAudioFormat::Stereo16: return 4;
+			default: return 0;
+		}
+	}
+	inline int GetChannelsOfAudioFormat(EAudioFormat format)
+	{
+		switch (format) {
+			case EAudioFormat::Mono8: return 1;
+			case EAudioFormat::Mono16: return 1;
+			case EAudioFormat::Stereo8: return 2;
+			case EAudioFormat::Stereo16: return 2;
+			default: return 0;
+		}
+	}
+	struct AudioData
+	{
+		std::vector<uint8_t> buffer;
+		EAudioFormat format = EAudioFormat::None;
+		uint32_t frequency = 0;
+		uint32_t count = 0;
+	};
+
+	class AudioCoder : public virtual Zen::Object
+	{
+	public:
+		virtual void load(AudioData & wave, std::string const & file) = 0;
+		virtual void save(AudioData const & wave, std::string const & file) = 0;
+		virtual void decode(AudioData & wave, std::vector<uint8_t> const & data) = 0;
+		virtual std::vector<uint8_t> encode(AudioData const & wave) = 0;
+	};
+
+	inline void AudioGenerate(AudioData & data, EAudioFormat format, uint32_t frequency, uint32_t count)
+	{
+		data.format = format;
+		data.frequency = frequency;
+		data.count = count;
+		data.buffer.resize(count * GetBytesOfAudioFormat(format));
+	}
+}

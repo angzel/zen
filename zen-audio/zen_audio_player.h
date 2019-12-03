@@ -1,6 +1,6 @@
 #pragma once
 
-#include "zen_audio_common.h"
+#include "zen_audio.h"
 
 namespace Zen {
 	class AudioPlayer : public Zen::Object

@@ -116,7 +116,7 @@ namespace Zen {
 		{
 			if(image_width == 0) image_width = getOutputWidth();
 			if(image_height == 0) image_height = getOutputHeight();
-			ImageCreate(image, EImageFormat::Grey, image_width, image_height);
+			ImageGenerate(image, EImageFormat::Grey, image_width, image_height);
 
 			if(mConfig.isVerticalWriting)
 			{

@@ -19,7 +19,7 @@
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "zen_audio_common.h"
+#include "zen_audio.h"
 
 namespace Zen {
 	class AudioWav : public AudioCoder
