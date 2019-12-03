@@ -17,7 +17,7 @@
 
 using namespace std;
 int main(int argc, const char * argv[]) {
-	Zen::ImageRaw raw;
+	Zen::ImageCoderRaw raw;
 	Zen::ImageData data;
 
 	Zen::FontConfig fc;
@@ -31,7 +31,7 @@ int main(int argc, const char * argv[]) {
 	auto h = render->getOutputHeight();
 	render->renderToImage(data, w, h+10, 0, 0);
 
-	Zen::ImageJPG jpg;
+	Zen::ImageCoderJPG jpg;
 	jpg.save(data, "2.jpg");
 	return 0;
 }

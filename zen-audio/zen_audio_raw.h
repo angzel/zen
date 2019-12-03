@@ -22,7 +22,7 @@
 #include "zen_audio.h"
 
 namespace Zen {
-	class AudioRaw : public AudioCoder
+	class AudioCoderRaw : public AudioCoder
 	{
 	public:
 		virtual void load(AudioData & wave, std::string const & file) override;

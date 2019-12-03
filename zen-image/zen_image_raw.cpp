@@ -28,7 +28,7 @@
 namespace Zen
 {
 
-	struct ImageRawHead
+	struct ImageCoderRawHead
 	{
 #define Version Byte4('j','a','i','i').value
 		
@@ -39,7 +39,7 @@ namespace Zen
 		uint16_t format;
 		uint16_t keep_;
 		
-		ImageRawHead()
+		ImageCoderRawHead()
 		{
 		}
 		void set(uint32_t width_, uint32_t height_,  uint32_t fmt)
@@ -53,7 +53,7 @@ namespace Zen
 	};
 	
 	
-	void ImageRaw::load(ImageData & img, std::string const & file)
+	void ImageCoderRaw::load(ImageData & img, std::string const & file)
 	{
 		img.format = Zen::EImageFormat::None;
 
@@ -62,13 +62,13 @@ namespace Zen
 
 		this->decode(img, data);
 	}
-	void ImageRaw::save(ImageData const & img, std::string const & file)
+	void ImageCoderRaw::save(ImageData const & img, std::string const & file)
 	{
 		std::fstream outs;
 		outs.open(file, std::ios::out | std::ios::binary);
 		musts(outs.good(), "open file error");
 		
-		ImageRawHead head;
+		ImageCoderRawHead head;
 		head.set(img.width, img.height, (uint32_t)img.format);
 		auto head_buf = reinterpret_cast<char const *>(&head);
 
@@ -78,13 +78,13 @@ namespace Zen
 		musts(outs.good(), "write file error");
 	}
 	
-	void ImageRaw::decode(ImageData & img, std::vector<uint8_t> const & data)
+	void ImageCoderRaw::decode(ImageData & img, std::vector<uint8_t> const & data)
 	{
 		img.format = Zen::EImageFormat::None;
 		
 		Zen::BufferReader reader(&data);
 		
-		ImageRawHead head;
+		ImageCoderRawHead head;
 		
 		bool res = reader.read(head);
 		
@@ -110,9 +110,9 @@ namespace Zen
 		img.height = height;
 		img.format = format;
 	}
-	std::vector<uint8_t> ImageRaw::encode(ImageData const & img)
+	std::vector<uint8_t> ImageCoderRaw::encode(ImageData const & img)
 	{
-		ImageRawHead head;
+		ImageCoderRawHead head;
 		head.set(img.width, img.height, (uint32_t)img.format);
 		
 		auto head_buf = reinterpret_cast<char const *>(&head);

@@ -25,7 +25,7 @@
 
 namespace Zen
 {
-	class ImageRaw : public ImageCoder
+	class ImageCoderRaw : public ImageCoder
 	{
 	public:
 		virtual void load(ImageData & img, std::string const & file) override;

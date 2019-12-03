@@ -27,7 +27,7 @@
 #include <iostream>
 
 namespace Zen {
-	struct AudioWavHead
+	struct AudioCoderWavHead
 	{
 		Byte4 fiRiffID; // "RIFF"
 		uint32_t fiRiffSize;
@@ -67,7 +67,7 @@ namespace Zen {
 		}
 	};
 	
-	void AudioWav::load(AudioData & wave, std::string const & file)
+	void AudioCoderWav::load(AudioData & wave, std::string const & file)
 	{
 		wave.format = EAudioFormat::None;
 		
@@ -77,7 +77,7 @@ namespace Zen {
 		this->decode(wave, data);
 	}
 	
-	void AudioWav::save(AudioData const & wave, std::string const & file) 	{
+	void AudioCoderWav::save(AudioData const & wave, std::string const & file) 	{
 		std::fstream outs;
 		outs.open(file, std::ios::out | std::ios::binary);
 		musts(outs.good(), "open file error");
@@ -85,7 +85,7 @@ namespace Zen {
 		uint32_t fiDataSize = (uint32_t)wave.buffer.size();
 		Byte4 fiDataID('d','a','t','a');
 		
-		AudioWavHead head;
+		AudioCoderWavHead head;
 
 		auto channel = GetChannelsOfAudioFormat(wave.format);
 		auto bytes = GetBytesOfAudioFormat(wave.format);
@@ -99,13 +99,13 @@ namespace Zen {
 		musts(outs.good(), "write wav file error");
 	}
 	
-	void AudioWav::decode(AudioData & wave, std::vector<uint8_t> const & data)
+	void AudioCoderWav::decode(AudioData & wave, std::vector<uint8_t> const & data)
 	{
 		wave.format = EAudioFormat::None;
 
 		Zen::BufferReader reader(&data);
 		
-		AudioWavHead head;
+		AudioCoderWavHead head;
 		
 		musts(reader.read(head), "failed to read file data");
 		
@@ -188,7 +188,7 @@ namespace Zen {
 		wave.frequency = (uint32_t)head.fiSPS;
 	}
 	
-	std::vector<uint8_t> AudioWav::encode(AudioData const & wave)
+	std::vector<uint8_t> AudioCoderWav::encode(AudioData const & wave)
 	{
 		std::vector<uint8_t> data;
 
@@ -197,7 +197,7 @@ namespace Zen {
 		uint32_t fiDataSize = (uint32_t)wave.buffer.size();
 		Byte4 fiDataID('d','a','t','a');
 
-		AudioWavHead head;
+		AudioCoderWavHead head;
 		auto channel = GetChannelsOfAudioFormat(wave.format);
 		auto bytes = GetBytesOfAudioFormat(wave.format);
 		head.set(fiDataSize, wave.count, wave.frequency, channel, bytes);

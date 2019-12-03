@@ -126,15 +126,15 @@ namespace Zen
 
 namespace Zen
 {
-	void ImagePNG::setAlpahPremultiplied(bool ap)
+	void ImageCoderPNG::setAlpahPremultiplied(bool ap)
 	{
 		mAlpahPremultiplied = ap;
 	}
-	bool ImagePNG::isAlpahPremultiplied() const
+	bool ImageCoderPNG::isAlpahPremultiplied() const
 	{
 		return mAlpahPremultiplied;
 	}
-	void ImagePNG::load(ImageData & img, std::string const & file)
+	void ImageCoderPNG::load(ImageData & img, std::string const & file)
 	{
 		img.format = Zen::EImageFormat::None;
 		
@@ -143,7 +143,7 @@ namespace Zen
 		
 		this->decode(img, data);
 	}
-	void ImagePNG::save(ImageData const & img, std::string const & file)
+	void ImageCoderPNG::save(ImageData const & img, std::string const & file)
 	{
 		auto data = encode(img);
 		
@@ -155,7 +155,7 @@ namespace Zen
 		musts(outs.good(), "write png file error");
 	}
 
-	void ImagePNG::decode(ImageData & img, std::vector<uint8_t> const & data)
+	void ImageCoderPNG::decode(ImageData & img, std::vector<uint8_t> const & data)
 	{
 		img.format = Zen::EImageFormat::None;
 
@@ -245,7 +245,7 @@ namespace Zen
 		img.format = format;
 		img.buffer = std::move(buffer);
 	}
-	std::vector<uint8_t> ImagePNG::encode(ImageData const & img)
+	std::vector<uint8_t> ImageCoderPNG::encode(ImageData const & img)
 	{
 		size_t bpp = GetBytesOfImageFormat(img.format);
 		musts(bpp, "invalid pixel format");

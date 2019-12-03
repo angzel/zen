@@ -1,71 +1,37 @@
-	//
-	//  main.cpp
-	//  zena_dev
-	//
-	//  Created by lover on 2019/11/29.
-	//  Copyright © 2019 lover. All rights reserved.
-	//
+		//
+		//  main.cpp
+		//  zena_dev
+		//
+		//  Created by lover on 2019/11/29.
+		//  Copyright © 2019 lover. All rights reserved.
+		//
 
-#include <iostream>
-#include <string>
-#include "zen_net.h"
+	#include <iostream>
+	#include <string>
+	#include "zen_image.h"
+	#include "zen_image.h"
+	#include "zen_image_jpg.h"
+	#include "zen_system.h"
+	#include "zen_freetype.h"
+	#include "zen_file.h"
+	#include "zen_utf8.h"
 
-class MyO {
-} o;
+	using namespace std;
+	int main(int argc, const char * argv[]) {
+		Zen::ImageData data;
 
-using namespace std;
+		Zen::FontConfig fc;
+		fc.charW = 32;
+		fc.charH = 32;
+		auto font_src = Zen::ReadWholeFileToBuffer("/System/Library/Fonts/Noteworthy.ttc");
+		auto lib = Zen::FontLibrary::GetDefault();
+		auto font = lib->loadFont(font_src);
+		auto render = Zen::FontRender::Create(font, fc, Zen::UTF8ToUnicode("hello,yaya"), 0);
+		auto w = render->getOutputWidth();
+		auto h = render->getOutputHeight();
+		render->renderToImage(data, w, h+10, 0, 0);
 
-template<typename Type>
-inline std::ostream & operator << (MyO const & o, Type const & v)
-{
-	cout << v << endl;
-	return cout;
-}
-
-void listen()
-{
-	Zen::IPInfo ip;
-	ip.setHostAddress("localhost");
-	auto lis = Zen::SocketListener::Create();
-	o << "open:" << lis->open();
-	o << "bind:" << lis->bind(ip, 2200);
-	lis->setReuseable(true);
-	auto sock = lis->accept();
-	char buf[1];
-	while(sock->recv(buf, 1))
-	{
-		cout << buf;
-		cout.flush();
-	}
-}
-int main(int argc, const char * argv[]) {
-	if(argc >= 2 && std::string(argv[1]) == "server")
-	{
-		listen();
+		Zen::ImageCoderJPG jpg;
+		jpg.save(data, "2.jpg");
 		return 0;
 	}
-
-	auto con = Zen::SocketConnector::Create();
-	Zen::IPInfo ip;
-	ip.setHostAddress("www.baidu.com");
-	o << con->connect(ip, 80);
-	std::string header = "GET / HTTP/1.1\n\n";
-	o << con->send(header.data(), header.size());
-	o << con->couldReadBytes();
-	char buf[1024];
-	while(true)
-	{
-		auto rs = con->recv(buf, 1024);
-		o << rs;
-		if(rs)
-		{
-			buf[rs] = 0;
-			o << buf;
-		}
-		else
-		{
-			break;
-		}
-	}
-	return 0;
-}

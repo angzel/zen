@@ -1,7 +1,7 @@
 #include "zen_audio_player.h"
-#include "zen_al.h"
 #include "zen_audio_raw.h"
 #include "zen_audio_wav.h"
+#include "zen_al.h"
 #include "zen_system.h"
 #include "zen_log.h"
 #include <vector>
@@ -10,8 +10,8 @@
 namespace Zen {
 	static const size_t AudioSourceCount = 128;
 
-	static Zen::AudioWav sAudioWavCoder;
-	static Zen::AudioRaw sAudioRawCoder;
+	static Zen::AudioCoderWav sAudioCoderWavCoder;
+	static Zen::AudioCoderRaw sAudioCoderRawCoder;
 
 	struct AudioSource
 	{
@@ -80,14 +80,14 @@ namespace Zen {
 				if(type == 1 || type == 0)
 				{
 					try {
-						sAudioRawCoder.decode(audio, data);
+						sAudioCoderRawCoder.decode(audio, data);
 					} catch(...) {}
 					if(audio.count) break;
 				}
 				if(type == 2 || type == 0)
 				{
 					try {
-						sAudioWavCoder.decode(audio, data);
+						sAudioCoderWavCoder.decode(audio, data);
 					} catch(...) {}
 					if(audio.count) break;
 				}

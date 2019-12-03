@@ -26,7 +26,7 @@
 #include "zen_endian.h"
 
 namespace Zen {
-	struct AudioRawHead
+	struct AudioCoderRawHead
 	{
 #define Version Byte4('j','a','i','w').value
 		
@@ -37,7 +37,7 @@ namespace Zen {
 		uint16_t format;
 		uint16_t keep_;
 		
-		AudioRawHead()
+		AudioCoderRawHead()
 		{
 		}
 		void set(uint32_t len, uint32_t freq,  uint32_t fmt)
@@ -50,7 +50,7 @@ namespace Zen {
 		}
 	};
 	
-	void AudioRaw::load(AudioData & wave, std::string const & file)
+	void AudioCoderRaw::load(AudioData & wave, std::string const & file)
 	{
 		wave.format = EAudioFormat::None;
 		
@@ -60,13 +60,13 @@ namespace Zen {
 		this->decode(wave, data);
 	}
 	
-	void AudioRaw::save(AudioData const & wave, std::string const & file)
+	void AudioCoderRaw::save(AudioData const & wave, std::string const & file)
 	{
 		std::fstream outs;
 		outs.open(file, std::ios::out | std::ios::binary);
 		musts(outs.good(), "open file error");
 		
-		AudioRawHead head;
+		AudioCoderRawHead head;
 		head.set(wave.count, wave.frequency, (uint32_t)wave.format);
 		auto head_buf = reinterpret_cast<char const *>(&head);
 		
@@ -76,13 +76,13 @@ namespace Zen {
 		musts(outs.good(), "write file error");
 	}
 	
-	void AudioRaw::decode(AudioData & wave, std::vector<uint8_t> const & data)
+	void AudioCoderRaw::decode(AudioData & wave, std::vector<uint8_t> const & data)
 	{
 		wave.format = EAudioFormat::None;
 		
 		Zen::BufferReader reader(&data);
 		
-		AudioRawHead head;
+		AudioCoderRawHead head;
 		head.set(wave.count, wave.frequency, (uint32_t)wave.format);
 		
 		musts(reader.read(head), "failed to read header");
@@ -105,9 +105,9 @@ namespace Zen {
 		wave.frequency = frequence;
 	}
 	
-	std::vector<uint8_t> AudioRaw::encode(AudioData const & wave)
+	std::vector<uint8_t> AudioCoderRaw::encode(AudioData const & wave)
 	{
-		AudioRawHead head;
+		AudioCoderRawHead head;
 		head.set(wave.count, wave.frequency, (uint32_t)wave.format);
 		
 		auto head_buf = reinterpret_cast<char const *>(&head);

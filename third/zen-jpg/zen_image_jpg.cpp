@@ -84,7 +84,7 @@ namespace Zen { namespace MyJPG {
 
 namespace Zen
 {
-	void ImageJPG::load(ImageData & img, std::string const & file)
+	void ImageCoderJPG::load(ImageData & img, std::string const & file)
 	{
 		img.format = Zen::EImageFormat::None;
 
@@ -93,7 +93,7 @@ namespace Zen
 		
 		this->decode(img, data);
 	}
-	void ImageJPG::save(ImageData const & img, std::string const & file)
+	void ImageCoderJPG::save(ImageData const & img, std::string const & file)
 	{
 		auto data = encode(img);
 		
@@ -105,7 +105,7 @@ namespace Zen
 		musts(outs.good(), "write jpg file error");
 	}
 	
-	void ImageJPG::decode(ImageData & img, std::vector<uint8_t> const & data)
+	void ImageCoderJPG::decode(ImageData & img, std::vector<uint8_t> const & data)
 	{
 		img.format = Zen::EImageFormat::None;
 		
@@ -159,7 +159,7 @@ namespace Zen
 		img.format = format;
 		img.buffer = std::move(buffer);
 	}
-	std::vector<uint8_t> ImageJPG::encode(ImageData const & img)
+	std::vector<uint8_t> ImageCoderJPG::encode(ImageData const & img)
 	{
 		auto bpp = GetBytesOfImageFormat(img.format);
 		
@@ -202,12 +202,12 @@ namespace Zen
 		return data;
 	}
 	
-	void ImageJPG::setQuality(int q)
+	void ImageCoderJPG::setQuality(int q)
 	{
 		m_quality = q;
 	}
 	
-	int ImageJPG::getQuality() const
+	int ImageCoderJPG::getQuality() const
 	{
 		return m_quality;
 	}
