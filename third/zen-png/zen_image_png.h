@@ -33,10 +33,6 @@ namespace Zen
 		virtual void save(ImageData const & img, std::string const & file) override;
 		virtual void decode(ImageData & img, std::vector<uint8_t> const & data) override;
 		virtual std::vector<uint8_t> encode(ImageData const & img) override;
-		void setAlpahPremultiplied(bool ap);
-		bool isAlpahPremultiplied() const;
-	protected:
-		bool mAlpahPremultiplied = true;
 	};
 }
 

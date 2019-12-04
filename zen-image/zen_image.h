@@ -33,9 +33,10 @@ namespace Zen {
 	enum class EImageFormat
 	{
 		None,
-		Grey,
-		RGB,
-		RGBA,
+		Grey,	// grey 1 byte
+		GreyA,	// grey+alpha 2 bytes
+		RGB,	// 3 bytes
+		RGBA,	// 4 bytes
 	};
 
 	struct ImageData
@@ -50,6 +51,7 @@ namespace Zen {
 	{
 		switch (format) {
 			case EImageFormat::Grey: return 1;
+			case EImageFormat::GreyA:  return 2;
 			case EImageFormat::RGB:  return 3;
 			case EImageFormat::RGBA: return 4;
 			default: return 0;
@@ -62,6 +64,88 @@ namespace Zen {
 		data.width = width;
 		data.height = height;
 		data.buffer.resize(width * height *  GetBytesOfImageFormat(format));
+	}
+	/**
+		copy the alpha channel from @source to @alpha
+		only @source format is GreyA, RGBA valid, else just return false.
+	 */
+	inline bool ImageSeparateAlpha(ImageData & alpha, ImageData const & source)
+	{
+		if(source.format == EImageFormat::GreyA)
+		{
+			ImageGenerate(alpha, EImageFormat::Grey, source.width, source.height);
+			auto dest = alpha.buffer.data();
+			auto src = source.buffer.data()+1;
+			for(int y = 0; y < source.height; ++y)
+			{
+				for(int x = 0; x < source.width; ++x)
+				{
+					*dest++ = *src;
+					src += 2;
+				}
+			}
+			return true;
+		}
+		else if(source.format == EImageFormat::RGBA)
+		{
+			ImageGenerate(alpha, EImageFormat::RGB, source.width, source.height);
+			auto dest = alpha.buffer.data();
+			auto src = source.buffer.data()+3;
+			for(int y = 0; y < source.height; ++y)
+			{
+				for(int x = 0; x < source.width; ++x)
+				{
+					*dest++ = *src;
+					src += 4;
+				}
+			}
+			return true;
+		}
+		else return false;
+	}
+	/**
+		copy the color channel from @source to @alpha
+		copy the alpha channel from @source to @alpha
+		only @source format is GreyA, RGBA valid, else just return false.
+		GreayA = Grey + Alpha
+		RGBA = RGB + Alpha
+	*/
+	inline bool ImageSeparateColor(ImageData & color, ImageData const & source)
+	{
+		if(source.format == EImageFormat::GreyA)
+		{
+			ImageGenerate(color, EImageFormat::Grey, source.width, source.height);
+			auto dest = color.buffer.data();
+			auto src = source.buffer.data();
+			for(int y = 0; y < source.height; ++y)
+			{
+				for(int x = 0; x < source.width; ++x)
+				{
+					*dest++ = *src;
+					src += 2;
+				}
+			}
+			return true;
+		}
+		else if(source.format == EImageFormat::RGBA)
+		{
+			ImageGenerate(color, EImageFormat::RGB, source.width, source.height);
+			auto dest = color.buffer.data();
+			auto src = source.buffer.data();
+			for(int y = 0; y < source.height; ++y)
+			{
+				for(int x = 0; x < source.width; ++x)
+				{
+					dest[0] = src[0];
+					dest[1] = src[1];
+					dest[2] = src[2];
+					src += 4;
+					dest += 3;
+				}
+			}
+			return true;
+		}
+		else return false;
 	}
 
 	struct ImageCoder : public virtual Zen::Object

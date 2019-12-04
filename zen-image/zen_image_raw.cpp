@@ -57,7 +57,7 @@ namespace Zen
 	{
 		img.format = Zen::EImageFormat::None;
 
-		auto data = Zen::ReadWholeFileToBuffer(file);
+		auto data = Zen::LoadFileToBuffer(file);
 		musts(data.size(), "read file error");
 
 		this->decode(img, data);

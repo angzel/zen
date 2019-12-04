@@ -23,6 +23,7 @@
 
 #include <cmath>
 #include <functional>
+#include <iostream>
 
 namespace Zen {
 	union Vector2 {
@@ -43,6 +44,32 @@ namespace Zen {
 			float x, y, z, w;
 		} s;
 	};
+	struct Point2 {
+		float x, y;
+	};
+	struct Size2 {
+		float w, h;
+	};
+
+}
+
+namespace Zen {
+	inline Point2 Point2Make(Size2 size)
+	{
+		return { size.w, size.h };
+	}
+	inline Size2 Size2Make(Point2 p)
+	{
+		return { p.x, p.y };
+	}
+	inline Point2 Point2Make(Vector2 v)
+	{
+		return { v.s.x, v.s.y };
+	}
+	inline Size2 Size2Make(Vector2 v)
+	{
+		return { v.s.x, v.s.y };
+	}
 }
 
 inline Zen::Vector2 operator-(Zen::Vector2 vector);
@@ -85,6 +112,7 @@ namespace Zen {
 
 	inline Vector2 Vector2Make(float x, float y);
 	inline Vector2 Vector2Make(float * values /* [2] */);
+	inline Vector2 Vector2Make(Point2 p);
 	inline Vector2 Vector2Normalize(Vector2 vector);
 	inline float Vector2DotProduct(Vector2 vectorLeft, Vector2 vectorRight);
 	inline float Vector2Length(Vector2 vector);
@@ -128,6 +156,10 @@ namespace Zen {
 		Vector2 v = { values[0], values[1] };
 		return v;
 	}
+	inline Vector2 Vector2Make(Point2 p) {
+		return { p.x, p.y };
+	}
+
 
 	inline Vector2 Vector2Normalize(Vector2 vector)
 	{
@@ -586,5 +618,3 @@ inline std::ostream & operator << (std::ostream & o, Zen::Vector2 const & m)
 	o << m.v[0] << ',' << m.v[1];
 	return o;
 }
-
-

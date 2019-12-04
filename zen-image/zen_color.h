@@ -29,7 +29,6 @@ namespace Zen
 	class Color4f;
 	class ColorRBG;
 	
-
 	/**
 	 enum usual color's name in RGB format.
 	 */

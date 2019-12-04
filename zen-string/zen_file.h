@@ -36,7 +36,7 @@ namespace Zen {
 		else return size;
 	}
 
-	inline std::string ReadWholeFileToString(std::fstream & stream)
+	inline std::string LoadFileToString(std::fstream & stream)
 	{
 		std::string str;
 		str.reserve((std::string::size_type)GetFileSize(stream));
@@ -48,7 +48,7 @@ namespace Zen {
 
 	}
 
-	inline std::vector<uint8_t> ReadWholeFileToBuffer(std::fstream & stream)
+	inline std::vector<uint8_t> LoadFileToBuffer(std::fstream & stream)
 	{
 		std::vector<uint8_t> data;
 		data.resize((std::string::size_type)GetFileSize(stream));
@@ -63,19 +63,45 @@ namespace Zen {
 	}
 
 
-	inline std::string ReadWholeFileToString(std::string const & path)
+	inline std::string LoadFileToString(std::string const & path, bool binary = false)
 	{
-		std::fstream s(path, std::ios::in);
+		std::fstream s(path, std::ios::in | (binary?std::ios::binary:0));
 		if(!s) return "";
-		return ReadWholeFileToString(s);
+		return LoadFileToString(s);
 	}
 
-	inline std::vector<uint8_t> ReadWholeFileToBuffer(std::string const & path)
+	inline std::vector<uint8_t> LoadFileToBuffer(std::string const & path, bool binary = true)
 	{
-		std::fstream s(path, std::ios::in | std::ios::binary);
+		std::fstream s(path, std::ios::in | (binary?std::ios::binary:0));
 		if(!s) return {};
-		return ReadWholeFileToBuffer(s);
+		return LoadFileToBuffer(s);
 	}
-	
+
+	inline bool WriteBufferToFile(std::string const & path, std::vector<uint8_t> const & data, bool binary = true)
+	{
+		std::fstream s(path, std::ios::out | (binary?std::ios::binary:0));
+		if(!s) return {};
+		return s.write((char*)data.data(), data.size()).good();
+	}
+
+	inline bool AppendBufferToFile(std::string const & path, std::vector<uint8_t> const &  data, bool binary = true)
+	{
+		std::fstream s(path, std::ios::out | (binary?std::ios::binary:0) | std::ios::app );
+		if(!s) return {};
+		return s.write((char*)data.data(), data.size()).good();
+	}
+	inline bool WriteStringToFile(std::string const & path, std::string const & data, bool binary = false)
+	{
+		std::fstream s(path, std::ios::out | (binary?std::ios::binary:0));
+		if(!s) return {};
+		return s.write((char*)data.data(), data.size()).good();
+	}
+
+	inline bool AppendStringToFile(std::string const & path, std::string const & data, bool binary = false)
+	{
+		std::fstream s(path, std::ios::out | (binary?std::ios::binary:0) | std::ios::app );
+		if(!s) return {};
+		return s.write((char*)data.data(), data.size()).good();
+	}
 
 }

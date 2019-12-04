@@ -31,6 +31,8 @@
 #include "zen_buffer.h"
 #include "zen_exception.h"
 #include "zen_log.h"
+#include <iostream>
+using namespace std;
 
 namespace Zen
 {
@@ -126,19 +128,11 @@ namespace Zen
 
 namespace Zen
 {
-	void ImageCoderPNG::setAlpahPremultiplied(bool ap)
-	{
-		mAlpahPremultiplied = ap;
-	}
-	bool ImageCoderPNG::isAlpahPremultiplied() const
-	{
-		return mAlpahPremultiplied;
-	}
 	void ImageCoderPNG::load(ImageData & img, std::string const & file)
 	{
 		img.format = Zen::EImageFormat::None;
 		
-		auto data = Zen::ReadWholeFileToBuffer(file);
+		auto data = Zen::LoadFileToBuffer(file);
 		musts(data.size(), "read file error");
 		
 		this->decode(img, data);
@@ -146,13 +140,7 @@ namespace Zen
 	void ImageCoderPNG::save(ImageData const & img, std::string const & file)
 	{
 		auto data = encode(img);
-		
-		std::fstream outs;
-		outs.open(file, std::ios::out | std::ios::binary);
-		musts(outs.good(), "open file error");
-		outs.write((const char*)data.data(), data.size());
-		
-		musts(outs.good(), "write png file error");
+		musts(Zen::WriteBufferToFile(file, data), "write file error");
 	}
 
 	void ImageCoderPNG::decode(ImageData & img, std::vector<uint8_t> const & data)
@@ -175,11 +163,6 @@ namespace Zen
 		::png_set_read_fn(png.png_ptr, &imageSource, &MyPNG::ReadCallback);
 		
 		::png_read_info(png.png_ptr, png.info_ptr);
-
-		if(mAlpahPremultiplied)
-		{
-			::png_set_alpha_mode(png.png_ptr, PNG_ALPHA_PREMULTIPLIED, 1);
-		}
 
 		uint32_t width = ::png_get_image_width(png.png_ptr, png.info_ptr);
 		uint32_t height = ::png_get_image_height(png.png_ptr, png.info_ptr);
@@ -206,12 +189,12 @@ namespace Zen
 		{
 			::png_set_strip_16(png.png_ptr);
 		}
-		// expand grayscale images to RGB
-		if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
-		{
-			::png_set_gray_to_rgb(png.png_ptr);
-		}
-		
+
+		// expand ga images to RGB
+//		if (color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+//		{
+//			::png_set_gray_to_rgb(png.png_ptr);
+//		}
 		
 		std::vector<png_bytep> row_pointers(height, 0);
 		
@@ -222,11 +205,25 @@ namespace Zen
 		size_t channel = rowbytes / width;
 		
 		musts(rowbytes % width == 0, "unsupported row stride");
-		
-		Zen::EImageFormat format = (channel == 4 ? Zen::EImageFormat::RGBA :
-							(channel == 3 ? Zen::EImageFormat::RGB : Zen::EImageFormat::None));
-		
-		musts(format != Zen::EImageFormat::None, "unsupported pixel format");
+
+		Zen::EImageFormat format = Zen::EImageFormat::None;
+		switch(channel)
+		{
+			case 1:
+				format = Zen::EImageFormat::Grey;
+				break;
+			case 2:
+				format = Zen::EImageFormat::GreyA;
+				break;
+			case 3:
+				format = Zen::EImageFormat::RGB;
+				break;
+			case 4:
+				format = Zen::EImageFormat::RGBA;
+				break;
+			default:
+				throws("unsupported pixel format");
+		}
 		
 		std::vector<uint8_t> buffer;
 		buffer.resize(rowbytes * height);
@@ -264,6 +261,9 @@ namespace Zen
 			case Zen::EImageFormat::Grey:
 				color_type = PNG_COLOR_TYPE_GRAY;
 				break;
+			case Zen::EImageFormat::GreyA:
+				color_type = PNG_COLOR_TYPE_GRAY_ALPHA;
+				break;
 			case Zen::EImageFormat::RGB:
 				color_type = PNG_COLOR_TYPE_RGB;
 				break;
@@ -282,12 +282,8 @@ namespace Zen
 		
 		::png_set_write_fn(png.png_ptr, &source, &MyPNG::WriteCallback, nullptr);
 
-//		if(mAlpahPremultiplied)
-//		{
-//			::png_set_alpha_mode(png.png_ptr, PNG_ALPHA_PREMULTIPLIED, 1);
-//		}
-		
 		::png_set_IHDR(png.png_ptr, png.info_ptr, img.width, img.height, 8, (int)color_type, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+
 		::png_write_info(png.png_ptr, png.info_ptr);
 		
 		::png_write_image(png.png_ptr, row_pointers.data());
