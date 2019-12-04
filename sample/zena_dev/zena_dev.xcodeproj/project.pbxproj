@@ -54,7 +54,6 @@
 		8DEBCBF92394CEB100D4B395 /* libssl.1.1.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 8D5266D52394224C006145A5 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8DEBCC0523964C6C00D4B395 /* zen_poll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC0023964C6C00D4B395 /* zen_poll.cpp */; };
 		8DEBCC0623964C6C00D4B395 /* zen_socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC0223964C6C00D4B395 /* zen_socket.cpp */; };
-		8DEBCC0723964C6C00D4B395 /* zen_ip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC0323964C6C00D4B395 /* zen_ip.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -194,7 +193,6 @@
 		8DEBCC0023964C6C00D4B395 /* zen_poll.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_poll.cpp; sourceTree = "<group>"; };
 		8DEBCC0123964C6C00D4B395 /* zen_net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_net.h; sourceTree = "<group>"; };
 		8DEBCC0223964C6C00D4B395 /* zen_socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_socket.cpp; sourceTree = "<group>"; };
-		8DEBCC0323964C6C00D4B395 /* zen_ip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_ip.cpp; sourceTree = "<group>"; };
 		8DEBCC0423964C6C00D4B395 /* zen_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_socket.h; sourceTree = "<group>"; };
 		8DEBCC0823964CA000D4B395 /* bez_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bez_debug.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -481,7 +479,6 @@
 				8DEBCC0023964C6C00D4B395 /* zen_poll.cpp */,
 				8DEBCC0123964C6C00D4B395 /* zen_net.h */,
 				8DEBCC0223964C6C00D4B395 /* zen_socket.cpp */,
-				8DEBCC0323964C6C00D4B395 /* zen_ip.cpp */,
 				8DEBCC0423964C6C00D4B395 /* zen_socket.h */,
 			);
 			name = "zen-net";
@@ -555,7 +552,6 @@
 				8D198799239236BA00515178 /* zen_audio_raw.cpp in Sources */,
 				8D198788239236BA00515178 /* zen_system.mm in Sources */,
 				8D19879A239236BA00515178 /* zen_audio_player.cpp in Sources */,
-				8DEBCC0723964C6C00D4B395 /* zen_ip.cpp in Sources */,
 				8D5266842393E234006145A5 /* zen_image_png.cpp in Sources */,
 				8D5266F42394290C006145A5 /* zen_db_connection.cpp in Sources */,
 				8D5266852393E234006145A5 /* zen_image_jpg.cpp in Sources */,

@@ -53,66 +53,20 @@ namespace Zen {
 	{
 		address.v4.sin_port = htons((in_port_t)port);
 	}
+	inline std::string GetAddressString(SocketAddress const & address)
+	{
+		static const int max_len = 256;
+		char buf[256];
+		std::string res;
+		switch(address.a.sa_family) {
+			case AF_INET:
+				res = inet_ntop(AF_INET, &address.v4.sin_addr, buf, max_len);
+				break;
 
-    class IPv4
-    {
-    public:
-        typedef in_addr_t IPType;
-        typedef uint16_t PortType;
-    protected:
-        IPType mIP = INADDR_NONE;
-    public:
-        IPv4() = default;
-        IPv4(const IPv4 & ) = default;
-        
-        IPType getAddressValue() const { return mIP; }
-        
-        void setAddressValue(IPType value) { mIP = value; }
-        
-        IPv4(std::string const & host_name);
-        
-        bool isValidAddress() const;
-        
-        void setAddress(uint8_t ip0, uint8_t ip1, uint8_t ip2, uint8_t ip3);
-        void setHostAddress(std::string const & host_name);
-
-        std::string getAddressString() const;
-    };
-    
-    class IPInfo
-    {
-    protected:
-        addrinfo * mAddress = nullptr;
-
-		IPInfo(IPInfo const & ) = delete;
-    public:
-        IPInfo() = default;
-
-		void operator = (IPInfo const &) = delete;
-        
-        ~IPInfo();
-        
-        addrinfo * getAddressInfo() const { return mAddress; }
-        
-        bool isValidAddress() const;
-        
-        void setHostAddress(std::string const & host_name,
-                            std::string const & service = "",
-                            addrinfo * hints = nullptr);
-        
-        void setLocalAddress(std::string const & service = "",
-                             addrinfo * hints = nullptr);
-        
-        
-        SocketFamily getFamily() const;
-        
-        bool isIPv6() const;
-        
-        bool isIPv4() const;
-        
-        void cleanAddress();
-        
-    public:
-        static std::string GetAddressString(addrinfo * addr);
-    };
+			case AF_INET6:
+				res = inet_ntop(AF_INET6, &address.v6.sin6_addr, buf, max_len);
+				break;
+		}
+		return res;
+	}
 }

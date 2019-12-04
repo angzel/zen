@@ -30,6 +30,7 @@ int main(int argc, const char * argv[]) {
 	auto con = Zen::SocketConnector::Create();
 
 	auto ip = Zen::SocketAddressMake("127.0.0.1", 2200, Zen::SocketFamily::inet);
+	o << Zen::GetAddressString(ip);
 	o << con->connect(ip);
 	std::string header = "GET / HTTP/1.1\n\n";
 	o << con->send(header.data(), header.size());

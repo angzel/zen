@@ -14,7 +14,6 @@
 		8DEBCC472396598100D4B395 /* zen_base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC292396598100D4B395 /* zen_base64.cpp */; };
 		8DEBCC482396598100D4B395 /* zen_poll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC3F2396598100D4B395 /* zen_poll.cpp */; };
 		8DEBCC492396598100D4B395 /* zen_socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC412396598100D4B395 /* zen_socket.cpp */; };
-		8DEBCC4A2396598100D4B395 /* zen_ip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC422396598100D4B395 /* zen_ip.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -236,7 +235,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DEBCC4A2396598100D4B395 /* zen_ip.cpp in Sources */,
 				8DEBCC492396598100D4B395 /* zen_socket.cpp in Sources */,
 				8DEBCC462396598100D4B395 /* zen_csv.cpp in Sources */,
 				8DEBCC442396598100D4B395 /* zen_md5.cpp in Sources */,

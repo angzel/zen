@@ -81,9 +81,7 @@ namespace Zen {
 	public:
 		static std::shared_ptr<SocketConnector> Create();
 
-		bool connect(SocketAddress const & address);
-        
-        bool connect(IPInfo const & address, uint16_t port);
+		bool connect(SocketAddress const & ip);
 	};
 
 	class SocketListener : public Socket
@@ -99,7 +97,7 @@ namespace Zen {
 
         using Socket::open;
         
-        bool bind(IPInfo const & address, uint16_t port);
+        bool bind(SocketAddress const & ip);
         
 		bool listen(int backlog);
 

@@ -13,7 +13,6 @@
 		8DEBCC8B23967CD600D4B395 /* zen_base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC6C23967CD600D4B395 /* zen_base64.cpp */; };
 		8DEBCC8C23967CD600D4B395 /* zen_poll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC8323967CD600D4B395 /* zen_poll.cpp */; };
 		8DEBCC8D23967CD600D4B395 /* zen_socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC8523967CD600D4B395 /* zen_socket.cpp */; };
-		8DEBCC8E23967CD600D4B395 /* zen_ip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC8623967CD600D4B395 /* zen_ip.cpp */; };
 		8DEBCC902396B94200D4B395 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBCC8F2396B94200D4B395 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -66,7 +65,6 @@
 		8DEBCC8323967CD600D4B395 /* zen_poll.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_poll.cpp; sourceTree = "<group>"; };
 		8DEBCC8423967CD600D4B395 /* zen_net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_net.h; sourceTree = "<group>"; };
 		8DEBCC8523967CD600D4B395 /* zen_socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_socket.cpp; sourceTree = "<group>"; };
-		8DEBCC8623967CD600D4B395 /* zen_ip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_ip.cpp; sourceTree = "<group>"; };
 		8DEBCC8723967CD600D4B395 /* zen_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_socket.h; sourceTree = "<group>"; };
 		8DEBCC8F2396B94200D4B395 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,7 +170,6 @@
 				8DEBCC8323967CD600D4B395 /* zen_poll.cpp */,
 				8DEBCC8423967CD600D4B395 /* zen_net.h */,
 				8DEBCC8523967CD600D4B395 /* zen_socket.cpp */,
-				8DEBCC8623967CD600D4B395 /* zen_ip.cpp */,
 				8DEBCC8723967CD600D4B395 /* zen_socket.h */,
 			);
 			name = "zen-net";
@@ -236,7 +233,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DEBCC8E23967CD600D4B395 /* zen_ip.cpp in Sources */,
 				8DEBCC8D23967CD600D4B395 /* zen_socket.cpp in Sources */,
 				8DEBCC8A23967CD600D4B395 /* zen_csv.cpp in Sources */,
 				8DEBCC8823967CD600D4B395 /* zen_md5.cpp in Sources */,

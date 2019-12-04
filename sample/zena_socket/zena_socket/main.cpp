@@ -56,14 +56,20 @@ void _poll_call(Zen::Poll::Event event, void * user_data, int extra)
 		auto size = node->socket->couldReadBytes();
 		std::vector<char> buf;
 		buf.resize(size+1);
-
-		auto sz = node->socket->recv(buf.data(), size);
-		if(sz != size)
+		if(size != 0)
 		{
-			error_log("recv error ");
+			auto sz = node->socket->recv(buf.data(), size);
+			if(sz != size)
+			{
+				error_log("recv error ");
+			}
+			buf[size+1] = 0;
+			cout << "r>>>" << buf.data() << endl;
 		}
-		buf[size+1] = 0;
-		cout << "r>>>" << buf.data() << endl;
+		else
+		{
+			node->socket->close();
+	}
 	}
 	if(!node->socket->isConnected())
 	{
@@ -130,13 +136,12 @@ void push_poll(std::shared_ptr<Zen::Socket> socket)
 }
 void listen_run()
 {
-	Zen::IPInfo ip;
-	ip.setHostAddress("127.0.0.1");
+	auto ip = Zen::SocketAddressMake("127.0.0.1", 2200, Zen::SocketFamily::inet);
 	auto lis = Zen::SocketListener::Create();
 	o << "open:" << lis->open();
 	lis->setReuseable(true);
 	lis->setNonBlock(false);
-	o << "bind:" << lis->bind(ip, 2200);
+	o << "bind:" << lis->bind(ip);
 	lis->listen(10);
 	while(1)
 	{

@@ -207,51 +207,7 @@ namespace Zen {
         mIsConnected = true;
         return true;
     }
-	bool SocketConnector::connect(IPInfo const & address, uint16_t port)
-	{
-        mIsConnected = false;
-        mErrorNo = 0;
-        
-        if(mSocketID == InvalidSocket)
-        {
-			if(!this->open()) return false;
-        }
-        addrinfo * info = address.getAddressInfo();
-        for (; info != nullptr; info = info->ai_next)
-        {
-            if(info->ai_family == (int)mConfig.family) break;
-        }
-        if(info == nullptr)
-        {
-            return false;
-        }
-        
-        int res = 0;
-        if(mConfig.family == SocketFamily::inet6)
-        {
-            sockaddr_in6 addr;
-            musts(info->ai_addrlen == sizeof(addr), "system error");
-            ::memcpy(&addr, info->ai_addr, sizeof(addr));
-            addr.sin6_port = htons(port);
-            res = ::connect(mSocketID, (sockaddr*)&addr, sizeof(addr));
-        }
-        else if(mConfig.family == SocketFamily::inet)
-        {
-            sockaddr_in addr;
-            musts(info->ai_addrlen == sizeof(addr), "system error");
-            ::memcpy(&addr, info->ai_addr, sizeof(addr));
-            addr.sin_port = htons(port);
-            res = ::connect(mSocketID, (sockaddr*)&addr, sizeof(addr));
-        }
-        
-        if(res != 0)
-        {
-			this->mErrorNo = _GetSocketError();
-            return false;
-        }
-        mIsConnected = true;
-        return true;
-	}
+
 	SocketListener::SocketListener()
 	{
 	}
@@ -279,7 +235,7 @@ namespace Zen {
 		return std::shared_ptr<Socket>(new Socket(acc, mConfig));
 	}
 
-    bool SocketListener::bind(IPInfo const & address, uint16_t port)
+    bool SocketListener::bind(SocketAddress const & ip)
 	{
         mIsConnected = false;
         
@@ -288,40 +244,9 @@ namespace Zen {
             Zen::LogE("invalid socket for bind");
             return false;
         }
-        addrinfo * info = address.getAddressInfo();
-        for (; info != nullptr; info = info->ai_next)
+        if(::bind(mSocketID, &ip.a, ip.a.sa_len) != 0)
         {
-            if(info->ai_family == (int)mConfig.family) break;
-        }
-        if(info == nullptr)
-        {
-            Zen::LogE("cannot find a valid server address");
-            return false;
-        }
-        
-        int res = 0;
-        if(mConfig.family == SocketFamily::inet6)
-        {
-            sockaddr_in6 addr;
-            musts(info->ai_addrlen == sizeof(addr), "system error");
-            ::memcpy(&addr, info->ai_addr, sizeof(addr));
-            addr.sin6_port = htons(port);
-            res = ::bind(mSocketID, (sockaddr*)&addr, sizeof(addr));
-        }
-        else if(mConfig.family == SocketFamily::inet)
-        {
-            sockaddr_in addr;
-            musts(info->ai_addrlen == sizeof(addr), "system error");
-            ::memcpy(&addr, info->ai_addr, sizeof(addr));
-            addr.sin_port = htons(port);
-            res = ::bind(mSocketID, (sockaddr*)&addr, sizeof(addr));
-        }
-        
-        if(res != 0)
-        {
-            Zen::LogE("failed to bind to %s %d (e:%d)",
-                            IPInfo::GetAddressString(info).data(), (int)port,
-                            _GetSocketError());
+			mErrorNo = _GetSocketError();
             return false;
         }
         mIsConnected = true;
