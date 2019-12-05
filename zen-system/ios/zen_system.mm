@@ -16,7 +16,7 @@ static NSString * _ResourcePath(std::string const & path)
 	return [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithUTF8String:path.data()]];
 }
 
-namespace Zen { namespace System {
+namespace Zen {
 	std::string GetPackageName()
 	{
 		return [[[NSBundle mainBundle] bundleIdentifier] UTF8String];
@@ -88,6 +88,6 @@ namespace Zen { namespace System {
 		if(!preferredLang) return "";
 		return [preferredLang UTF8String];
 	}
-}}
+}
 
 #endif

@@ -26,22 +26,22 @@
 #include "zen_app_delegate.h"
 #include "zen_app_runtime.h"
 
-class AppRuntime : public Zen::App::Runtime
+class AppRuntimeIOS : public Zen::AppRuntime
 {
 protected:
-	Zen::App::RuntimeDelegate* mDelegate = nullptr;
+	Zen::AppRuntimeDelegate* mDelegate = nullptr;
 
 	Zen::Size2 mViewSize;
 
-	static AppRuntime * _me;
+	static AppRuntimeIOS * _me;
 
 public:
-	static AppRuntime * GetDefault()
+	static AppRuntimeIOS * GetDefault()
 	{
 		return _me;
 	}
 
-	virtual void setRuntimeDelegate(Zen::App::RuntimeDelegate* delegate)
+	virtual void setRuntimeDelegate(Zen::AppRuntimeDelegate* delegate)
 	{
 		mDelegate = delegate;
 	}
@@ -55,7 +55,7 @@ public:
 
 	}
 
-	virtual Zen::App::RuntimeDelegate*
+	virtual Zen::AppRuntimeDelegate*
 	getRuntimeDelegate()
 	{
 		return mDelegate;
@@ -112,16 +112,16 @@ public:
 
 	void resume();
 
-	void touchDown(Zen::App::Touch);
+	void touchDown(Zen::AppTouch);
 
-	void touchUp(Zen::App::Touch);
+	void touchUp(Zen::AppTouch);
 	
-	void touchCancel(Zen::App::Touch);
+	void touchCancel(Zen::AppTouch);
 
-	void touchMove(Zen::App::Touch);
+	void touchMove(Zen::AppTouch);
 
 protected:
-	AppRuntime()
+	AppRuntimeIOS()
 	{
 		mDelegate = nullptr;
 	}

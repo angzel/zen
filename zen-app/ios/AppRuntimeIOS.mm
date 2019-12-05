@@ -19,73 +19,73 @@
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#import "AppRuntime.h"
+#import "AppRuntimeIOS.h"
 #import "AppDelegate.h"
 #import "ViewController.h"
 
 
-AppRuntime * AppRuntime::_me = new AppRuntime();
+AppRuntimeIOS * AppRuntimeIOS::_me = new AppRuntimeIOS();
 
-Zen::App::Runtime * Zen::App::Runtime::GetDefault()
+Zen::AppRuntime * Zen::AppRuntime::GetDefault()
 {
-	return AppRuntime::GetDefault();
+	return AppRuntimeIOS::GetDefault();
 }
 
 
-void AppRuntime::update()
+void AppRuntimeIOS::update()
 {
 	mDelegate->onUpdate();
 }
 
-void AppRuntime::draw()
+void AppRuntimeIOS::draw()
 {
 	mDelegate->onDraw();
 }
 
-void AppRuntime::launch(Zen::Size2 const & view_size)
+void AppRuntimeIOS::launch(Zen::Size2 const & view_size)
 {
 	mDelegate->onLaunch(view_size);
 	mViewSize = view_size;
 }
 
-void AppRuntime::resize(Zen::Size2 const & view_size)
+void AppRuntimeIOS::resize(Zen::Size2 const & view_size)
 {
 	mDelegate->onResize(mViewSize, view_size);
 	mViewSize = view_size;
 }
 
-void AppRuntime::exit()
+void AppRuntimeIOS::exit()
 {
 	mDelegate->onExit();
 }
 
-void AppRuntime::pause()
+void AppRuntimeIOS::pause()
 {
 	mDelegate->onPause();
 }
 
-void AppRuntime::resume()
+void AppRuntimeIOS::resume()
 {
 	mDelegate->onResume();
 }
 
 
-void AppRuntime::touchDown(Zen::App::Touch touch)
+void AppRuntimeIOS::touchDown(Zen::AppTouch touch)
 {
 	mDelegate->onTouchDown(touch);
 }
 
-void AppRuntime::touchUp(Zen::App::Touch touch)
+void AppRuntimeIOS::touchUp(Zen::AppTouch touch)
 {
 	mDelegate->onTouchUp(touch);
 }
 
-void AppRuntime::touchCancel(Zen::App::Touch touch)
+void AppRuntimeIOS::touchCancel(Zen::AppTouch touch)
 {
 	mDelegate->onTouchCancel(touch);
 }
 
-void AppRuntime::touchMove(Zen::App::Touch touch)
+void AppRuntimeIOS::touchMove(Zen::AppTouch touch)
 {
 	mDelegate->onTouchMove(touch);
 }

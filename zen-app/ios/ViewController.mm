@@ -20,12 +20,12 @@
  */
 
 #import "ViewController.h"
-#import "AppRuntime.h"
+#import "AppRuntimeIOS.h"
 #import "AppDelegate.h"
 
 static const int DefaultFPS = 60;
 
-#define runtime AppRuntime::GetDefault()
+#define runtime AppRuntimeIOS::GetDefault()
 
 ViewController * G_view_controller = nil;
 
@@ -119,7 +119,7 @@ ViewController * G_view_controller = nil;
 {
 	for (UITouch * uiTouch in touches)
 	{
-		Zen::App::Touch touch;
+		Zen::AppTouch touch;
 
 		CGPoint l = [uiTouch locationInView:self.view];
 
@@ -134,7 +134,7 @@ ViewController * G_view_controller = nil;
 {
 	for (UITouch * uiTouch in touches)
 	{
-		Zen::App::Touch touch;
+		Zen::AppTouch touch;
 
 		CGPoint l = [uiTouch locationInView:self.view];
 
@@ -149,7 +149,7 @@ ViewController * G_view_controller = nil;
 {
 	for (UITouch * uiTouch in touches)
 	{
-		Zen::App::Touch touch;
+		Zen::AppTouch touch;
 
 		CGPoint l = [uiTouch locationInView:self.view];
 
@@ -164,7 +164,7 @@ ViewController * G_view_controller = nil;
 {
 	for (UITouch * uiTouch in touches)
 	{
-		Zen::App::Touch touch;
+		Zen::AppTouch touch;
 
 		CGPoint l = [uiTouch locationInView:self.view];
 

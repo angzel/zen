@@ -26,18 +26,18 @@
 
 extern int ZenAppMain(int argc, char const ** argv);
 
-namespace Zen { namespace App {
+namespace Zen {
 
-	class Runtime : public virtual Zen::Object
+	class AppRuntime : public virtual Zen::Object
 	{
 	protected:
-		Runtime() = default;
+		AppRuntime() = default;
 	public:
-		static Runtime * GetDefault();
+		static AppRuntime * GetDefault();
 
-		virtual void setRuntimeDelegate(Zen::App::RuntimeDelegate* delegate) = 0;
+		virtual void setRuntimeDelegate(Zen::AppRuntimeDelegate* delegate) = 0;
 
-		virtual RuntimeDelegate * getRuntimeDelegate() = 0;
+		virtual AppRuntimeDelegate * getRuntimeDelegate() = 0;
 
 		virtual bool isMultiTouch() = 0;
 
@@ -55,4 +55,4 @@ namespace Zen { namespace App {
 
 		virtual void setStatusVisible(bool) = 0;
 	};
-}}
+}

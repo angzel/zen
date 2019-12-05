@@ -24,19 +24,19 @@
 #include "zen_object.h"
 #include "zen_vector.h"
 
-namespace Zen { namespace App {
-	struct Key
+namespace Zen {
+	struct AppKey
 	{
 		int type;
 		int value;
 	};
-	struct Touch
+	struct AppTouch
 	{
 		uint32_t no;
 		float x, y;
 	};
 
-	class RuntimeDelegate
+	class AppRuntimeDelegate
 	: public virtual Zen::Object
 	{
 	public:
@@ -66,18 +66,18 @@ namespace Zen { namespace App {
 		 */
 		virtual void onClose() {}
 
-		virtual void onTouchDown(Touch const & touch) {}
+		virtual void onTouchDown(AppTouch const & touch) {}
 
-		virtual void onTouchMove(Touch const & touch) {}
+		virtual void onTouchMove(AppTouch const & touch) {}
 
-		virtual void onTouchUp(Touch const & touch) {}
+		virtual void onTouchUp(AppTouch const & touch) {}
 
-		virtual void onTouchCancel(Touch const & touch) {}
+		virtual void onTouchCancel(AppTouch const & touch) {}
 
-		virtual void onMouseMove(Touch const & touch) {}
+		virtual void onMouseMove(AppTouch const & touch) {}
 
-		virtual void onKeyDown(Key const & key) {}
+		virtual void onKeyDown(AppKey const & key) {}
 
-		virtual void onKeyUp(Key const & key) {}
+		virtual void onKeyUp(AppKey const & key) {}
 	};
-}}
+}

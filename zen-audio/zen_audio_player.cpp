@@ -61,10 +61,10 @@ namespace Zen {
 			auto iter = mAudioCache.find(file);
 			if(iter != mAudioCache.end()) return iter->second;
 
-			auto data = Zen::System::LoadResourceContent(file);
+			auto data = Zen::LoadResourceContent(file);
 			if(data.size() == 0)
 			{
-				data = Zen::System::LoadDocumentContent(file);
+				data = Zen::LoadDocumentContent(file);
 				if(data.empty()) return nullptr;
 			}
 

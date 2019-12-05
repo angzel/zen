@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace Zen { namespace System {
+namespace Zen {
 
 	std::string GetPackageName();
 
@@ -22,4 +22,4 @@ namespace Zen { namespace System {
 	std::vector<uint8_t> LoadDataFromURL(std::string const & url);
 
 	std::string GetSystemLanguage();
-}}
+}

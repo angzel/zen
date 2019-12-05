@@ -16,7 +16,7 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 	auto player = Zen::AudioPlayer::GetDefault();
 	player->play("a.wav", false, 1, 1);
-	cout << Zen::System::GetDeviceUniqueID() << endl;
+	cout << Zen::GetDeviceUniqueID() << endl;
 	char a;
 	cin >> a;
 	return 0;

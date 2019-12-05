@@ -25,6 +25,10 @@
 
 namespace Zen
 {
+	/**
+	@class ImageCoderJPG
+	when encode the alpha channel will be thrown away.
+	 */
 	class ImageCoderJPG : public ImageCoder
 	{
 	public:
