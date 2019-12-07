@@ -55,11 +55,6 @@ namespace Zen {
 	inline Quaternion QuaternionMake(Vector3 vector, float scalar);
 
 	/*
-	 values[0], values[1], and values[2] represent the imaginary values.
-	 */
-	inline Quaternion QuaternionMake(float *values/*[4]*/);
-	
-	/*
 	 Assumes the axis is already normalized.
 	 */
 	inline Quaternion QuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z);
@@ -112,12 +107,6 @@ namespace Zen {
 	inline Quaternion QuaternionMake(Vector3 vector, float scalar)
 	{
 		Quaternion q = { vector.v[0], vector.v[1], vector.v[2], scalar };
-		return q;
-	}
-
-	inline Quaternion QuaternionMake(float * values /* [4] */)
-	{
-		Quaternion q = { values[0], values[1], values[2], values[3] };
 		return q;
 	}
 

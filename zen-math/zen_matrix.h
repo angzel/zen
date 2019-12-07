@@ -38,8 +38,6 @@ namespace Zen {
 		float m[16];
 		float c[4][4];
 	};
-#define Matrix3Identity Matrix3{1, 0, 0, 0, 1, 0, 0, 0, 1}
-#define Matrix4Identity Matrix4{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}
 }
 
 inline Zen::Matrix3 operator+(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight);
@@ -55,15 +53,13 @@ namespace Zen {
 	inline Matrix3 Matrix3Make(float m00, float m01, float m02,
 							   float m10, float m11, float m12,
 							   float m20, float m21, float m22);
-	
+
+	inline Matrix3 Matrix3MakeIdentity(float v = 1);
+
 	inline Matrix3 Matrix3MakeAndTranspose(float m00, float m01, float m02,
 										   float m10, float m11, float m12,
 										   float m20, float m21, float m22);
-	
-	inline Matrix3 Matrix3Make(float const * values /* [9] */);
-	
-	inline Matrix3 Matrix3MakeAndTranspose(float const * values /* [9] */);
-	
+
 	inline Matrix3 Matrix3MakeWithRows(Vector3 row0,
 									   Vector3 row1,
 									   Vector3 row2);
@@ -93,10 +89,7 @@ namespace Zen {
 	inline Matrix3 Matrix3SetColumn(Matrix3 matrix, int column, Vector3 vector);
 	
 	inline Matrix3 Matrix3Transpose(Matrix3 matrix);
-	
-	Matrix3 Matrix3Invert(Matrix3 matrix, bool *isInvertible);
-	Matrix3 Matrix3InvertAndTranspose(Matrix3 matrix, bool *isInvertible);
-	
+
 	inline Matrix3 Matrix3Multiply(Matrix3 matrixLeft, Matrix3 matrixRight);
 	
 	inline Matrix3 Matrix3Scale(Matrix3 matrix, float sx, float sy, float sz);
@@ -127,6 +120,8 @@ namespace Zen {
 							   float m20, float m21, float m22, float m23,
 							   float m30, float m31, float m32, float m33);
 
+
+	inline Matrix4 Matrix4MakeIdentity(float v = 1);
 	/*
 	 m03, m13, and m23 correspond to the translation values tx, ty, tz, respectively.
 	 */
@@ -134,16 +129,6 @@ namespace Zen {
 										   float m10, float m11, float m12, float m13,
 										   float m20, float m21, float m22, float m23,
 										   float m30, float m31, float m32, float m33);
-
-	/*
-	 m[12], m[13], and m[14] correspond to the translation values tx, ty, and tz, respectively.
-	 */
-	inline Matrix4 Matrix4Make(float * values /* [16] */);
-
-	/*
-	 m[3], m[7], and m[11] correspond to the translation values tx, ty, and tz, respectively.
-	 */
-	inline Matrix4 Matrix4MakeAndTranspose(float * values /* [16] */);
 
 	/*
 	 row0, row1, and row2's last component should correspond to the translation values tx, ty, and tz, respectively.
@@ -233,9 +218,6 @@ namespace Zen {
 
 	inline Matrix4 Matrix4Transpose(Matrix4 matrix);
 
-	Matrix4 Matrix4Invert(Matrix4 matrix, bool * __nullable isInvertible);
-	Matrix4 Matrix4InvertAndTranspose(Matrix4 matrix, bool * __nullable isInvertible);
-
 	inline Matrix4 Matrix4Multiply(Matrix4 matrixLeft, Matrix4 matrixRight);
 
 	inline Matrix4 Matrix4Add(Matrix4 matrixLeft, Matrix4 matrixRight);
@@ -304,6 +286,11 @@ namespace Zen {
 			m20, m21, m22 };
 		return m;
 	}
+
+	inline Matrix3 Matrix3MakeIdentity(float v)
+	{
+		return Matrix3{v, 0, 0, 0, v, 0, 0, 0, v};
+	}
 	
 	inline Matrix3 Matrix3MakeAndTranspose(float m00, float m01, float m02,
 										   float m10, float m11, float m12,
@@ -312,22 +299,6 @@ namespace Zen {
 		Matrix3 m = { m00, m10, m20,
 			m01, m11, m21,
 			m02, m12, m22 };
-		return m;
-	}
-	
-	inline Matrix3 Matrix3Make(float const * values /* [9] */)
-	{
-		Matrix3 m = { values[0], values[1], values[2],
-			values[3], values[4], values[5],
-			values[6], values[7], values[8] };
-		return m;
-	}
-	
-	inline Matrix3 Matrix3MakeAndTranspose(float *values /* [9] */)
-	{
-		Matrix3 m = { values[0], values[3], values[6],
-			values[1], values[4], values[7],
-			values[2], values[5], values[8] };
 		return m;
 	}
 	
@@ -381,7 +352,7 @@ namespace Zen {
 	
 	inline Matrix3 Matrix3MakeScale(float sx, float sy, float sz)
 	{
-		Matrix3 m = Matrix3Identity;
+		Matrix3 m = Matrix3MakeIdentity();
 		m.m[0] = sx;
 		m.m[4] = sy;
 		m.m[8] = sz;
@@ -592,6 +563,11 @@ namespace Zen {
 		return m;
 	}
 
+	inline Matrix4 Matrix4MakeIdentity(float v)
+	{
+		return Matrix4{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+	}
+
 	inline Matrix4 Matrix4MakeAndTranspose(float m00, float m01, float m02, float m03,
 										   float m10, float m11, float m12, float m13,
 										   float m20, float m21, float m22, float m23,
@@ -601,24 +577,6 @@ namespace Zen {
 			m01, m11, m21, m31,
 			m02, m12, m22, m32,
 			m03, m13, m23, m33 };
-		return m;
-	}
-
-	inline Matrix4 Matrix4Make(float * values /* [16] */)
-	{
-		Matrix4 m = { values[0], values[1], values[2], values[3],
-			values[4], values[5], values[6], values[7],
-			values[8], values[9], values[10], values[11],
-			values[12], values[13], values[14], values[15] };
-		return m;
-	}
-
-	inline Matrix4 Matrix4MakeAndTranspose(float * values /* [16] */)
-	{
-		Matrix4 m = { values[0], values[4], values[8], values[12],
-			values[1], values[5], values[9], values[13],
-			values[2], values[6], values[10], values[14],
-			values[3], values[7], values[11], values[15] };
 		return m;
 	}
 
@@ -682,19 +640,23 @@ namespace Zen {
 
 	inline Matrix4 Matrix4MakeTranslation(float tx, float ty, float tz)
 	{
-		Matrix4 m = Matrix4Identity;
-		m.m[12] = tx;
-		m.m[13] = ty;
-		m.m[14] = tz;
+		Matrix4 m = {
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		tx, ty, tz, 1,
+		};
 		return m;
 	}
 
 	inline Matrix4 Matrix4MakeScale(float sx, float sy, float sz)
 	{
-		Matrix4 m = Matrix4Identity;
-		m.m[0] = sx;
-		m.m[5] = sy;
-		m.m[10] = sz;
+		Matrix4 m = {
+		sx, 0, 0, 0,
+		0, sy, 0, 0,
+		0, 0, sz, 0,
+		0, 0, 0, 1,
+		};
 		return m;
 	}
 
