@@ -16,7 +16,7 @@
 #include "zen_matrix.h"
 #include "zen_gles2_shader_sampler.h"
 #include "zen_gles2_shader_color.h"
-#include <OpenGLES/ES2/gl.h>
+#include "zen_gles2_texture_src.h"
 
 float coords[] = {
 	0, 0,
@@ -67,8 +67,9 @@ public:
 		tex.create();
 		tex.bindData(120, 120, Zen::GL::ETextureFmt::Alpha, buf.data(), 0);
 
+		glEnable(GL_BLEND);
 		float screen_x = 100;
-		float screen_y = 200;
+		float screen_y = size.h / size.w * screen_x;
 		mat_w = Zen::Matrix4MakeScale(1/screen_x, 1/screen_y, 1);
 		using namespace Zen::GL;
 		Render::SetBlendFunc(EBlendSrc::SrcAlpha, EBlendDst::OneMinusSrcAlpha);

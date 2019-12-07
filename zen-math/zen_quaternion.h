@@ -86,13 +86,13 @@ namespace Zen {
 	inline Quaternion QuaternionNormalize(Quaternion quaternion);
 
 	inline Vector3 QuaternionRotateVector3(Quaternion quaternion, Vector3 vector);
-	void QuaternionRotateVector3Array(Quaternion quaternion, Vector3 *__nonnull vectors, size_t vectorCount);
+	void QuaternionRotateVector3Array(Quaternion quaternion, Vector3 * vectors, size_t vectorCount);
 
 	/*
 	 The fourth component of the vector is ignored when calculating the rotation.
 	 */
 	inline Vector4 QuaternionRotateVector4(Quaternion quaternion, Vector4 vector);
-	void QuaternionRotateVector4Array(Quaternion quaternion, Vector4 *__nonnull vectors, size_t vectorCount);
+	void QuaternionRotateVector4Array(Quaternion quaternion, Vector4 * vectors, size_t vectorCount);
 
 #pragma mark -
 #pragma mark Implementations

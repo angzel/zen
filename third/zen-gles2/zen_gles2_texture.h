@@ -96,6 +96,7 @@ namespace Zen { namespace GL {
 				break;
 			case ETextureFmt::RGBA:
 				glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+				break;
 		}
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mID);

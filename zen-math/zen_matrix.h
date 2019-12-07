@@ -264,15 +264,15 @@ namespace Zen {
 	/*
 	 Assumes 0 in the w component.
 	 */
-	inline void Matrix4MultiplyVector3Array(Matrix4 matrix, Vector3 *__nonnull vectors, size_t vectorCount);
+	inline void Matrix4MultiplyVector3Array(Matrix4 matrix, Vector3 * vectors, size_t vectorCount);
 	/*
 	 Assumes 1 in the w component.
 	 */
-	inline void Matrix4MultiplyVector3ArrayWithTranslation(Matrix4 matrix, Vector3 *__nonnull vectors, size_t vectorCount);
+	inline void Matrix4MultiplyVector3ArrayWithTranslation(Matrix4 matrix, Vector3 * vectors, size_t vectorCount);
 	/*
 	 Assumes 1 in the w component and divides the resulting vector by w before returning.
 	 */
-	inline void Matrix4MultiplyAndProjectVector3Array(Matrix4 matrix, Vector3 *__nonnull vectors, size_t vectorCount);
+	inline void Matrix4MultiplyAndProjectVector3Array(Matrix4 matrix, Vector3 * vectors, size_t vectorCount);
 
 	inline Vector4 Matrix4MultiplyVector4(Matrix4 matrixLeft, Vector4 vectorRight);
 
@@ -998,14 +998,14 @@ namespace Zen {
 		return Vector3Make(v4.v[0], v4.v[1], v4.v[2]) * 1.0f / v4.v[3];
 	}
 
-	inline void Matrix4MultiplyVector3ArrayWithTranslation(Matrix4 matrix, Vector3 *__nonnull vectors, size_t vectorCount)
+	inline void Matrix4MultiplyVector3ArrayWithTranslation(Matrix4 matrix, Vector3 * vectors, size_t vectorCount)
 	{
 		int i;
 		for (i=0; i < vectorCount; i++)
 			vectors[i] = Matrix4MultiplyVector3WithTranslation(matrix, vectors[i]);
 	}
 
-	inline void Matrix4MultiplyAndProjectVector3Array(Matrix4 matrix, Vector3 *__nonnull vectors, size_t vectorCount)
+	inline void Matrix4MultiplyAndProjectVector3Array(Matrix4 matrix, Vector3 * vectors, size_t vectorCount)
 	{
 		int i;
 		for (i=0; i < vectorCount; i++)
@@ -1021,7 +1021,7 @@ namespace Zen {
 		return v;
 	}
 
-	inline void Matrix4MultiplyVector4Array(Matrix4 matrix, Vector4 *__nonnull vectors, size_t vectorCount)
+	inline void Matrix4MultiplyVector4Array(Matrix4 matrix, Vector4 * vectors, size_t vectorCount)
 	{
 		int i;
 		for (i=0; i < vectorCount; i++)

@@ -110,6 +110,7 @@ class AppGLSurfaceView extends GLSurfaceView
 
 		public EGLConfig chooseConfig(EGL10 egl, EGLDisplay display, EGLConfig[] configs)
 		{
+			Log.v(TAG, "Choose Config" + configs.length);
 			EGLConfig chosen = null;
 			int alpha = 0;
 			for (EGLConfig config : configs)
@@ -129,6 +130,7 @@ class AppGLSurfaceView extends GLSurfaceView
 					chosen = config;
 				}
 			}
+			Log.v(TAG, "config alpha:" + alpha);
 			return chosen;
 		}
 

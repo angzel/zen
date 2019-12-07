@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		8D8B720B239B645B001AC2E8 /* zen_egl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B71FD239B645B001AC2E8 /* zen_egl.cpp */; };
-		8D8B720C239B645B001AC2E8 /* zen_gles2_buffer_coords.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B7203239B645B001AC2E8 /* zen_gles2_buffer_coords.cpp */; };
+		8D8B720C239B645B001AC2E8 /* zen_gles2_texture_src.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B7203239B645B001AC2E8 /* zen_gles2_texture_src.cpp */; };
 		8D8B720D239B645B001AC2E8 /* zen_gles2_shader_color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B7208239B645B001AC2E8 /* zen_gles2_shader_color.cpp */; };
 		8D8B720E239B645B001AC2E8 /* zen_gles2_shader_sampler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B7209239B645B001AC2E8 /* zen_gles2_shader_sampler.cpp */; };
+		8D8B7251239B7914001AC2E8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D8B7250239B7914001AC2E8 /* main.cpp */; };
 		8DD7CD6123977B6300D9D5D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */; };
 		8DD7CD6423977B6300D9D5D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CD6223977B6300D9D5D0 /* LaunchScreen.storyboard */; };
 		8DD7CDC823977D3200D9D5D0 /* zen_md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDBE23977D3100D9D5D0 /* zen_md5.cpp */; };
@@ -24,7 +25,6 @@
 		8DD7CDE023978EAF00D9D5D0 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDD923978EAF00D9D5D0 /* main.mm */; };
 		8DD7CDE123978EAF00D9D5D0 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDDA23978EAF00D9D5D0 /* AppDelegate.mm */; };
 		8DD7CDE223978EAF00D9D5D0 /* AppRuntimeIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDDD23978EAF00D9D5D0 /* AppRuntimeIOS.mm */; };
-		8DD7CDE423978EC200D9D5D0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDE323978EC200D9D5D0 /* main.cpp */; };
 		8DD7CDEB23978FA400D9D5D0 /* zen_image_raw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDE823978FA400D9D5D0 /* zen_image_raw.cpp */; };
 		8DD7CDEC23978FA400D9D5D0 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CDE923978FA400D9D5D0 /* README.txt */; };
 /* End PBXBuildFile section */
@@ -37,14 +37,15 @@
 		8D8B7200239B645B001AC2E8 /* zen_gles2_frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_frame.h; sourceTree = "<group>"; };
 		8D8B7201239B645B001AC2E8 /* zen_gles2_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_render.h; sourceTree = "<group>"; };
 		8D8B7202239B645B001AC2E8 /* zen_gles2_shader_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_shader_sampler.h; sourceTree = "<group>"; };
-		8D8B7203239B645B001AC2E8 /* zen_gles2_buffer_coords.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_buffer_coords.cpp; sourceTree = "<group>"; };
+		8D8B7203239B645B001AC2E8 /* zen_gles2_texture_src.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_texture_src.cpp; sourceTree = "<group>"; };
 		8D8B7204239B645B001AC2E8 /* zen_gles2_program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_program.h; sourceTree = "<group>"; };
 		8D8B7205239B645B001AC2E8 /* zen_egl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_egl.h; sourceTree = "<group>"; };
 		8D8B7206239B645B001AC2E8 /* zen_gles2_texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_texture.h; sourceTree = "<group>"; };
 		8D8B7207239B645B001AC2E8 /* zen_gles2_shader_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_shader_color.h; sourceTree = "<group>"; };
 		8D8B7208239B645B001AC2E8 /* zen_gles2_shader_color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_shader_color.cpp; sourceTree = "<group>"; };
 		8D8B7209239B645B001AC2E8 /* zen_gles2_shader_sampler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_shader_sampler.cpp; sourceTree = "<group>"; };
-		8D8B720A239B645B001AC2E8 /* zen_gles2_buffer_coords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_buffer_coords.h; sourceTree = "<group>"; };
+		8D8B720A239B645B001AC2E8 /* zen_gles2_texture_src.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_texture_src.h; sourceTree = "<group>"; };
+		8D8B7250239B7914001AC2E8 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		8DD7CD5123977B5D00D9D5D0 /* app-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "app-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DD7CD6323977B6300D9D5D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -90,7 +91,6 @@
 		8DD7CDDC23978EAF00D9D5D0 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		8DD7CDDD23978EAF00D9D5D0 /* AppRuntimeIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppRuntimeIOS.mm; sourceTree = "<group>"; };
 		8DD7CDDE23978EAF00D9D5D0 /* zen_app_runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_runtime.h; sourceTree = "<group>"; };
-		8DD7CDE323978EC200D9D5D0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 		8DD7CDE623978FA400D9D5D0 /* zen_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image.h; sourceTree = "<group>"; };
 		8DD7CDE723978FA400D9D5D0 /* zen_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_color.h; sourceTree = "<group>"; };
 		8DD7CDE823978FA400D9D5D0 /* zen_image_raw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_raw.cpp; sourceTree = "<group>"; };
@@ -117,8 +117,8 @@
 			children = (
 				8D8B71FD239B645B001AC2E8 /* zen_egl.cpp */,
 				8D8B7205239B645B001AC2E8 /* zen_egl.h */,
-				8D8B7203239B645B001AC2E8 /* zen_gles2_buffer_coords.cpp */,
-				8D8B720A239B645B001AC2E8 /* zen_gles2_buffer_coords.h */,
+				8D8B7203239B645B001AC2E8 /* zen_gles2_texture_src.cpp */,
+				8D8B720A239B645B001AC2E8 /* zen_gles2_texture_src.h */,
 				8D8B71FE239B645B001AC2E8 /* zen_gles2_buffer.h */,
 				8D8B71FC239B645B001AC2E8 /* zen_gles2_enum.h */,
 				8D8B7200239B645B001AC2E8 /* zen_gles2_frame.h */,
@@ -135,9 +135,19 @@
 			path = "../../third/zen-gles2";
 			sourceTree = "<group>";
 		};
+		8D8B724F239B7914001AC2E8 /* gles_src */ = {
+			isa = PBXGroup;
+			children = (
+				8D8B7250239B7914001AC2E8 /* main.cpp */,
+			);
+			name = gles_src;
+			path = ../gles_src;
+			sourceTree = "<group>";
+		};
 		8DD7CD4823977B5D00D9D5D0 = {
 			isa = PBXGroup;
 			children = (
+				8D8B724F239B7914001AC2E8 /* gles_src */,
 				8D8B71FB239B645B001AC2E8 /* zen-gles2 */,
 				8DD7CDE523978FA400D9D5D0 /* zen-image */,
 				8DD7CDD423978EAF00D9D5D0 /* zen-app */,
@@ -164,7 +174,6 @@
 				8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */,
 				8DD7CD6223977B6300D9D5D0 /* LaunchScreen.storyboard */,
 				8DD7CD6523977B6300D9D5D0 /* Info.plist */,
-				8DD7CDE323978EC200D9D5D0 /* main.cpp */,
 			);
 			path = gles_debug;
 			sourceTree = "<group>";
@@ -344,15 +353,15 @@
 				8DD7CDCB23977D3200D9D5D0 /* zen_base64.cpp in Sources */,
 				8D8B720D239B645B001AC2E8 /* zen_gles2_shader_color.cpp in Sources */,
 				8D8B720B239B645B001AC2E8 /* zen_egl.cpp in Sources */,
-				8D8B720C239B645B001AC2E8 /* zen_gles2_buffer_coords.cpp in Sources */,
+				8D8B720C239B645B001AC2E8 /* zen_gles2_texture_src.cpp in Sources */,
 				8DD7CDE223978EAF00D9D5D0 /* AppRuntimeIOS.mm in Sources */,
 				8DD7CDE123978EAF00D9D5D0 /* AppDelegate.mm in Sources */,
 				8DD7CDDF23978EAF00D9D5D0 /* ViewController.mm in Sources */,
+				8D8B7251239B7914001AC2E8 /* main.cpp in Sources */,
 				8DD7CDE023978EAF00D9D5D0 /* main.mm in Sources */,
 				8DD7CDC823977D3200D9D5D0 /* zen_md5.cpp in Sources */,
 				8DD7CDCA23977D3200D9D5D0 /* zen_csv.cpp in Sources */,
 				8D8B720E239B645B001AC2E8 /* zen_gles2_shader_sampler.cpp in Sources */,
-				8DD7CDE423978EC200D9D5D0 /* main.cpp in Sources */,
 				8DD7CDC923977D3200D9D5D0 /* zen_urlcoding.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -27,6 +27,7 @@
 #include "zen_gles2_enum.h"
 #include "zen_gles2_program.h"
 #include "zen_gles2_texture.h"
+#include "zen_gles2_buffer.h"
 #include <map>
 
 namespace Zen { namespace GL { namespace Render {
@@ -35,6 +36,7 @@ namespace Zen { namespace GL { namespace Render {
 	inline void ActiveProgram(GLuint program_id);
 	// texture
 	inline void BindTexture(Texture const & texture, int);
+	inline void BindBuffer(Buffer const & buffer);
 //	// frame
 //	inline void ActiveFrame(FrameBuffer const & frame);
 //	inline void ActiveFrame(GLuint frame_id);
@@ -159,6 +161,10 @@ namespace Zen { namespace GL { namespace Render {
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
 #endif
+	}
+	inline void BindBuffer(Buffer const & buffer)
+	{
+		glBindBuffer((GLenum)buffer.getType(), buffer.getObject());
 	}
 	inline void UnbindTexture(int sampler)
 	{

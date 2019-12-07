@@ -48,7 +48,7 @@ set_target_properties(lib_openal
 
 # include
 include_directories(
-		../cpp
+		../../gles_src
 		${SOURCE_PATH}/zen-cpp
 		${SOURCE_PATH}/zen-image
 		${SOURCE_PATH}/zen-math
@@ -56,6 +56,7 @@ include_directories(
 		${SOURCE_PATH}/zen-app/android
 		${SOURCE_PATH}/zen-string
 		${SOURCE_PATH}/zen-system
+		${SOURCE_PATH}/third/zen-gles2
 		${SOURCE_PATH}/zen-system/android
 		${SOURCE_PATH}/../zen-external/external/png/include/android/
 		${SOURCE_PATH}/../zen-external/external/jpeg/include/android/
@@ -65,7 +66,7 @@ include_directories(
 
 # source files
 file(GLOB sources_cpp
-		../cpp/*.cpp
+		../../gles_src/*.cpp
 		${SOURCE_PATH}/zen-cpp/*.cpp
 		${SOURCE_PATH}/zen-image/*.cpp
 		${SOURCE_PATH}/zen-math/*.cpp
@@ -73,6 +74,7 @@ file(GLOB sources_cpp
 		${SOURCE_PATH}/zen-app/android/*.cpp
 		${SOURCE_PATH}/zen-string/*.cpp
 		${SOURCE_PATH}/zen-system/*.cpp
+		${SOURCE_PATH}/third/zen-gles2/*.cpp
 		${SOURCE_PATH}/zen-system/android/*.cpp
 		)
 
