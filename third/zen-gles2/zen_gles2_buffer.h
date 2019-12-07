@@ -78,12 +78,6 @@ namespace Zen { namespace GL {
 
 /// class buffer
 namespace Zen { namespace GL {
-	
-
-//	inline void Buffer::ActiveNone()
-//	{
-//		glBindBuffer(oType, 0);
-//	}
 
 	inline Buffer::Buffer(EBufferType type)
 	{

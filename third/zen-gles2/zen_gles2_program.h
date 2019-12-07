@@ -33,12 +33,11 @@ namespace Zen { namespace GL {
 
 		void operator = (Shader const &);
 
+		static GLenum const Type = tType;
 	public:
-		static GLenum const oType = tType;
 
 	public:
 		inline Shader();
-
 
 		inline ~Shader();
 
@@ -55,9 +54,11 @@ namespace Zen { namespace GL {
 	protected:
 		GLuint mData;
 	};
+
 	typedef Shader<GL_VERTEX_SHADER> VertexShader;
+
 	typedef Shader<GL_FRAGMENT_SHADER> FragmentShader;;
-} } // namespace Zen::gl
+} }
 
 
 namespace Zen { namespace GL { 
@@ -132,7 +133,7 @@ namespace Zen { namespace GL {
 	{
 		if(mData == 0)
 		{
-			mData = glCreateShader(oType);
+			mData = glCreateShader(Type);
 		}
 #if ZEN_DEBUG
 		mustsn(mData != 0, "Failed to create shader", (int)glGetError());

@@ -36,10 +36,14 @@ namespace Zen { namespace GL { namespace Render {
 	inline void ActiveProgram(GLuint program_id);
 	// texture
 	inline void BindTexture(Texture const & texture, int);
+	inline void BindTexture(GLint texture, int);
+	inline void UnbindTexture(int sampler);
+	// buffer
+	inline void BindArrayBuffer(GLint buffer);
+	inline void BindElementArrayBuffer(GLint buffer);
 	inline void BindBuffer(Buffer const & buffer);
-//	// frame
-//	inline void ActiveFrame(FrameBuffer const & frame);
-//	inline void ActiveFrame(GLuint frame_id);
+	inline void UnbindBuffer(Buffer const & buffer);
+
 	// vertex.
 	inline void EnableVertexAttrib(GLint attrib);
 
@@ -162,9 +166,14 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
 #endif
 	}
-	inline void BindBuffer(Buffer const & buffer)
+	inline void BindTexture(GLint texture, int sampler)
 	{
-		glBindBuffer((GLenum)buffer.getType(), buffer.getObject());
+		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
+		glBindTexture(GL_TEXTURE_2D, texture);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
+#endif
 	}
 	inline void UnbindTexture(int sampler)
 	{
@@ -174,6 +183,22 @@ namespace Zen { namespace GL { namespace Render {
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
 #endif
+	}
+	inline void BindBuffer(Buffer const & buffer)
+	{
+		glBindBuffer((GLenum)buffer.getType(), buffer.getObject());
+	}
+	inline void UnbindBuffer(Buffer const & buffer)
+	{
+		glBindBuffer((GLenum)buffer.getType(), 0);
+	}
+	inline void BindArrayBuffer(GLint buffer)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	}
+	inline void BindElementArrayBuffer(GLint buffer)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 	}
 
 	inline void ActiveFrame(GLuint frame_id);

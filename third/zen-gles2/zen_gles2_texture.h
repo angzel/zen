@@ -23,6 +23,7 @@
 
 #include "zen_gles2_enum.h"
 #include <memory>
+#include <vector>
 
 namespace Zen { namespace GL {
 	enum class ETextureFmt
@@ -54,9 +55,23 @@ namespace Zen { namespace GL {
 	protected:
 		GLuint mID;
 	};
+	class TextureSrc {
+	public:
+		Texture texture;
+		Zen::Size2 size;
+		Zen::Size2 real_size;
+		Zen::Size2 gl_size;
+		ETextureFmt format;
+
+		TextureSrc() = default;
+		TextureSrc(TextureSrc&) = delete;
+	};
+	typedef std::shared_ptr<TextureSrc const> SharedTexture;
+
+	inline SharedTexture Create(uint32_t width, uint32_t height, ETextureFmt format, void const * data);
 }}
 
-/// class Texture
+	/// class Texture
 namespace Zen { namespace GL {
 	inline Texture::Texture()
 	{
@@ -109,5 +124,68 @@ namespace Zen { namespace GL {
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to bind data to gl texture", eno);
 #endif
+	}
+	inline uint32_t GetTextureExtendSize(uint32_t s)
+	{
+		for (int i = 0; i < 16; ++i) {
+			if (s < (1U << i)) return (1U << i);
+		}
+		return 0;
+	}
+	inline SharedTexture CreateSharedTexture(uint32_t width, uint32_t height, ETextureFmt format, void const * data)
+	{
+			//#if ZEN_GL_2D_ANY_SZ
+		auto t = new TextureSrc;
+		t->format = format;
+		t->texture.create();
+		t->size = { (float)width, (float)height };
+#if 1
+		t->texture.bindData(width, height, format, data, 0);
+		t->real_size = t->size;
+		t->gl_size = { 1.f, 1.f };
+#else
+		int bpp = (ETextureFmt::Alpha == format?1:(ETextureFmt::RGB == format?3:4));
+
+		auto w = GetTextureExtendSize(width);
+		auto h = GetTextureExtendSize(height);
+
+		if(w == width)
+		{
+			if(h == height)
+			{
+				t->texture.bindData(width, height, format, data, 0);
+			}
+			else
+			{
+				auto src_size = width * height * bpp;
+				auto dest_size = w * h * bpp;
+				std::vector<char> buf(dest_size, 0);
+				::memcpy(buf.data(), data, src_size);
+				t->texture.bindData(w, h, format, buf.data(), 0);
+			}
+		}
+		else
+		{
+			auto dest_stride = bpp * w;
+			auto src_stride = bpp * width;
+			auto dest_size = dest_stride * h;
+
+			std::vector<char> buf;
+			buf.resize(dest_size, 0);
+
+			auto src = (char const *)data;
+			auto dest = buf.data();
+
+			for (int i = 0; i < height; ++i) {
+				::memcpy(dest, src, src_stride);
+				dest += dest_stride;
+				src += src_stride;
+			}
+			t->texture.bindData(w, h, format, buf.data(), 0);
+		}
+		t->real_size = {(float)w, (float)h};
+		t->gl_size = {(float)width /(float)w, (float)height /(float)h};
+#endif
+		return SharedTexture(t);
 	}
 } }

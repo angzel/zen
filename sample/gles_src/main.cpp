@@ -16,7 +16,11 @@
 #include "zen_matrix.h"
 #include "zen_gles2_shader_sampler.h"
 #include "zen_gles2_shader_color.h"
-#include "zen_gles2_texture_src.h"
+#include "zen_gles2_texture.h"
+#include "zen_vap2d_sprite.h"
+#include "zen_vap2d_layer.h"
+#include "zen_image_raw.h"
+#include "zen_system.h"
 
 float coords[] = {
 	0, 0,
@@ -36,19 +40,24 @@ class ScreenColorDelegate : public Zen::AppRuntimeDelegate {
 	Zen::Random r;
 	float v = 0;
 
-	Zen::GL::Texture tex;
+	Zen::GL::SharedTexture texture;
 
 	Zen::Matrix4 mat_w;
 
 	bool touched = false;
 
+	Zen::Vap2d::Sprite * m_sprite;
+	Zen::Vap2d::Layer * m_layer;
 public:
 	virtual void onTouchDown(Zen::AppTouch const &) override
 	{
 		touched = true;
+		m_sprite->setTextureFlipX(!m_sprite->isTextureFlipX());
 	}
 	virtual void onTouchUp(Zen::AppTouch const &) override
 	{
+		m_sprite->setTextureFlipY(!m_sprite->isTextureFlipY());
+
 		touched = false;
 	}
 	virtual void onLaunch(Zen::Size2 const & size) override {
@@ -58,14 +67,25 @@ public:
 		c2.set(r.next());
 		grad.set(c1, c2);
 
-		size_t len = 120*120;
-		std::vector<uint8_t> buf(len);
-		for(int i = 0; i < len; i += 1)
+		Zen::ImageCoderRaw raw;
+		Zen::ImageData img;
+		auto img_data = Zen::LoadResourceContent("a.raw");
+		raw.decode(img, img_data);
+		using namespace Zen::GL;
+		ETextureFmt format = ETextureFmt::Alpha;
+		if(img.format == Zen::EImageFormat::Grey)
 		{
-			buf[i] = (i%120) + (i/120);
+			format = ETextureFmt::Alpha;
 		}
-		tex.create();
-		tex.bindData(120, 120, Zen::GL::ETextureFmt::Alpha, buf.data(), 0);
+		else if(img.format == Zen::EImageFormat::RGB)
+		{
+			format = ETextureFmt::RGB;
+		}
+		else if(img.format == Zen::EImageFormat::RGBA)
+		{
+			format = ETextureFmt::RGBA;
+		}
+		texture = Zen::GL::CreateSharedTexture(img.width, img.height, format, img.buffer.data());
 
 		glEnable(GL_BLEND);
 		float screen_x = 100;
@@ -73,6 +93,21 @@ public:
 		mat_w = Zen::Matrix4MakeScale(1/screen_x, 1/screen_y, 1);
 		using namespace Zen::GL;
 		Render::SetBlendFunc(EBlendSrc::SrcAlpha, EBlendDst::OneMinusSrcAlpha);
+
+		m_sprite = new Zen::Vap2d::Sprite;
+		m_sprite->setTexture(texture);
+		m_sprite->setSize(texture->size.w * 1.5f, texture->size.h);
+		m_sprite->setTextureRect({1, 0, -1, 1});
+		m_sprite->setAnchor(0.5f, 0.5f);
+		m_sprite->setScale(0.5f, 1);
+		m_layer = new Zen::Vap2d::Layer;
+		m_layer->setScale(0.5f, 0.5f);
+		m_layer->setPosition(100, 100);
+		m_layer->setRotation(0.5);
+		m_layer->addNode(m_sprite);
+		auto root = Zen::Vap2d::RNode::GetDefault();
+		root->setDesignViewSize(screen_x * 2, screen_y * 2);
+		root->addNode(m_layer);
 	}
 	virtual void onDraw() override {
 		v += 0.004f;
@@ -85,8 +120,12 @@ public:
 		glClearColor(c.red, c.green, c.blue, c.alpha);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		this->drawSampler();
-		this->drawColor();
+		Zen::GL::Render::BindArrayBuffer(0);
+//		this->drawSampler();
+//		this->drawColor();
+		this->drawSprite();
+//		this->drawSampler(20, 20);
+
 	}
 	void drawColor()
 	{
@@ -99,7 +138,6 @@ public:
 		Render::SetVertexAttribData(sc->a_color, 4, EType::Float, 0, 0, colors);
 		Render::SetUniformFloat(sc->u_point_size, 5);
 		Render::SetUniformFloat(sc->u_color, 1, 1, 1, 1);
-
 
 		static float radians = 0.3f;
 		radians += 0.01f;
@@ -125,18 +163,19 @@ public:
 
 		Render::DrawArray(EDrawMode::TriangleStrip, 0, 4);
 	}
-	void drawSampler()
+	void drawSampler(float posx = -50, float posy = -30)
 	{
 		using namespace Zen::GL;
 		auto ss = touched?ShaderSampler::GetAlpha():ShaderSampler::GetNormal();
 		Render::ActiveProgram(ss->program);
+
 		Render::EnableVertexAttrib(ss->a_coord);
 		Render::SetVertexAttribData(ss->a_coord, 2, EType::Float, false, 0, coords);
 
 		Render::EnableVertexAttrib(ss->a_sampler_coord);
 		Render::SetVertexAttribData(ss->a_sampler_coord, 2, EType::Float, true, 0, coords);
 
-		Render::SetUniformFloat(ss->u_color, 1, 0, 0, 1);
+		Render::SetUniformFloat(ss->u_color, 1, 1, 1, 1);
 
 		static float radians = 0.3f;
 		radians += 0.01f;
@@ -146,7 +185,7 @@ public:
 		float y = 80;
 		float ax = 0.5f;
 		float ay = 0.5f;
-		Zen::Point2 pos = { -50, -30 };
+		Zen::Point2 pos = { posx, posy };
 
 		auto mat1 = Zen::Matrix4{
 			cos * x, sin * x, 0.0f, 0.0f,
@@ -161,11 +200,16 @@ public:
 			//		Zen::Matrix4MakeTranslation(0, -1, 0);
 		Render::SetUniformMat(ss->u_transform, mat);
 
-		Render::BindTexture(tex, 1);
+		Render::BindTexture(texture->texture, 1);
 		Render::SetUniformInt(ss->u_sampler, 1);
 
 		Render::DrawArray(EDrawMode::TriangleStrip, 0, 4);
 
+	}
+	void drawSprite()
+	{
+		m_sprite->setRotation(m_sprite->getRotation()+0.01f);
+		Zen::Vap2d::RNode::GetDefault()->draw();
 	}
 };
 int ZenAppMain(int argc, const char ** argv)
