@@ -7,8 +7,9 @@
 namespace Zen { namespace Vap2d {
 	class Layer : public BNode, public View {
 	public:
-		Layer();
+		Layer(std::string const & name = "layer");
 
-		virtual void draw() override;
+		virtual void draw() override;	public:
+
 	};
 }}

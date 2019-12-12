@@ -35,9 +35,14 @@ namespace Zen {
 	public:
 		static AppRuntime * GetDefault();
 
-		virtual void setRuntimeDelegate(Zen::AppRuntimeDelegate* delegate) = 0;
+		/**
+		 @function setRuntimeDelegate
+		 generally just set once in ZenAppMain.
+		 if set again, be carefull the original is not deleted here.
+		 */
+		virtual void setRuntimeDelegate(std::shared_ptr<AppRuntimeDelegate> delegate) = 0;
 
-		virtual AppRuntimeDelegate * getRuntimeDelegate() = 0;
+		virtual std::shared_ptr<AppRuntimeDelegate> getRuntimeDelegate() = 0;
 
 		virtual bool isMultiTouch() = 0;
 

@@ -34,13 +34,13 @@ namespace Zen { namespace GL {
 		GLint u_color;
 		Zen::GL::Program program;
 	public:
-		static ShaderSampler const * GetNormal();
+		static std::shared_ptr<ShaderSampler const> GetNormal();
 		// convert texture to grey channel
-		static ShaderSampler const * GetGrey();
+		static std::shared_ptr<ShaderSampler const> GetGrey();
 		// texture is alpha channel
-		static ShaderSampler const * GetAlpha();
+		static std::shared_ptr<ShaderSampler const> GetAlpha();
 
-		static ShaderSampler * Create(char const * vertext_shader, char const * fragment_shader);
+		static std::shared_ptr<ShaderSampler const> Create(char const * vertext_shader, char const * fragment_shader);
 	protected:
 		ShaderSampler() = default;
 		ShaderSampler(ShaderSampler&) = delete;

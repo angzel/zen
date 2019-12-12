@@ -29,7 +29,7 @@
 class AppRuntimeIOS : public Zen::AppRuntime
 {
 protected:
-	Zen::AppRuntimeDelegate* mDelegate = nullptr;
+	std::shared_ptr<Zen::AppRuntimeDelegate> mDelegate = nullptr;
 
 	Zen::Size2 mViewSize;
 
@@ -41,7 +41,7 @@ public:
 		return _me;
 	}
 
-	virtual void setRuntimeDelegate(Zen::AppRuntimeDelegate* delegate)
+	virtual void setRuntimeDelegate(std::shared_ptr<Zen::AppRuntimeDelegate> delegate)
 	{
 		mDelegate = delegate;
 	}
@@ -55,7 +55,7 @@ public:
 
 	}
 
-	virtual Zen::AppRuntimeDelegate*
+	virtual std::shared_ptr<Zen::AppRuntimeDelegate>
 	getRuntimeDelegate()
 	{
 		return mDelegate;
@@ -102,9 +102,9 @@ public:
 
 	void draw();
 
-	void launch(Zen::Size2 const & view_size);
+	void launch(Zen::Size2 view_size);
 
-	void resize(Zen::Size2 const & view_size);
+	void resize(Zen::Size2 view_size);
 
 	void exit();
 

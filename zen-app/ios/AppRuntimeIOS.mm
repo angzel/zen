@@ -42,15 +42,15 @@ void AppRuntimeIOS::draw()
 	mDelegate->onDraw();
 }
 
-void AppRuntimeIOS::launch(Zen::Size2 const & view_size)
+void AppRuntimeIOS::launch(Zen::Size2 view_size)
 {
 	mDelegate->onLaunch(view_size);
 	mViewSize = view_size;
 }
 
-void AppRuntimeIOS::resize(Zen::Size2 const & view_size)
+void AppRuntimeIOS::resize(Zen::Size2 view_size)
 {
-	mDelegate->onResize(mViewSize, view_size);
+	mDelegate->onResize(view_size);
 	mViewSize = view_size;
 }
 

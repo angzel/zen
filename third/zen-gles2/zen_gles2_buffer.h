@@ -45,18 +45,15 @@ namespace Zen { namespace GL {
 		
 		void operator = (Buffer const &);
 		
-	public:
-		inline Buffer(EBufferType type);
-		
-		inline ~Buffer(void);
-		
-		inline void create();
+	protected:
+		inline Buffer(GLenum type);
 
-		inline void release();
+		inline ~Buffer(void);
+	public:
 		
-		inline void bindData(uint32_t size, void const * data, EBufferUsage usage = EBufferUsage::StaticDraw);
+		inline void bindData(size_t size, void const * data, EBufferUsage usage = EBufferUsage::StaticDraw);
 		
-		inline void updateData(uint32_t offset, uint32_t size, void const * data);
+		inline void updateData(size_t offset, size_t size, void const * data);
 		
 		inline EBufferUsage getUsage() const;
 		
@@ -66,11 +63,23 @@ namespace Zen { namespace GL {
 		
 		inline uint32_t getObject() const;
 
-		inline EBufferType getType() const;
 	protected:
 		uint32_t mID;
-		EBufferType mType;
+		GLenum mType;
 		
+	};
+
+	class ArrayBuffer : public Buffer {
+	public:
+		ArrayBuffer()
+		: Buffer(GL_ARRAY_BUFFER)
+		{
+		}
+	};
+
+	class ElementArrayBuffer : public Buffer {
+	public:
+		ElementArrayBuffer();
 	};
 	
 }}
@@ -79,10 +88,11 @@ namespace Zen { namespace GL {
 /// class buffer
 namespace Zen { namespace GL {
 
-	inline Buffer::Buffer(EBufferType type)
+	inline Buffer::Buffer(GLenum type)
 	{
 		mType = type;
 		mID = 0;
+		glGenBuffers(1, &mID);
 	}
 
 	inline Buffer::~Buffer(void)
@@ -90,36 +100,20 @@ namespace Zen { namespace GL {
 		if(mID != 0) glDeleteBuffers(1, &mID);
 	}
 
-	inline void Buffer::release()
+	inline void Buffer::bindData(size_t size, void const * data, EBufferUsage usage)
 	{
-		if(mID == 0) return;
-		glDeleteBuffers(1, &mID);
-		mID = 0;
-	}
-
-	inline void Buffer::create()
-	{
-		if(mID == 0) glGenBuffers(1, &mID);
-#if ZEN_DEBUG
-		mustsn(mID != 0, "failed to create gl buffer", (int)glGetError());
-#endif
-	}
-
-	inline void Buffer::bindData(uint32_t size, void const * data, EBufferUsage usage)
-	{
-		create();
 		glBindBuffer((GLenum)mType, mID);
-		glBufferData((GLenum)mType, size, data, (GLenum)usage);
+		glBufferData((GLenum)mType, (GLsizeiptr)size, data, (GLenum)usage);
 #if ZEN_DEBUG
 		GLenum eno = glGetError();
 		mustsn(eno == GL_NO_ERROR, "set gl buffer data failed", (int)eno);
 #endif
 	}
 
-	inline void Buffer::updateData(uint32_t offset, uint32_t size, void const * data)
+	inline void Buffer::updateData(size_t offset, size_t size, void const * data)
 	{
 		glBindBuffer((GLenum)mType, mID);
-		glBufferSubData((GLenum)mType, offset, size, data);
+		glBufferSubData((GLenum)mType, (GLintptr)offset, (GLsizeiptr)size, data);
 #if ZEN_DEBUG
 		GLenum eno = glGetError();
 		mustsn(eno == GL_NO_ERROR, "set gl buffer sub data failed", (int)eno);
@@ -140,10 +134,6 @@ namespace Zen { namespace GL {
 		glBindBuffer((GLenum)mType, mID);
 		glGetBufferParameteriv((GLenum)mType, GL_BUFFER_SIZE, &sz);
 		return (uint32_t)sz;
-	}
-	inline EBufferType Buffer::getType() const
-	{
-		return mType;
 	}
 
 	inline bool Buffer::isValid() const

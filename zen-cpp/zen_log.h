@@ -61,7 +61,7 @@
 #define ZEN_LOGS_PRIORITY 0xff
 #endif
 
-#if defined(ZEN_LOGS_STYLE)
+#if defined(ZEN_P_LOGS_STYLE)
 #define ZEN_LOGS_STYLE ZEN_P_LOGS_STYLE
 #else
 #define ZEN_LOGS_STYLE 0
@@ -94,7 +94,7 @@ namespace Zen {
 				timeStruct->tm_min,
 				timeStruct->tm_sec);
 #	else
-		fprintf(stdout, "%c:", type);
+		fprintf(stdout, "%c> ", type);
 #	endif
 		vfprintf(stdout, fmt, va);
 		fprintf(stdout, "\n");

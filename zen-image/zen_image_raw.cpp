@@ -52,21 +52,9 @@ namespace Zen
 		}
 	};
 	
-	
-	void ImageCoderRaw::load(ImageData & img, std::string const & file)
+	void ImageEncoderRaw::save(ImageData const & img, std::fstream & outs)
 	{
-		img.format = Zen::EImageFormat::None;
-
-		auto data = Zen::LoadFileToBuffer(file);
-		musts(data.size(), "read file error");
-
-		this->decode(img, data);
-	}
-	void ImageCoderRaw::save(ImageData const & img, std::string const & file)
-	{
-		std::fstream outs;
-		outs.open(file, std::ios::out | std::ios::binary);
-		musts(outs.good(), "open file error");
+		musts(outs.good(), "file error");
 		
 		ImageCoderRawHead head;
 		head.set(img.width, img.height, (uint32_t)img.format);
@@ -78,9 +66,9 @@ namespace Zen
 		musts(outs.good(), "write file error");
 	}
 	
-	void ImageCoderRaw::decode(ImageData & img, std::vector<uint8_t> const & data)
+	void ImageDecoderRaw::decode(ImageData & img, std::vector<uint8_t> const & data)
 	{
-		img.format = Zen::EImageFormat::None;
+		img.format = Zen::EBPP::None;
 		
 		Zen::BufferReader reader(&data);
 		
@@ -93,9 +81,9 @@ namespace Zen
 		uint32_t width = HostNet32(head.width);
 		uint32_t height = HostNet32(head.height);
 		
-		auto format = (Zen::EImageFormat)HostNet16(head.format);
+		auto format = (Zen::EBPP)HostNet16(head.format);
 		
-		uint32_t bpp = GetBytesOfImageFormat(format);
+		uint32_t bpp = (int)format;
 		musts(bpp > 0, "invalid format");
 		
 		uint32_t sz = width * height * bpp;
@@ -110,7 +98,7 @@ namespace Zen
 		img.height = height;
 		img.format = format;
 	}
-	std::vector<uint8_t> ImageCoderRaw::encode(ImageData const & img)
+	std::vector<uint8_t> ImageEncoderRaw::encode(ImageData const & img)
 	{
 		ImageCoderRawHead head;
 		head.set(img.width, img.height, (uint32_t)img.format);

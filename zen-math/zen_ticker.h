@@ -26,10 +26,18 @@
 
 namespace Zen
 {
+	typedef std::chrono::microseconds Microseconds;
+
 	template<typename TTimeDuration>
 	double ToSeconds(TTimeDuration mic)
 	{
 		return (double)mic.count() / (double)TTimeDuration::period::den;
+	}
+
+	inline Microseconds ToMicroseconds(double seconds)
+	{
+		std::chrono::microseconds mc((long long)(seconds * std::chrono::microseconds::period::den));
+		return mc;
 	}
 
 	inline static std::chrono::microseconds Now()
@@ -42,8 +50,6 @@ namespace Zen
 	class Ticker
 	{
 	public:
-		typedef std::chrono::microseconds Microsecond;
-	public:
 		inline Ticker(bool start = false);
 		
 		inline bool actived() const;
@@ -54,57 +60,57 @@ namespace Zen
 		
 		inline void pause();
 		
-		inline Microsecond getRunningDuration() const;
+		inline Microseconds getTotalDuration() const;
 		
-		inline Microsecond getTimeDurationSinceResume() const;
+		inline Microseconds getRecentDuration() const;
 		
 
 	private:
-		Microsecond mPastDuration;
+		Microseconds m_past_duration;
 		
-		Microsecond mStartTime;
+		Microseconds m_start_point;
 	};
 }
 
 namespace Zen {
 	inline Ticker::Ticker(bool start)
 	{
-		mStartTime = Microsecond::zero();
+		m_start_point = Microseconds::zero();
 		if(start) restart();
 	}
 	inline bool Ticker::actived() const
 	{
-		return mStartTime.count() != 0;
+		return m_start_point.count() != 0;
 	}
 	inline void Ticker::restart()
 	{
-		mPastDuration = Microsecond::zero();
-		mStartTime = Now();
+		m_past_duration = Microseconds::zero();
+		m_start_point = Now();
 	}
 	inline void Ticker::resume()
 	{
 		if(actived()) return;
 
-		mStartTime = Now();
+		m_start_point = Now();
 	}
 	inline void Ticker::pause()
 	{
 		if(!actived()) return;
 
-		mPastDuration += Now() - mStartTime;
-		mStartTime = Microsecond::zero();
+		m_past_duration += Now() - m_start_point;
+		m_start_point = Microseconds::zero();
 	}
 	/* @ GetTime
 	 */
-	inline std::chrono::microseconds Ticker::getRunningDuration() const
+	inline std::chrono::microseconds Ticker::getTotalDuration() const
 	{
-		if(actived()) return mPastDuration + (Now() - mStartTime);
-		else return mPastDuration;
+		if(actived()) return m_past_duration + (Now() - m_start_point);
+		else return m_past_duration;
 	}
-	inline std::chrono::microseconds Ticker::getTimeDurationSinceResume() const
+	inline std::chrono::microseconds Ticker::getRecentDuration() const
 	{
-		if(actived()) return Now() - mStartTime;
-		else return Microsecond::zero();
+		if(actived()) return Now() - m_start_point;
+		else return Microseconds::zero();
 	}
 
 }

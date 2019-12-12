@@ -25,6 +25,15 @@
 
 namespace Zen 
 {
+	enum class EBPP : int
+	{
+		None  = 0,
+		Grey  = 1,	// grey 1 byte
+		GA    = 2,	// grey+alpha 2 bytes
+		RGB   = 3,	// 3 bytes
+		RGBA  = 4,	// 4 bytes
+	};
+	
 	class Color4;
 	class Color4f;
 	class ColorRBG;
@@ -44,7 +53,6 @@ namespace Zen
 		Magenta             = 0xFF00FF,
 		Yellow              = 0xFFFF00,
 	};
-
 
 	class Color3
 	{
@@ -303,62 +311,22 @@ namespace Zen
 		b_byte = (uint8_t)(cf.blue * 0xff + 0.5f);
 		a_byte = (uint8_t)(cf.alpha * 0xff + 0.5f);
 	}
-	
-	/** ColorGradient
-	 -- ColorGradient color function by value 0.0 - 1.0
-	 */
-	class ColorGradient
+
+	inline float ColorChannelLerp(float from, float to, float value)
 	{
-	protected:
-		Color4f mC0;
-		
-		Color4f mC1;
-	public:
-		ColorGradient() = default;
-		
-		ColorGradient(Color4f const & c0, Color4f const & c1)
-		{
-			set(c0, c1);
-		}
-		
-		Color4f get0() const
-		{
-			return mC0;
-		}
-		
-		Color4f get1() const
-		{
-			return mC1;
-		}
-		
-		void set(Color4f const & c0, Color4f const & c1)
-		{
-			mC0 = c0;
-			mC1 = c1;
-		}
-		
-		Color4f get(float value)
-		{
-			return Color4f
-			(
-			 Grey(mC0.red, mC1.red, value),
-			 Grey(mC0.green, mC1.green, value),
-			 Grey(mC0.blue, mC1.blue, value),
-			 Grey(mC0.alpha, mC1.alpha, value)
-			 );
-		}
-		
-		Color4f operator() (float value)
-		{
-			return this->get(value);
-		}
-		
-		static float Grey(float from ,float to, float rat)
-		{
-			return from + (to - from) * rat;
-		}
-	};
-	
+		return from + (to - from) * value;
+	}
+	inline Color4f Color4fLerp(Color4f const & c0, Color4f const & c1, float value)
+	{
+		return Color4f
+		(
+		 ColorChannelLerp(c0.red, c1.red, value),
+		 ColorChannelLerp(c0.green, c1.green, value),
+		 ColorChannelLerp(c0.blue, c1.blue, value),
+		 ColorChannelLerp(c0.alpha, c1.alpha, value)
+		 );
+	}
+
 	typedef Color4 Color;
 }
 								  

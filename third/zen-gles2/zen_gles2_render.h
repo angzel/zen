@@ -26,32 +26,28 @@
 #include "zen_matrix.h"
 #include "zen_gles2_enum.h"
 #include "zen_gles2_program.h"
-#include "zen_gles2_texture.h"
+#include "zen_gles2_image2d.h"
 #include "zen_gles2_buffer.h"
 #include <map>
 
 namespace Zen { namespace GL { namespace Render {
 	// Program
-	inline void ActiveProgram(Program const & program);
 	inline void ActiveProgram(GLuint program_id);
 	// texture
-	inline void BindTexture(Texture const & texture, int);
-	inline void BindTexture(GLint texture, int);
-	inline void UnbindTexture(int sampler);
+	inline void BindTexImage2D(GLint texture, int);
+	inline void UnbindTexImage2D(int sampler);
 	// buffer
 	inline void BindArrayBuffer(GLint buffer);
 	inline void BindElementArrayBuffer(GLint buffer);
-	inline void BindBuffer(Buffer const & buffer);
-	inline void UnbindBuffer(Buffer const & buffer);
 
 	// vertex.
 	inline void EnableVertexAttrib(GLint attrib);
 
 	inline void DisableVertexAttrib(GLint attrib);
 
-	inline void SetVertexAttribData(GLint attrib, int size, EType type, bool normalize, int stride, void const * data);
+	inline void SetVertexAttribData(GLint attrib, size_t size, EType type, bool normalize, size_t stride, void const * data);
 	
-	inline void SetVertexAttribBuffer(GLint attrib, int size, EType type, bool normalize, int stride, int off);
+	inline void SetVertexAttribBuffer(GLint attrib, size_t size, EType type, bool normalize, size_t stride, size_t off);
 
 	inline void SetVertexAttribFloat(GLint loc, GLfloat valu);
 
@@ -62,13 +58,13 @@ namespace Zen { namespace GL { namespace Render {
 	inline void SetVertexAttribFloat(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
 
 	// draw
-	inline void DrawArray(EDrawMode mode, int first, uint32_t count);
+	inline void DrawArray(EDrawMode mode, int first, size_t count);
 	
-	inline void DrawElements(EDrawMode mode, int count, uint8_t const * indices);
+	inline void DrawElements(EDrawMode mode, size_t count, uint8_t const * indices);
 	
-	inline void DrawElements(EDrawMode mode, int count, uint16_t const * indices);
+	inline void DrawElements(EDrawMode mode, size_t count, uint16_t const * indices);
 	
-	inline void DrawElements(EDrawMode mode, int count, uint32_t const * indices);
+	inline void DrawElements(EDrawMode mode, size_t count, uint32_t const * indices);
 	
 	// uniform
 	inline void SetUniformInt(GLint unif, GLint value);
@@ -149,24 +145,12 @@ namespace Zen { namespace GL { namespace Render {
 
 namespace Zen { namespace GL { namespace Render {
 
-	inline void ActiveProgram(Program const & program)
-	{
-		glUseProgram(program.getObject());
-	}
 	inline void ActiveProgram(GLuint program_id)
 	{
 		glUseProgram(program_id);
 	}
-	inline void BindTexture(Texture const & texture, int sampler)
-	{
-		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
-		glBindTexture(GL_TEXTURE_2D, texture.getObject());
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
-#endif
-	}
-	inline void BindTexture(GLint texture, int sampler)
+
+	inline void BindTexImage2D(GLint texture, int sampler)
 	{
 		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
 		glBindTexture(GL_TEXTURE_2D, texture);
@@ -175,7 +159,7 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
 #endif
 	}
-	inline void UnbindTexture(int sampler)
+	inline void UnbindTexImage2D(int sampler)
 	{
 		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -183,14 +167,6 @@ namespace Zen { namespace GL { namespace Render {
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
 #endif
-	}
-	inline void BindBuffer(Buffer const & buffer)
-	{
-		glBindBuffer((GLenum)buffer.getType(), buffer.getObject());
-	}
-	inline void UnbindBuffer(Buffer const & buffer)
-	{
-		glBindBuffer((GLenum)buffer.getType(), 0);
 	}
 	inline void BindArrayBuffer(GLint buffer)
 	{
@@ -203,17 +179,17 @@ namespace Zen { namespace GL { namespace Render {
 
 	inline void ActiveFrame(GLuint frame_id);
 
-	inline void SetVertexAttribData(GLint attrib, int size, EType type, bool normalize, int stride, void const* ptr)
+	inline void SetVertexAttribData(GLint attrib, size_t size, EType type, bool normalize, size_t stride, void const* ptr)
 	{
-		glVertexAttribPointer((GLuint)attrib, size, (GLenum)type, normalize, stride, ptr);
+		glVertexAttribPointer((GLuint)attrib, (GLint)size, (GLenum)type, (GLboolean)normalize, (GLint)stride, ptr);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set vertex attrib array", eno);
 #endif
 	}
-	inline void SetVertexAttribBuffer(GLint attrib, int size, EType type, bool normalize, int stride, int off)
+	inline void SetVertexAttribBuffer(GLint attrib, size_t size, EType type, bool normalize, size_t stride, size_t off)
 	{
-		glVertexAttribPointer((GLuint)attrib, size, (GLenum)type, normalize, stride, (char*)NULL + off);
+		glVertexAttribPointer((GLuint)attrib, (GLint)size, (GLenum)type, normalize, (GLint)stride, (char*)NULL + off);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set vertex attrib array", eno);
@@ -235,7 +211,7 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "enable vertex attrib array error", eno);
 #endif
 	}
-	inline void DrawArray(EDrawMode mode, int first, uint32_t count)
+	inline void DrawArray(EDrawMode mode, int first, size_t count)
 	{
 		glDrawArrays((GLenum)mode, (GLint)first, (GLsizei)count);
 #if ZEN_DEBUG
@@ -243,17 +219,17 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "gl draw arry error", eno);
 #endif
 	}
-	inline void DrawElements(EDrawMode mode, int count, uint8_t const * indices)
+	inline void DrawElements(EDrawMode mode, size_t count, uint8_t const * indices)
 	{
-		glDrawElements((GLenum)mode, count, (GLenum)EType::UByte, indices);
+		glDrawElements((GLenum)mode, (GLint)count, (GLenum)EType::UByte, indices);
 	}
-	inline void DrawElements(EDrawMode mode, int count, uint16_t const * indices)
+	inline void DrawElements(EDrawMode mode, size_t count, uint16_t const * indices)
 	{
-		glDrawElements((GLenum)mode, count, (GLenum)EType::UShort, indices);
+		glDrawElements((GLenum)mode, (GLint)count, (GLenum)EType::UShort, indices);
 	}
-	inline void DrawElements(EDrawMode mode, int count, uint32_t const * indices)
+	inline void DrawElements(EDrawMode mode, size_t count, uint32_t const * indices)
 	{
-		glDrawElements((GLenum)mode, count, (GLenum)EType::UInt, indices);
+		glDrawElements((GLenum)mode, (GLint)count, (GLenum)EType::UInt, indices);
 	}
 	inline void SetUniformInt(GLint unif, GLint value)
 	{
@@ -536,6 +512,7 @@ namespace Zen { namespace GL { namespace Render {
 	}
 	inline void SetLineWidth(float width)
 	{
+		if(width <= 0.1f) width = 0.1f;
 		glLineWidth(width);
 	}
 	inline std::pair<float, float> GetLineWidthRange()

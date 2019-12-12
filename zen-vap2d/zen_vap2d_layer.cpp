@@ -2,7 +2,8 @@
 #include "zen_vap2d_layer.h"
 
 namespace Zen { namespace Vap2d {
-	Layer::Layer()
+	Layer::Layer(std::string const & name)
+	: BNode(name)
 	{
 	}
 	void Layer::draw()
@@ -11,8 +12,9 @@ namespace Zen { namespace Vap2d {
 
 		bool dirty = this->updateWorldMatrix();
 
-		RenderNode rn(&m_world_matrix, dirty, m_alpha, m_blend);
+		RenderStackGuard rg(&m_world_matrix, dirty, this->getAlpha(), m_blend);
 
 		BNode::draw();
 	}
+
 }}

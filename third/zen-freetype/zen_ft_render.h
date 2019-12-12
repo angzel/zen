@@ -26,36 +26,26 @@
 #include <string>
 
 namespace Zen {
-	struct FontRenderLineInfo
-	{
-		int points = 0;
-		std::vector<std::shared_ptr<FontCharacter> > chars;
-	};
-	
+
 	class FontRender
 	{
 	public:
 		static std::shared_ptr<FontRender> Create
-		(std::shared_ptr<Font>,
-		 FontConfig const & config,
+		(std::shared_ptr<FontBrush>,
 		 std::u32string const & text,
 		 float alignment, /* 0.0 left(top), to 1.0 right(bottom) */
-		 int letter_spacing = 0, // px as font-size
-		 int max_line_size = 0,
-		 bool auto_break = false);
-
-		virtual std::shared_ptr<FontCharacter> getCharacter(char32_t unicode) = 0;
+		 int char_spacing, // px as font-size
+		 int line_spacing,
+		 int line_width);
 
 		/*
 		 image: dest image, will be modified
 		 image_width: final image width, 0 for auto set
 		 image_height: final image height, 0 for auto set
+		 underline: line width in base line
 		 */
 		virtual void renderToImage
-		(ImageData & image,
-		 int image_width,
-		 int image_height,
-		 int x_off, int y_off) = 0;
+		(ImageData & image, int width, int height, int x_off, int y_off, int underline) = 0;
 
 		virtual int getOutputWidth() = 0;
 

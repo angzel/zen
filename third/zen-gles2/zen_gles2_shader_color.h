@@ -34,11 +34,11 @@ namespace Zen { namespace GL {
 		GLint u_color;
 		Zen::GL::Program program;
 	public:
-		static ShaderColor const * GetNormal();
+		static std::shared_ptr<ShaderColor const> GetNormal();
 		// convert texture to grey channel
-		static ShaderColor const * GetGrey();
+		static std::shared_ptr<ShaderColor const> GetGrey();
 
-		static ShaderColor * Create(char const * vertext_shader, char const * fragment_shader);
+		static std::shared_ptr<ShaderColor const> Create(char const * vertext_shader, char const * fragment_shader);
 	protected:
 		ShaderColor() = default;
 		ShaderColor(ShaderColor&) = delete;

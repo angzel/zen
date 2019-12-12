@@ -28,6 +28,12 @@
 #include <fstream>
 
 namespace Zen {
+	inline std::string GetFilePathExtention(std::string const & path)
+	{
+		auto pos = path.find_last_of(".");
+		if(pos == path.npos) return "";
+		return path.substr(pos+1);
+	}
 	inline std::fstream::pos_type GetFileSize(std::fstream & stream)
 	{
 		stream.seekg(0, std::ios::end);

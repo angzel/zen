@@ -24,7 +24,7 @@
 
 namespace Zen { namespace GL {
 
-	ShaderSampler * ShaderSampler::Create(char const * vertext_shader, char const * fragment_shader)
+	std::shared_ptr<ShaderSampler const> ShaderSampler::Create(char const * vertext_shader, char const * fragment_shader)
 	{
 		auto s = new ShaderSampler();
 		s->program.makeAttachAndLink(vertext_shader, fragment_shader);
@@ -33,7 +33,7 @@ namespace Zen { namespace GL {
 		s->u_transform = s->program.getUniformLocation("u_transform");
 		s->u_color = s->program.getUniformLocation("u_color");
 		s->u_sampler = s->program.getUniformLocation("u_sampler");
-		return s;
+		return std::shared_ptr<ShaderSampler const>(s);
 	}
 	
 	static const char * vertex_shader =
@@ -48,7 +48,7 @@ namespace Zen { namespace GL {
 	" gl_Position = u_transform * a_coord;"
 	"}";
 	
-	ShaderSampler const * ShaderSampler::GetNormal()
+	std::shared_ptr<ShaderSampler const> ShaderSampler::GetNormal()
 	{
 		static const char * fragment =
 		"precision mediump float;"
@@ -59,10 +59,11 @@ namespace Zen { namespace GL {
 		"{"
 		" gl_FragColor = texture2D(u_sampler, v_sample_coord) * u_color;"
 		"}";
-		return Create(vertex_shader, fragment);
+		static auto me = Create(vertex_shader, fragment);
+		return me;
 	}
 	
-	ShaderSampler const * ShaderSampler::GetGrey()
+	std::shared_ptr<ShaderSampler const> ShaderSampler::GetGrey()
 	{
 		static const char * fragment =
 		"precision mediump float;"
@@ -76,9 +77,10 @@ namespace Zen { namespace GL {
 		" float i = dot(c.rgb, grey);"
 		" gl_FragColor = vec4(i, i, i, c.w) * u_color;"
 		"}";
-		return Create(vertex_shader, fragment);
+		static auto me = Create(vertex_shader, fragment);
+		return me;
 	}
-	ShaderSampler const * ShaderSampler::GetAlpha()
+	std::shared_ptr<ShaderSampler const> ShaderSampler::GetAlpha()
 	{
 		static const char * fragment =
 		"precision mediump float;"
@@ -87,10 +89,10 @@ namespace Zen { namespace GL {
 		"varying vec2 v_sample_coord;"
 		"void main()"
 		"{"
-		" vec4 c = texture2D(u_sampler, v_sample_coord);"
-		" gl_FragColor = u_color * c.w;"
+		" gl_FragColor = vec4(u_color.rgb, u_color.w * texture2D(u_sampler, v_sample_coord).w);"
 		"}";
-		return Create(vertex_shader, fragment);
+		static auto me = Create(vertex_shader, fragment);
+		return me;
 	}
 }}
 

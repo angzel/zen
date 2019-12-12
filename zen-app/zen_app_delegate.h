@@ -40,10 +40,9 @@ namespace Zen {
 	: public virtual Zen::Object
 	{
 	public:
-		virtual void onLaunch(Zen::Size2 const & view_size) {}
+		virtual void onLaunch(Zen::Size2 view_size) {}
 
-		virtual void onResize(Zen::Size2 const & old_size,
-		Zen::Size2 const & new_size) {}
+		virtual void onResize(Zen::Size2 view_size) {}
 
 		virtual void onExit() {}
 
@@ -66,18 +65,18 @@ namespace Zen {
 		 */
 		virtual void onClose() {}
 
-		virtual void onTouchDown(AppTouch const & touch) {}
+		virtual void onTouchDown(AppTouch touch) {}
 
-		virtual void onTouchMove(AppTouch const & touch) {}
+		virtual void onTouchMove(AppTouch touch) {}
 
-		virtual void onTouchUp(AppTouch const & touch) {}
+		virtual void onTouchUp(AppTouch touch) {}
 
-		virtual void onTouchCancel(AppTouch const & touch) {}
+		virtual void onTouchCancel(AppTouch touch) {}
 
-		virtual void onMouseMove(AppTouch const & touch) {}
+		virtual void onMouseMove(AppTouch touch) {}
 
-		virtual void onKeyDown(AppKey const & key) {}
+		virtual void onKeyDown(AppKey key) {}
 
-		virtual void onKeyUp(AppKey const & key) {}
+		virtual void onKeyUp(AppKey key) {}
 	};
 }

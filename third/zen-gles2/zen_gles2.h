@@ -7,4 +7,4 @@
 #include "zen_gles2_enum.h"
 #include "zen_gles2_frame.h"
 #include "zen_gles2_program.h"
-#include "zen_gles2_texture.h"
+#include "zen_gles2_image2d.h"

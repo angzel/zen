@@ -51,6 +51,11 @@ namespace Zen {
 	{
 		return num < var && num > -var;
 	}
+	template<typename _FloatType>
+	inline _FloatType Lerp(_FloatType start, _FloatType end, _FloatType v)
+	{
+		return start + (end - start) * v;
+	}
 
 	template<typename _FloatType>
 	inline bool IsFuzzyEqual(_FloatType num0, _FloatType num1, _FloatType var = ZEN_F_EPSILON)

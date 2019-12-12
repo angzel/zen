@@ -24,7 +24,7 @@
 
 namespace Zen { namespace GL {
 
-	ShaderColor * ShaderColor::Create(char const * vertext_shader, char const * fragment_shader)
+	std::shared_ptr<ShaderColor const> ShaderColor::Create(char const * vertext_shader, char const * fragment_shader)
 	{
 		auto s = new ShaderColor();
 		s->program.makeAttachAndLink(vertext_shader, fragment_shader);
@@ -33,7 +33,7 @@ namespace Zen { namespace GL {
 		s->u_transform = s->program.getUniformLocation("u_transform");
 		s->u_color = s->program.getUniformLocation("u_color");
 		s->u_point_size = s->program.getUniformLocation("u_point_size");
-		return s;
+		return std::shared_ptr<ShaderColor const>(s);
 	}
 	
 	static const char * vertex_shader =
@@ -50,7 +50,7 @@ namespace Zen { namespace GL {
 	"	gl_Position = u_transform * a_coord;"
 	"}";
 	
-	ShaderColor const * ShaderColor::GetNormal()
+	std::shared_ptr<ShaderColor const> ShaderColor::GetNormal()
 	{
 		static const char * fragment =
 		"precision mediump float;"
@@ -60,10 +60,11 @@ namespace Zen { namespace GL {
 		"{"
 		"	gl_FragColor = v_color * u_color;"
 		"}";
-		return Create(vertex_shader, fragment);
+		static auto me = Create(vertex_shader, fragment);
+		return me;
 	}
 	
-	ShaderColor const * ShaderColor::GetGrey()
+	std::shared_ptr<ShaderColor const> ShaderColor::GetGrey()
 	{
 		static const char * fragment =
 		"precision mediump float;"
@@ -75,6 +76,7 @@ namespace Zen { namespace GL {
 		" float i = dot(v_color.rgb, grey);"
 		" gl_FragColor = vec4(i, i, i, v_color.w) * u_color;"
 		"}";
-		return Create(vertex_shader, fragment);
+		static auto me = Create(vertex_shader, fragment);
+		return me;
 	}
 }}

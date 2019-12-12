@@ -2,10 +2,23 @@
 #include "zen_vap2d_node.h"
 
 namespace Zen { namespace Vap2d {
+
+	VapObject::VapObject(std::string const & name)
+	: m_vap_name(name)
+	{
+
+	}
+
+	VapObject::~VapObject()
+	{
+#if ZEN_DEBUG
+		Zen::LogV("delete vap: %s", m_vap_name.data());
+#endif
+	}
 	
 	static void SortNodes(std::vector<Node*> & nodes)
 	{
-		if(nodes.size() <= 1) return;
+		if(nodes.size() < 2) return;
 		for(size_t i = 0; i < nodes.size() - 1; ++i)
 		{
 			bool swaped = false;
@@ -23,106 +36,110 @@ namespace Zen { namespace Vap2d {
 		}
 		return;
 	}
-	
+
+	BNode::BNode(std::string const & name)
+	: Node(name)
+	{
+	}
+
+	Node * BNode::onTouchDown(AppTouch const & touch)
+	{
+		this->clearNodesDirty();
+		for(auto iter = m_nodes.rbegin(); iter != m_nodes.rend(); ++iter)
+		{
+			auto res = (*iter)->onTouchDown(touch);
+			if(res) return res;
+		}
+		return nullptr;
+	}
+
+	Node * BNode::onTouchMove(AppTouch const & touch)
+	{
+		return this;
+	}
+
+	Node * BNode::onTouchUp(AppTouch const & touch)
+	{
+		return this;
+	}
+
+	Node * BNode::onTouchCancel(AppTouch const & touch) {
+		return this->onTouchUp(touch);
+	}
 	void BNode::draw()
 	{
-		if(m_nodes_dirty)
+		this->clearNodesDirty();
+		for(auto i : m_nodes)
 		{
-			SortNodes(m_nodes);
-			m_nodes_dirty = false;
+			if(i->isVisible()) i->draw();
 		}
-		for(auto i : m_nodes) i->draw();
 	}
+
 	void BNode::addNode(Node * node)
 	{
-		if(node->m_parent) throw "node already in the tree";
+		if(node->m_upper) throw "node already in the tree";
 		m_nodes.push_back(node);
-		node->m_parent = this;
+		node->m_upper = this;
 		this->setNodesDirty();
 	}
-	void BNode::_remove_node(Node * node)
-	{
-		for(auto i = m_nodes.begin(); i != m_nodes.end(); ++i)
-		{
-			if(*i == node)
-			{
-				m_nodes.erase(i);
-				delete node;
-			}
-		}
-	}
+
 	void BNode::removeAllNodes()
 	{
 		for(auto i : m_nodes)
 		{
-			delete i;
+			i->m_upper = nullptr;
+			i->remove();
 		}
 		m_nodes.clear();
-		
+
 	}
 	void BNode::setNodesDirty()
 	{
 		m_nodes_dirty = true;
 	}
-	
-	BNode::~BNode()
+
+	void BNode::clearNodesDirty()
 	{
-		this->removeAllNodes();
+		if(!m_nodes_dirty) return;
+		SortNodes(m_nodes);
+		m_nodes_dirty = false;
 	}
-	void Node::remove()
+	/**
+	 @ref zen_vap2d_root.cpp
+	 void Node::remove() {};
+	 void Node::runAction(Action * action);
+	 void Node::removeAction(Action * action);
+	 */;
+	Node::Node(std::string const & name)
+	: VapObject(name)
 	{
-		if(m_parent) m_parent->_remove_node(this);
-		delete this;
-	}
-	void Node::setAlpha(float alpha)
-	{
-		m_alpha = alpha;
-	}
-	void Node::setOrder(int index)
+	}	void Node::setOrder(int index)
 	{
 		m_order = index;
-		if(m_parent) m_parent->setNodesDirty();
-	}
-	
-
-	RNode * RNode::GetDefault()
-	{
-		static auto me = new RNode;
-		return me;
+		if(m_upper) m_upper->setNodesDirty();
 	}
 
-	void RNode::setDesignViewSize(float width, float height)
+	void Node::setVisible(bool v)
 	{
-		m_design_view_size = { width, height };
-		m_is_view_dirty = true;
+		m_is_visible = v;
 	}
 
-	Size2 RNode::getDesignViewSize()
+	int Node::getOrder() const
 	{
-		return m_design_view_size;
+		return m_order;
+
 	}
 
-	void RNode::draw()
+	bool Node::isVisible() const
 	{
-		bool dirty = false;
-		if(m_is_view_dirty)
-		{
-			m_matrix = {
-				2 / m_design_view_size.w, 0, 0, 0,
-				0, 2 / m_design_view_size.h, 0, 0,
-				0, 0, 1, 0,
-				-1, -1, 0, 1
-			};
-			dirty = true;
-			m_is_view_dirty = false;
-		}
-		RenderNode rn(&m_matrix, dirty, 1.0f, EBlend::Normal);
-		BNode::draw();
+		return m_is_visible;
 	}
-	void RNode::remove()
+	LNode::LNode(std::string const & name)
+	: Node(name)
 	{
-		throw "Root node cannot be removed";
+
 	}
+
 	/**
 	 Blend
 	 */
@@ -178,6 +195,7 @@ namespace Zen { namespace Vap2d {
 	
 	void RenderStack::pushAlpha(float a)
 	{
+		if(!m_alphas.empty()) a *= getTopAlpha();
 		this->m_alphas.push_back(a);
 	}
 
@@ -222,13 +240,13 @@ namespace Zen { namespace Vap2d {
 		this->m_blends.clear();
 	}
 
-	RenderNode::RenderNode(Matrix4 const * mat, bool mat_dirty, float alpha, EBlend blend)
+	RenderStackGuard::RenderStackGuard(Matrix4 const * mat, bool mat_dirty, float alpha, EBlend blend)
 	{
 		RenderStack::GetDefault()->pushMatrix(mat, mat_dirty);
 		RenderStack::GetDefault()->pushAlpha(alpha);
 		RenderStack::GetDefault()->pushBlend(blend);
 	}
-	RenderNode::~RenderNode()
+	RenderStackGuard::~RenderStackGuard()
 	{
 		RenderStack::GetDefault()->popMatrix();
 		RenderStack::GetDefault()->popAlpha();
@@ -381,6 +399,15 @@ namespace Zen { namespace Vap2d {
 	{
 		return m_blend;
 	}
+	void View::setAlpha(float alpha)
+	{
+		m_alpha = alpha;
+	}
+
+	float View::getAlpha()
+	{
+		return m_alpha;
+	}
 	
 	void SizeView::setSize(float width, float height)
 	{
@@ -437,6 +464,10 @@ namespace Zen { namespace Vap2d {
 	{
 		m_size = size;
 		this->setViewDirty();
+	}
+	Size2 SizeView::getSize()
+	{
+		return m_size;
 	}
 	void SizeView::setAnchor(Point2 anchor)
 	{

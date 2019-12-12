@@ -1,32 +1,15 @@
-# Prerequisites
-*.d
+# vi
+*.swp
+# mac
+.DS_Store
+xcuserdata
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# android
+local.properties
+gradle.properties
+.gradle
+.idea
+.externalNativeBuild
+# build
+build
+gradle

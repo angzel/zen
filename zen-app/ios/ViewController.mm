@@ -84,8 +84,8 @@ ViewController * G_view_controller = nil;
 	[super viewWillAppear:animated];
 
 	float w = self.view.bounds.size.width, h = self.view.bounds.size.height;
-
-	runtime->launch({w, h});
+	float s = [UIScreen mainScreen].scale;
+	runtime->launch({w*s, h*s});
 
 	runtime->update();
 }
@@ -188,14 +188,8 @@ ViewController * G_view_controller = nil;
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
 {
-	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-	 {
-//		 NSLog(@"转屏前调入");
-	 } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-	 {
-//		 NSLog(@"转屏后调入");
-	 }];
-	runtime->resize({(float)size.width, (float)size.height});
+	float s = [UIScreen mainScreen].scale;
+	runtime->resize({(float)size.width*s, (float)size.height*s});
 
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }

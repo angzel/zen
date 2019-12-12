@@ -25,13 +25,16 @@
 
 namespace Zen
 {
-	class ImageCoderRaw : public ImageCoder
+	class ImageDecoderRaw : public ImageDecoder
 	{
 	public:
-		virtual void load(ImageData & img, std::string const & file) override;
-		virtual void save(ImageData const & img, std::string const & file) override;
 		virtual void decode(ImageData & img, std::vector<uint8_t> const & data) override;
+	};
+	class ImageEncoderRaw : public ImageEncoder
+	{
+	public:
 		virtual std::vector<uint8_t> encode(ImageData const & img) override;
+		void save(ImageData const & img, std::fstream & outs);
 	};
 }
 

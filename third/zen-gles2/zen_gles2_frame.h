@@ -21,7 +21,7 @@
 
 #pragma once
 #include "zen_gles2_enum.h"
-#include "zen_gles2_texture.h"
+#include "zen_gles2_image2d.h"
 
 namespace Zen {
 	namespace GL {

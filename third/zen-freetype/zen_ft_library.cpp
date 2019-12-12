@@ -27,48 +27,39 @@
 
 namespace Zen {
 
-	struct FontFaceInner : public Font
+	struct FontInner : public Font
 	{
-		std::vector<uint8_t> mMemory;
+		std::vector<uint8_t> m_data;
 		FT_Face mFT_Face = nullptr;
 
-		FontFaceInner(FT_Library library, const std::vector<uint8_t> &font_data)
+		FontInner(FT_Library library, const std::vector<uint8_t> & data)
 		{
-			mMemory = font_data;
+			m_data = data;
 			FT_Face face = nullptr;
-			auto eno = FT_New_Memory_Face(library, mMemory.data(), mMemory.size(), 0, &face);
+			auto eno = FT_New_Memory_Face(library, m_data.data(), m_data.size(), 0, &face);
 			mustsn(eno == 0, "FT_New_Memory_Face ERROR", eno);
 
 			mFT_Face = face;
 		}
 
-		~FontFaceInner()
+		~FontInner()
 		{
 			if(mFT_Face) FT_Done_Face(mFT_Face);
 		}
 		
-		FT_GlyphSlot loadGlyph(uint32_t unicode, int width, int height, float italic, float boldx, float boldy, bool vertical)
+		void loadGlyph(uint32_t unicode, FontConfig const & c)
 		{
-			auto eno = FT_Set_Char_Size(mFT_Face, width << 6, height <<6, 72, 72);
-			
-				//			if(eno == 23)
-				//				eno = FT_Set_Char_Size(mFont, 16<<6, 16<<6, 72, 72);
-				//			if(eno == 23)
-				//				eno = FT_Set_Char_Size(mFont, 18<<6, 18<<6, 72, 72);
-				//			if(eno == 23)
-				//				eno = FT_Set_Char_Size(mFont, 20<<6, 20<<6, 72, 72);
-				//			if(eno == 23)
-				//				eno = FT_Set_Char_Size(mFont, 24<<6, 24<<6, 72, 72);
-			
+			auto eno = FT_Set_Char_Size(mFT_Face, c.width << 6, c.height <<6, 72, 72);
+
 			mustsn(eno == 0, "FT_Set_Char_Size error", eno);
 			
 			FT_Int32 type = 0;
 
 			FT_Matrix matrix;
-			if(italic != 0)
+			if(c.italic != 0)
 			{
 				matrix.xx = 0x10000L;
-				matrix.xy = (int)(italic * (float)0x10000L);
+				matrix.xy = (int)(c.italic * (float)0x10000L);
 				matrix.yx = 0;
 				matrix.yy = 0x10000L;
 				FT_Set_Transform(mFT_Face, &matrix, 0 );
@@ -79,9 +70,9 @@ namespace Zen {
 			{
 				type = FT_LOAD_IGNORE_TRANSFORM | FT_LOAD_TARGET_NORMAL;
 			}
-
-			if(vertical) type |= FT_LOAD_VERTICAL_LAYOUT;
-			
+			/** no vertical
+			 if(c.is_vertical) type |= FT_LOAD_VERTICAL_LAYOUT;
+			 */
 			auto index = FT_Get_Char_Index(mFT_Face, (FT_ULong)unicode);
 			eno = FT_Load_Glyph(mFT_Face, index, type);
 			
@@ -89,7 +80,7 @@ namespace Zen {
 			
 			if (mFT_Face->glyph->format == FT_GLYPH_FORMAT_OUTLINE )
 			{
-				FT_Outline_EmboldenXY(&mFT_Face->glyph->outline, (int)(boldx * 64), (int)(boldy*64));
+				FT_Outline_EmboldenXY(&mFT_Face->glyph->outline, (int)(c.bold_x * 64), (int)(c.bold_y*64));
 			}
 			
 			if(mFT_Face->glyph->format != FT_GLYPH_FORMAT_BITMAP)
@@ -97,29 +88,31 @@ namespace Zen {
 				eno = FT_Render_Glyph(mFT_Face->glyph, FT_RENDER_MODE_LIGHT);
 				mustsn(eno == 0, "FT_Render_Glyph error", eno);
 			}
-			return mFT_Face->glyph;
 		}
 
-		virtual std::shared_ptr<FontCharacter>
-		loadCharacter(uint32_t unicode, FontConfig const & config) override
+		virtual Info getInfo(FontConfig const & config) override
 		{
-			return this->loadCharacter
-			(unicode, config.charW, config.charH,
-			 config.isVerticalWriting,
-			 config.italicValue, config.boldX, config.boldY
-			 );
+			loadGlyph(uint32_t(32), config);
+			Info info;
+			auto & m = mFT_Face->size->metrics;
+			info.line_height = (int)m.height>>6;
+			info.base_line_height = (int)m.ascender>>6;
+			info.forward = (int)m.max_advance>>6;
+			info.width = m.x_ppem;
+			info.height = m.y_ppem;
+			return info;
 		}
-
-		virtual std::shared_ptr<FontCharacter>
-		loadCharacter
-		(uint32_t unicode, int width, int height,
-		 bool vertical_writing = false,
-		 float italic = 0, float boldx = 0, float boldy = 0) override
+		virtual std::shared_ptr<FontChar>
+		createCharBitmap(uint32_t unicode, FontConfig const & config) override
 		{
-			auto glyph = loadGlyph(unicode, width, height, italic, boldx, boldy, vertical_writing);
+			loadGlyph(unicode, config);
+
+			auto glyph = mFT_Face->glyph;
 			auto & src = glyph->bitmap;
-			auto fc = new FontCharacter;
-			
+			auto res = std::shared_ptr<FontChar>(new FontChar);
+			auto fc = res.get();
+
+			fc->unicode = unicode;
 			fc->width = src.width;
 			fc->height = src.rows;
 			fc->bitmap_left = (int)glyph->bitmap_left;
@@ -129,7 +122,7 @@ namespace Zen {
 
 			if(fc->view_width < 0 || fc->view_height < 0)
 			{
-				LogV("***************** < 0 font");
+				LogV("Warn: font view size (%d %d) < 0", fc->view_width, fc->view_height);
 			}
 			
 			auto size = fc->width * fc->height;
@@ -202,7 +195,7 @@ namespace Zen {
 				fc->width = fc->height = 0;
 				fc->bitmap.clear();
 			}
-			return Zen::MakeShared(fc);
+			return res;
 		}
 	};
 	
@@ -210,12 +203,7 @@ namespace Zen {
 	{
 		FT_Library mFT_Library = nullptr;
 	public:
-		
-		std::shared_ptr<Font> loadFont(const std::vector<uint8_t> &font_data) override
-		{
-			return Zen::MakeShared((Font*)new FontFaceInner(mFT_Library, font_data));
-		}
-		
+
 		FontLibraryInner()
 		{
 			auto eno = FT_Init_FreeType(&mFT_Library);
@@ -225,45 +213,70 @@ namespace Zen {
 		{
 			if(mFT_Library) FT_Done_FreeType(mFT_Library);
 		}
-		
+		std::shared_ptr<Font> createFont(const std::vector<uint8_t> &data) override
+		{
+			return std::shared_ptr<Font>(new FontInner(mFT_Library, data));
+		}
 	};
-	
-	static FontLibraryInner * library;
+
+	static auto S_library = new FontLibraryInner;
 	
 	FontLibrary * FontLibrary::GetDefault()
 	{
-		if(library) return library;
-		auto temp = new FontLibraryInner;
-		return (library = temp);
+		return S_library;
+	}
+	
+	Fonts * Fonts::GetDefault()
+	{
+		static auto me = new Fonts;
+		return me;
 	}
 
-	class FontCacheInner : public FontCache
+	std::shared_ptr<Font> Fonts::setFont(std::string const & name, std::vector<uint8_t> const & data)
 	{
-		std::map<std::string, std::shared_ptr<Font> > mCache;
-	public:
-		FontCacheInner()
-		{
-		}
+		auto font = FontLibrary::GetDefault()->createFont(data);
+		m_fonts[name] = font;
+		return font;
+	}
 
-		virtual std::shared_ptr<Font> setFont(std::string const & name, std::vector<uint8_t> const & font_data) override
-		{
-			auto font = FontLibrary::GetDefault()->loadFont(font_data);
-			mCache[name] = font;
-			return font;
-		}
-
-		virtual std::shared_ptr<Font> getFont(std::string const & name) override
-		{
-			auto iter = mCache.find(name);
-			if(iter == mCache.end()) return nullptr;
-			return iter->second;
-		}
-	};
-	
-	FontCache * FontCache::GetDefault()
+	std::shared_ptr<Font> Fonts::getFont(std::string const & name)
 	{
-		static auto me = new FontCacheInner;
-		return me;
+		auto iter = m_fonts.find(name);
+		if(iter == m_fonts.end()) return nullptr;
+		return iter->second;
+	}
+
+	std::shared_ptr<FontBrush> FontBrush::Create(std::shared_ptr<Font> font, FontConfig const & config)
+	{
+		auto fb = std::shared_ptr<FontBrush>(new FontBrush);
+		fb->m_font = font;
+		fb->m_config = config;
+		fb->m_font_info = font->getInfo(config);
+		return fb;
+	}
+
+	std::shared_ptr<FontChar> FontBrush::getCharBitmap(uint32_t unicode)
+	{
+		auto iter = m_chars.find(unicode);
+		if(iter != m_chars.end()) return iter->second;
+		auto c = m_font->createCharBitmap(unicode, m_config);
+		m_chars[unicode] = c;
+		return c;
+	}
+
+	std::shared_ptr<Font> FontBrush::getFont() const
+	{
+		return m_font;
+	}
+
+	Font::Info const & FontBrush::getInfo() const
+	{
+		return m_font_info;
+	}
+
+	FontConfig const & FontBrush::getConfig() const
+	{
+		return m_config;
 	}
 
 }
