@@ -28,13 +28,12 @@ namespace Zen
 	class ImageDecoderRaw : public ImageDecoder
 	{
 	public:
-		virtual void decode(ImageData & img, std::vector<uint8_t> const & data) override;
+		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) override;
 	};
 	class ImageEncoderRaw : public ImageEncoder
 	{
 	public:
-		virtual std::vector<uint8_t> encode(ImageData const & img) override;
-		void save(ImageData const & img, std::fstream & outs);
+		virtual std::vector<uint8_t> encode(Image const *) override;
 	};
 }
 

@@ -2,10 +2,11 @@
 
 #include <iostream>
 #include <vector>
-#include "zen_gles2.h"
+#include "zen_vap2d_config.h"
 #include "zen_vap2d.h"
 #include "zen_image_raw.h"
 #include "zen_system.h"
+#include "zen_log.h"
 #include "zen_ticker.h"
 
 class MySprite : public Zen::Vap2d::Sprite {
@@ -17,10 +18,10 @@ public:
 	}
 	virtual Node * onTouchUp(Zen::AppTouch const & touch) override
 	{
-//		if(touch.y < 100) Zen::Vap2d::Root::GetDefault()->replaceRootNode(nullptr);
+//		if(touch.y < 100) Zen::Vap2d::Root::S()->replaceRootNode(nullptr);
 //		else if(touch.y < 400)
 //		{
-//			auto root = Zen::Vap2d::Root::GetDefault()->getRootNode();
+//			auto root = Zen::Vap2d::Root::S()->getRootNode();
 //			root->setVisible(!root->isVisible());
 //		}
 		return this;

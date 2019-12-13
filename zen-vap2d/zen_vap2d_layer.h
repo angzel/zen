@@ -5,7 +5,7 @@
 #include <mutex>
 
 namespace Zen { namespace Vap2d {
-	class Layer : public BNode, public View {
+	class Layer : public BranchNode, public View {
 	public:
 		Layer(std::string const & name = "layer");
 

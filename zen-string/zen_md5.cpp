@@ -173,7 +173,7 @@ namespace Zen {
 		
 		if(left && length >= fill)
 		{
-			memcpy((void *)(mBuffer + left), (void *)input, fill);
+			memcpy(mBuffer + left, input, fill);
 			process(mBuffer);
 			length -= fill;
 			input  += fill;
@@ -189,7 +189,7 @@ namespace Zen {
 		
 		if(length)
 		{
-			memcpy((void *)(mBuffer + left), (void *)input, length);
+			memcpy(mBuffer + left, input, length);
 		}
 		
 	}

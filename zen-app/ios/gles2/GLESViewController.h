@@ -18,13 +18,21 @@
  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "zen_app_config.h"
+
+#if ZEN_APP_DRAW_API_OPENGLES
 
 #import <UIKit/UIKit.h>
+#import <GLKit/GLKit.h>
+#import <CoreMotion/CoreMotion.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface ViewController : GLKViewController
 
-@property (strong, nonatomic) UIWindow *window;
+-(void)setFPS:(int)fps;
+-(int)getFPS;
 
 @end
 
-extern AppDelegate * G_app_delegate;
+extern ViewController * G_view_controller;
+
+#endif

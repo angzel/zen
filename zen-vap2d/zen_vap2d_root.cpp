@@ -2,6 +2,7 @@
 #include "zen_vap2d_event.h"
 #include "zen_app_runtime.h"
 #include "zen_ticker.h"
+#include "zen_log.h"
 #include <vector>
 #include <mutex>
 #include <queue>
@@ -38,7 +39,7 @@ namespace Zen { namespace Vap2d {
 		bool m_is_view_dirty = false;
 
 		Node * m_root_node = nullptr;
-		RootDelegate * m_delegate = nullptr;
+		std::shared_ptr<RootDelegate> m_delegate = nullptr;
 		Zen::Color4f m_color;
 
 		Zen::Microseconds m_now;
@@ -170,8 +171,8 @@ namespace Zen { namespace Vap2d {
 
 	public: // override
 		virtual void run() override;
-		virtual void setDelegate(RootDelegate * delegate) override;
-		virtual RootDelegate * getDelegate() override;
+		virtual void setDelegate(std::shared_ptr<RootDelegate> delegate) override;
+		virtual std::shared_ptr<RootDelegate> getDelegate() override;
 		virtual void setViewSize(Size2 size) override;
 		virtual Size2 getViewSize() override;
 		virtual Size2 getRealViewSize() override;
@@ -224,7 +225,7 @@ namespace Zen { namespace Vap2d {
 
 	void RootInner::onLaunch(Zen::Size2 view_size)
 	{
-		Zen::GL::Render::EnableBlend();
+		Zen::LogV("%s", __FUNCTION__);
 
 		m_ticker.restart();
 		m_now = m_ticker.getTotalDuration();
@@ -240,6 +241,8 @@ namespace Zen { namespace Vap2d {
 
 	void RootInner::onResize(Zen::Size2 view_size)
 	{
+		Zen::LogV("%s", __FUNCTION__);
+
 		m_real_size = view_size;
 		this->setViewDirty();
 		if(m_delegate) m_delegate->onResize();
@@ -247,17 +250,22 @@ namespace Zen { namespace Vap2d {
 
 	void RootInner::onExit()
 	{
+		Zen::LogV("%s", __FUNCTION__);
+
 		if(m_delegate) m_delegate->onExit();
 	}
 
 	void RootInner::onPause()
 	{
+		Zen::LogV("%s", __FUNCTION__);
 		if(m_delegate) m_delegate->onPause();
 		m_ticker.pause();
 	}
 
 	void RootInner::onResume()
 	{
+		Zen::LogV("%s", __FUNCTION__);
+
 		if(m_delegate) m_delegate->onResume();
 		m_ticker.resume();
 	}
@@ -281,7 +289,7 @@ namespace Zen { namespace Vap2d {
 
 	void RootInner::onDraw()
 	{
-		Zen::GL::Render::Clear();
+		_StartRender();
 
 		if(!m_root_node || !m_root_node->isVisible()) return;
 
@@ -298,8 +306,10 @@ namespace Zen { namespace Vap2d {
 			};
 		}
 
-		RenderStackGuard rg(&m_matrix, dirty, 1.0f, EBlend::Normal);
+		DrawStack::GuardAll rg(&m_matrix, dirty, 1.0f, eBlend::Normal);
 		m_root_node->draw();
+
+		_EndRender();
 	}
 
 	/**
@@ -308,6 +318,8 @@ namespace Zen { namespace Vap2d {
 	 */
 	void RootInner::onBack()
 	{
+		Zen::LogV("%s", __FUNCTION__);
+
 		if(m_delegate) m_delegate->onBack();
 	}
 	/**
@@ -316,6 +328,8 @@ namespace Zen { namespace Vap2d {
 	 */
 	void RootInner::onClose()
 	{
+		Zen::LogV("%s", __FUNCTION__);
+
 		if(m_delegate) m_delegate->onClose();
 	}
 
@@ -362,19 +376,19 @@ namespace Zen { namespace Vap2d {
 
 	static std::shared_ptr<RootInner> S_root(new RootInner);
 
-	Root * Root::GetDefault()
+	Root * Root::S()
 	{
 		return S_root.get();
 	}
 	void RootInner::run()
 	{
-		Zen::AppRuntime::GetDefault()->setRuntimeDelegate(S_root);
+		Zen::AppRuntime::S()->setRuntimeDelegate(S_root);
 	}
 
 	void RootInner::setBackgroundColor(Zen::Color4f color)
 	{
 		m_color = color;
-		Zen::GL::Render::SetClearColor(color);
+		_SetClearColor(color);
 	}
 
 	Zen::Color4f RootInner::getBackgroundColor()
@@ -400,7 +414,7 @@ namespace Zen { namespace Vap2d {
 		return m_view_scale;
 	}
 	
-	void RootInner::setDelegate(RootDelegate * delegate)
+	void RootInner::setDelegate(std::shared_ptr<RootDelegate> delegate)
 	{
 		m_delegate = delegate;
 	}
@@ -417,7 +431,7 @@ namespace Zen { namespace Vap2d {
 	{
 		return Zen::ToSeconds(m_ticker.getTotalDuration());
 	}
-	RootDelegate * RootInner::getDelegate()
+	std::shared_ptr<RootDelegate> RootInner::getDelegate()
 	{
 		return m_delegate;
 	}
@@ -432,11 +446,11 @@ namespace Zen { namespace Vap2d {
 	{
 		S_root->clearNode(this);
 	}
-	BNode::~BNode()
+	BranchNode::~BranchNode()
 	{
 		for(auto i : m_nodes) delete i;
 	}
-	LNode::~LNode()
+	FinalNode::~FinalNode()
 	{
 	}
 

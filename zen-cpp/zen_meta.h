@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace Zen { namespace Meta {
 
 	template<bool, typename Type, Type v1, Type v2>
@@ -49,7 +51,7 @@ namespace Zen { namespace Meta {
 	 std::end(a) - std::begin(a)
 	 */
 	template<typename Type, size_t n>
-	inline size_t SizeA(Type (&array)[n])
+	inline size_t Count(Type (&array)[n])
 	{
 		return n; // n == sizeof(array)/sizeof(*array)
 	}

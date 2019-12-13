@@ -22,121 +22,106 @@
 #pragma once
 
 #include "zen_color.h"
-#include "zen_object.h"
-#include "zen_exception.h"
 
 #include <memory>
 #include <vector>
 
 namespace Zen {
 
-	struct ImageData
+	class Image
 	{
-		int width = 0;
-		int height = 0;
-		EBPP format = EBPP::None;
-		std::vector<uint8_t> buffer;
+	public:
+		inline static std::shared_ptr<Image> Create(ePixel format, size_t width, size_t height);
+		inline static std::shared_ptr<Image> CreateWidthData(ePixel format, size_t width, size_t height, void const * data);
+		inline static std::shared_ptr<Image> CreateWidthByte(ePixel format, size_t width, size_t height, uint8_t byte);
+
+		uint8_t * bytes() { return m_buffer.data(); }
+		size_t size() const { return m_buffer.size(); }
+		uint8_t const * bytes() const { return m_buffer.data(); }
+		ePixel format() const { return m_format; }
+		size_t width() const { return m_width; }
+		size_t height() const { return m_height; }
+
+		void fillByte(uint8_t byte);
+		void fillAlpha(uint8_t byte);
+		void fillGrey(uint8_t byte);
+		void fillRGB(Zen::Color3b rgb);
+		void fillRGBA(Zen::Color4b rgba);
+
+		/**
+		 @ data must has same width/height.
+
+		 copy color and alpha.
+		 if any self pixel changed, return true.
+		 */
+		bool copy(ePixel format, void const * data);
+		/**
+		 copy alpha only.
+		 if no alpha channel, return false.
+		 */
+		bool copyAlpha(ePixel format, void const * data);
+		/**
+		 copy rgb(or grey). only.
+		 */
+		bool copyColor(ePixel format, void const * data);
+	protected:
+		Image() = default;
+		Image(Image&) = default;
+
+		std::vector<uint8_t> m_buffer;
+		ePixel m_format = ePixel::None;
+		size_t m_width = 0;
+		size_t m_height = 0;
+	};
+
+	class ImageDecoder
+	{
+	public:
+		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) = 0;
+		virtual ~ImageDecoder() = default;
 	};
 	
-	inline void ImageGenerate(ImageData & data, EBPP format, int width, int height)
-	{
-		data.format = format;
-		data.width = width;
-		data.height = height;
-		data.buffer.resize(width * height *  (int)format);
-	}
-	/**
-		copy the alpha channel from @source to @alpha
-		only @source format is GA, RGBA valid, else just return false.
-	 */
-	inline bool ImageSeparateAlpha(ImageData & alpha, ImageData const & source)
-	{
-		if(source.format == EBPP::GA)
-		{
-			ImageGenerate(alpha, EBPP::Grey, source.width, source.height);
-			auto dest = alpha.buffer.data();
-			auto src = source.buffer.data()+1;
-			for(int y = 0; y < source.height; ++y)
-			{
-				for(int x = 0; x < source.width; ++x)
-				{
-					*dest++ = *src;
-					src += 2;
-				}
-			}
-			return true;
-		}
-		else if(source.format == EBPP::RGBA)
-		{
-			ImageGenerate(alpha, EBPP::RGB, source.width, source.height);
-			auto dest = alpha.buffer.data();
-			auto src = source.buffer.data()+3;
-			for(int y = 0; y < source.height; ++y)
-			{
-				for(int x = 0; x < source.width; ++x)
-				{
-					*dest++ = *src;
-					src += 4;
-				}
-			}
-			return true;
-		}
-		else return false;
-	}
-	/**
-		copy the color channel from @source to @alpha
-		copy the alpha channel from @source to @alpha
-		only @source format is GA, RGBA valid, else just return false.
-		GreayA = Grey + Alpha
-		RGBA = RGB + Alpha
-	*/
-	inline bool ImageSeparateColor(ImageData & color, ImageData const & source)
-	{
-		if(source.format == EBPP::GA)
-		{
-			ImageGenerate(color, EBPP::Grey, source.width, source.height);
-			auto dest = color.buffer.data();
-			auto src = source.buffer.data();
-			for(int y = 0; y < source.height; ++y)
-			{
-				for(int x = 0; x < source.width; ++x)
-				{
-					*dest++ = *src;
-					src += 2;
-				}
-			}
-			return true;
-		}
-		else if(source.format == EBPP::RGBA)
-		{
-			ImageGenerate(color, EBPP::RGB, source.width, source.height);
-			auto dest = color.buffer.data();
-			auto src = source.buffer.data();
-			for(int y = 0; y < source.height; ++y)
-			{
-				for(int x = 0; x < source.width; ++x)
-				{
-					dest[0] = src[0];
-					dest[1] = src[1];
-					dest[2] = src[2];
-					src += 4;
-					dest += 3;
-				}
-			}
-			return true;
-		}
-		else return false;
-	}
-
-	class ImageDecoder : public virtual Zen::Object
+	class ImageEncoder
 	{
 	public:
-		virtual void decode(ImageData & img, std::vector<uint8_t> const & data) = 0;
-	};
-	class ImageEncoder : public virtual Zen::Object
-	{
-	public:
-		virtual std::vector<uint8_t> encode(ImageData const & img) = 0;
+		virtual std::vector<uint8_t> encode(Image const *) = 0;
+		virtual ~ImageEncoder() = default;
 	};
 
+}
+
+namespace Zen {
+
+	inline std::shared_ptr<Image> Image::CreateWidthData(ePixel format, size_t width, size_t height, void const * data)
+	{
+		if(data == nullptr)
+			return nullptr;
+
+		auto a = std::shared_ptr<Image>(new Image);
+
+		a->m_width = width;
+		a->m_height = height;
+		a->m_format = format;
+		auto size = width * height *  (int)format;
+		auto buf = (uint8_t const*)data;
+		a->m_buffer.assign(buf, buf + size);
+
+		return a;
+	}
+	inline std::shared_ptr<Image> Image::CreateWidthByte(ePixel format, size_t width, size_t height, uint8_t byte)
+	{
+		auto a = std::shared_ptr<Image>(new Image);
+
+		a->m_width = width;
+		a->m_height = height;
+		a->m_format = format;
+		auto size = width * height *  (int)format;
+		a->m_buffer.assign(size, byte);
+
+		return a;
+	}
+	inline std::shared_ptr<Image> Image::Create(ePixel format, size_t width, size_t height)
+	{
+		return CreateWidthByte(format, width, height, 0);
+	}
 }

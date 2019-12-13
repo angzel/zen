@@ -1,25 +1,35 @@
 #pragma once
 
-#include "zen_gles2.h"
+#include "zen_vap2d_config.h"
 #include "zen_image.h"
+#include <map>
 
 namespace Zen { namespace Vap2d {
+	
 	class Texture {
 	public:
 		Texture() {printf("texture new\n");}
+		virtual ~Texture() = default;
 		Texture(Texture&) = delete;
 	public:
-		Zen::GL::TexImage2D const & image2d() { return m_texture; }
+		Texture2DBuffer const & buffer() { return m_texture; }
+
 		Zen::Size2 const & size() { return  m_size; }
 		Zen::Size2 const & using_size() { return m_using_size; };
-		EBPP format() { return m_format; }
+		ePixel format() { return m_format; }
+
 	public:
-		void set(uint32_t width, uint32_t height, EBPP bpp, void const * data);
+		static std::shared_ptr<Texture> Create();
+
+		void set(size_t width, size_t height, ePixel bpp, void const * data);
+
+		void set(Image const * image);
+
 	protected:
-		Zen::GL::TexImage2D m_texture;
-		Zen::Size2 m_size;
-		Zen::Size2 m_using_size;
-		EBPP m_format;
+		Texture2DBuffer m_texture;
+		Zen::Size2 m_size = {0, 0};
+		Zen::Size2 m_using_size = {1, 1};
+		ePixel m_format = ePixel::None;
 	};
 
 	typedef std::shared_ptr<Texture> SharedTexture;
@@ -27,16 +37,13 @@ namespace Zen { namespace Vap2d {
 	class Textures
 	{
 	public:
-		static Textures * GetDefault();
+		static Textures * S();
 
 		/**
 		 @createTexture
 		 -create SharedTexture.
 		 -not cached.
 		 */
-		static SharedTexture CreateTexture(uint32_t width, uint32_t height, EBPP bpp, void const * data);
-
-		static SharedTexture CreateTexture(ImageData const & image);
 
 	public:
 		void setImageDecoder(std::string const & extension, ImageDecoder * decoder);

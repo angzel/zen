@@ -46,12 +46,13 @@ namespace Zen { namespace Vap2d {
 		return r;
 	}
 	Particle::Particle(std::string const & name)
-	: LNode(name)
+	: FinalNode(name)
 	{
 		m_color_lerp = &DefaultLerp;
 		m_size_lerp = &DefaultLerp;
-		m_blend = EBlend::Add;
-	}
+		m_blend = eBlend::Add;
+		m_color = Zen::Color4f(0xff8822ff);
+		_initParticle();	}
 
 	void Particle::setParticleTotalCount(size_t count)
 	{
@@ -135,6 +136,7 @@ namespace Zen { namespace Vap2d {
 			this->stopAction(m_update_action);
 		}
 		this->initParticles();
+
 		auto action = new ActionCall(0, m_update_interval, "action update " + m_vap_name);
 		auto call = [this](float interval)->bool {
 			this->updateParticles(interval);
@@ -157,10 +159,6 @@ namespace Zen { namespace Vap2d {
 		return m_update_action != nullptr;
 	}
 
-	void Particle::setEffect(std::shared_ptr<Zen::GL::ShaderParticle const> shader)
-	{
-		m_shader = shader;
-	}
 	void Particle::setTexture(SharedTexture texture)
 	{
 		m_texture = texture;
@@ -174,64 +172,23 @@ namespace Zen { namespace Vap2d {
 	{
 		return m_texture;
 	}
-
-	void Particle::setColor(Zen::Color4f color)
+	
+	void Particle::initParticles()
 	{
-		m_color = color;
+		m_is_buffer_dirty = true;
 	}
-	Zen::Color4f Particle::getColor()
+	void Particle::updateParticles(float)
 	{
-		return m_color;
+		m_is_buffer_dirty = true;
 	}
-
 	void Particle::draw()
 	{
-		if(!isRunning() || m_buffer.empty()) return;
+		if(!isRunning() || !m_dots.size()) return;
 
-		using namespace Zen::GL;
-		if(m_buffer_dirty)
-		{
-			m_texture_buffer.updateData(0, m_buffer.size() * sizeof(Dot), m_buffer.data());
-			m_buffer_dirty = false;
-		}
+		if(!m_texture) m_texture = Textures::S()->getParticleTexture();
 
-		this->updateWorldMatrix();
-
-		auto alpha = RenderStack::GetDefault()->getTopAlpha() * this->getAlpha();
-
-		auto texture = m_texture;
-		if(texture == nullptr) texture = Textures::GetDefault()->getParticleTexture();
-
-		auto ss = m_shader;
-		if(ss == nullptr)
-		{
-			if(texture->format() == EBPP::Grey) ss = ShaderParticle::GetAlpha();
-			else ss = ShaderParticle::GetNormal();
-		}
-
-		RenderStack::GetDefault()->performBlend(m_blend);
-
-		Render::BindTexImage2D(texture->image2d().getObject(), 1);
-		Render::ActiveProgram(ss->program.getObject());
-
-		Render::BindArrayBuffer(m_texture_buffer.getObject());
-
-		Render::SetVertexAttribBuffer(ss->a_color, 4, EType::Float, true, sizeof(Dot), 0);
-		Render::SetVertexAttribBuffer(ss->a_coord, 2, EType::Float, false, sizeof(Dot), 4*sizeof(float));
-		Render::SetVertexAttribBuffer(ss->a_size, 1, EType::Float, false, sizeof(Dot), 6*sizeof(float));
-		Render::EnableVertexAttrib(ss->a_coord);
-		Render::EnableVertexAttrib(ss->a_color);
-		Render::EnableVertexAttrib(ss->a_size);
-		Render::SetUniformFloat(ss->u_color, m_color.red, m_color.green, m_color.blue, m_color.alpha*alpha);
-
-		Render::SetUniformFloat(ss->u_size, m_point_scale/Root::GetDefault()->getViewScale());
-		Render::SetUniformInt(ss->u_sampler, 1);
-		Render::SetUniformMat(ss->u_transform, m_world_matrix);
-		Render::DrawArray(EDrawMode::Points, 0, m_buffer.size());
-
-		Render::BindArrayBuffer(0);
+		this->_drawParticle();
 	}
-
 }}
 
 namespace Zen { namespace Vap2d {
@@ -297,8 +254,8 @@ namespace Zen { namespace Vap2d {
 		i.start_alpha = Rf01(m_start_alpha, m_start_alpha_var);
 		i.end_alpha = Rf01(m_end_alpha, m_end_alpha_var);
 
-		i.start_size = Rf0(m_start_size, m_start_size_var);
-		i.end_size = Rf0(m_end_size, m_end_size_var);
+		i.start_size = Rf0(m_start_size, m_start_size_var) * m_point_scale / Root::S()->getViewScale();
+		i.end_size = Rf0(m_end_size, m_end_size_var) * m_point_scale / Root::S()->getViewScale();
 		float r = Rf(m_emit_radians, m_emit_radians_var);
 		float s = Rf(m_emit_speed, m_emit_speed_var);
 		i.emit_speed.x = cosf(r) * s;
@@ -312,48 +269,48 @@ namespace Zen { namespace Vap2d {
 		i.life = Rf(m_emit_life, m_emit_life_var);
 	}
 
-	void GravityParticle::_update_a_particle(Dot & b, SrcItem & i)
+	void GravityParticle::_update_a_particle(size_t i)
 	{
-		float v = i.age / i.life;
-		auto & sc = i.start_color;
-		auto & ec = i.end_color;
-		b.color.red = m_color_lerp(sc.red, ec.red, v);
-		b.color.green = m_color_lerp(sc.green, ec.green, v);
-		b.color.blue = m_color_lerp(sc.blue, ec.blue, v);
-		b.color.alpha = m_color_lerp(sc.alpha, ec.alpha, v) * m_color_lerp(i.start_alpha, i.end_alpha, v);
-		b.coord.x = i.emit_position.x + i.emit_speed.x * i.age + i.gravity.x * i.age * i.age * 0.5f;
-		b.coord.y = i.emit_position.y + i.emit_speed.y * i.age + i.gravity.y * i.age * i.age * 0.5f;
-		b.size = m_size_lerp(i.start_size, i.end_size, v);
+		auto & dot = m_dots[i];
+		auto & s = m_particles[i];
+		float v = s.age / s.life;
+		auto & sc = s.start_color;
+		auto & ec = s.end_color;
+		dot.red = m_color_lerp(sc.red, ec.red, v);
+		dot.green = m_color_lerp(sc.green, ec.green, v);
+		dot.blue = m_color_lerp(sc.blue, ec.blue, v);
+		dot.alpha = m_color_lerp(sc.alpha, ec.alpha, v) * m_color_lerp(s.start_alpha, s.end_alpha, v);
+		dot.x = s.emit_position.x + s.emit_speed.x * s.age + s.gravity.x * s.age * s.age * 0.5f;
+		dot.y = s.emit_position.y + s.emit_speed.y * s.age + s.gravity.y * s.age * s.age * 0.5f;
+		dot.size = m_size_lerp(s.start_size, s.end_size, v);
 	}
 	void GravityParticle::initParticles()
 	{
-		m_buffer.resize(m_total_count);
+		m_dots.resize(m_total_count);
 		m_particles.resize(m_total_count);
-		auto b = m_buffer.data();
-		for(auto & i : m_particles)
+		for(size_t i = 0; i < m_total_count; ++i)
 		{
-			this->_init_a_particle(i);
-			i.age = S_rand.nextf() * i.life;
-			this->_update_a_particle(*b, i);
-			++b;
+			auto & s = m_particles[i];
+			this->_init_a_particle(s);
+			s.age = S_rand.nextf() * s.life;
+			this->_update_a_particle(i);
 		}
-		m_texture_buffer.bindData(m_buffer.size() * sizeof(Dot), m_buffer.data());
+		Particle::initParticles();
 	}
 	void GravityParticle::updateParticles(float interval)
 	{
-		auto b = m_buffer.data();
-		for(auto & i : m_particles)
+		for(size_t i = 0; i < m_dots.size(); ++i)
 		{
-			i.age += interval;
-			if(i.age > i.life)
+			auto & s = m_particles[i];
+			s.age += interval;
+			if(s.age > s.life)
 			{
-				this->_init_a_particle(i);
-				i.age = 0;
+				this->_init_a_particle(s);
+				s.age = 0;
 			}
-			this->_update_a_particle(*b, i);
-			++b;
+			this->_update_a_particle(i);
 		}
-		m_buffer_dirty = true;
+		Particle::updateParticles(interval);
 	}
 }}
 
@@ -420,7 +377,7 @@ namespace Zen { namespace Vap2d {
 		else m_radius_lerp = lerp;
 	}
 
-	void GalaxyParticle::_init_a_particle(SrcItem &i)
+	void GalaxyParticle::_init_a_particle(SrcItem & i)
 	{
 		i.start_color.red = Rf01(m_start_color.red, m_start_color_var.red);
 		i.start_color.green = Rf01(m_start_color.green, m_start_color_var.green);
@@ -435,8 +392,8 @@ namespace Zen { namespace Vap2d {
 		i.start_alpha = Rf01(m_start_alpha, m_start_alpha_var);
 		i.end_alpha = Rf01(m_end_alpha, m_end_alpha_var);
 
-		i.start_size = Rf0(m_start_size, m_start_size_var);
-		i.end_size = Rf0(m_end_size, m_end_size_var);
+		i.start_size = Rf0(m_start_size, m_start_size_var) * m_point_scale / Root::S()->getViewScale();
+		i.end_size = Rf0(m_end_size, m_end_size_var) * m_point_scale / Root::S()->getViewScale();
 		i.life = Rf(m_emit_life, m_emit_life_var);
 
 		i.start_radius = Rf(m_start_radius, m_start_radius_var);
@@ -445,49 +402,50 @@ namespace Zen { namespace Vap2d {
 		i.emit_acc = Rf(m_emit_acc, m_emit_acc_var);
 		i.emit_angle = Rf(m_emit_angle, m_emit_angle_var);
 	}
-	void GalaxyParticle::_update_a_particle(Dot & b, SrcItem &i)
+	void GalaxyParticle::_update_a_particle(size_t i)
 	{
-		float v = i.age / i.life;
-		auto & sc = i.start_color;
-		auto & ec = i.end_color;
-		b.color.red = m_color_lerp(sc.red, ec.red, v);
-		b.color.green = m_color_lerp(sc.green, ec.green, v);
-		b.color.blue = m_color_lerp(sc.blue, ec.blue, v);
-		b.color.alpha = m_color_lerp(sc.alpha, ec.alpha, v) * m_color_lerp(i.start_alpha, i.end_alpha, v);
-		float r = Zen::Lerp(i.start_radius, i.end_radius, v);
-		float rad = i.emit_angle + i.emit_av * i.age + i.emit_acc * i.age * i.age * 0.5f;
-		b.coord.x = r * cosf(rad);
-		b.coord.y = r * sinf(rad);
-		b.size = m_size_lerp(i.start_size, i.end_size, v);
+		auto & dot = m_dots[i];
+		auto & s = m_particles[i];
+		float v = s.age / s.life;
+		auto & sc = s.start_color;
+		auto & ec = s.end_color;
+		dot.red = m_color_lerp(sc.red, ec.red, v);
+		dot.green = m_color_lerp(sc.green, ec.green, v);
+		dot.blue = m_color_lerp(sc.blue, ec.blue, v);
+		dot.alpha = m_color_lerp(sc.alpha, ec.alpha, v) * m_color_lerp(s.start_alpha, s.end_alpha, v);
+		float r = Zen::Lerp(s.start_radius, s.end_radius, v);
+		float rad = s.emit_angle + s.emit_av * s.age + s.emit_acc * s.age * s.age * 0.5f;
+		dot.x = r * cosf(rad);
+		dot.y = r * sinf(rad);
+		dot.size = m_size_lerp(s.start_size, s.end_size, v);
 	}
 	void GalaxyParticle::initParticles()
 	{
-		m_buffer.resize(m_total_count);
+		m_dots.resize(m_total_count);
 		m_particles.resize(m_total_count);
-		auto b = m_buffer.data();
-		for(auto & i : m_particles)
+
+		for(size_t i = 0; i < m_dots.size(); ++i)
 		{
-			this->_init_a_particle(i);
-			i.age = S_rand.nextf() * i.life;
-			this->_update_a_particle(*b, i);
-			++b;
+			auto & s = m_particles[i];
+			this->_init_a_particle(s);
+			s.age = S_rand.nextf() * s.life;
+			this->_update_a_particle(i);
 		}
-		m_texture_buffer.bindData(m_buffer.size() * sizeof(Dot), m_buffer.data());
+		Particle::initParticles();
 	}
 	void GalaxyParticle::updateParticles(float interval)
 	{
-		auto b = m_buffer.data();
-		for(auto & i : m_particles)
+		for(size_t i = 0; i < m_dots.size(); ++i)
 		{
-			i.age += interval;
-			if(i.age > i.life)
+			auto & s = m_particles[i];
+			s.age += interval;
+			if(s.age > s.life)
 			{
-				this->_init_a_particle(i);
-				i.age = 0;
+				this->_init_a_particle(s);
+				s.age = 0;
 			}
-			this->_update_a_particle(*b, i);
-			++b;
+			this->_update_a_particle(i);
 		}
-		m_buffer_dirty = true;
+		Particle::updateParticles(interval);
 	}
 }}

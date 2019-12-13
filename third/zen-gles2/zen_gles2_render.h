@@ -25,193 +25,209 @@
 #include "zen_color.h"
 #include "zen_matrix.h"
 #include "zen_gles2_enum.h"
-#include "zen_gles2_program.h"
+#include "zen_gles2_shader.h"
 #include "zen_gles2_image2d.h"
 #include "zen_gles2_buffer.h"
 #include <map>
 
-namespace Zen { namespace GL { namespace Render {
-	// Program
-	inline void ActiveProgram(GLuint program_id);
-	// texture
-	inline void BindTexImage2D(GLint texture, int);
-	inline void UnbindTexImage2D(int sampler);
-	// buffer
-	inline void BindArrayBuffer(GLint buffer);
-	inline void BindElementArrayBuffer(GLint buffer);
+namespace Zen { namespace GL { 
 
-	// vertex.
-	inline void EnableVertexAttrib(GLint attrib);
+	class Render {
+	protected:
+		Render();
+	public:
+		static Render * S();
+			// ShaderProgram
+		inline void activeProgram(GLuint program_id);
 
-	inline void DisableVertexAttrib(GLint attrib);
+			// buffer
+		inline void enableBuffer(GLint buffer);
 
-	inline void SetVertexAttribData(GLint attrib, size_t size, EType type, bool normalize, size_t stride, void const * data);
-	
-	inline void SetVertexAttribBuffer(GLint attrib, size_t size, EType type, bool normalize, size_t stride, size_t off);
+			// vertex.
+			//setVertexAttribData
+		inline void setVertexData(GLint attrib, size_t size, eType type, bool normalize, size_t stride, void const * data);
+			//setVertexAttribBuffer
+		inline void setVertexBuffer(GLint attrib, size_t size, eType type, bool normalize, size_t stride, size_t off);
 
-	inline void SetVertexAttribFloat(GLint loc, GLfloat valu);
+		inline void setVertex(GLint loc, GLfloat valu);
 
-	inline void SetVertexAttribFloat(GLint loc, GLfloat v0, GLfloat v1);
+		inline void setVertex(GLint loc, GLfloat v0, GLfloat v1);
 
-	inline void SetVertexAttribFloat(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2);
+		inline void setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2);
 
-	inline void SetVertexAttribFloat(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+		inline void setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+		/**
+		 more
+		 glEnableVertexAttribArray
+		 glDisableVertexAttribArray
+		 glVertexAttrib1f
+		 glVertexAttrib2f
+		 glVertexAttrib3f
+		 glVertexAttrib4f
+		 ...
+		 glVertexAttrib4fv
+		 */
+			// uniform
+		inline void setSampler(GLint unif, int sampler, GLuint texture);
 
-	// draw
-	inline void DrawArray(EDrawMode mode, int first, size_t count);
-	
-	inline void DrawElements(EDrawMode mode, size_t count, uint8_t const * indices);
-	
-	inline void DrawElements(EDrawMode mode, size_t count, uint16_t const * indices);
-	
-	inline void DrawElements(EDrawMode mode, size_t count, uint32_t const * indices);
-	
-	// uniform
-	inline void SetUniformInt(GLint unif, GLint value);
-	
-	inline void SetUniformInt(GLint unif, GLint v0, GLint v1);
-	
-	inline void SetUniformInt(GLint unif, GLint v0, GLint v1, GLint v2);
-	
-	inline void SetUniformInt(GLint unif, GLint v0, GLint v1, GLint v2, GLint v3);
-	
-	inline void SetUniformFloat(GLint unif, GLfloat value);
-	
-	inline void SetUniformFloat(GLint unif, GLfloat v0, GLfloat v1);
-	
-	inline void SetUniformFloat(GLint unif, GLfloat v0, GLfloat v1, GLfloat v2);
-	
-	inline void SetUniformFloat(GLint unif, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
-	
-	inline void SetUniformMat(GLint unif, Matrix3 const & mat);
-	
-	inline void SetUniformMat(GLint unif, Matrix4 const & mat);
+		inline void setUniform(GLint unif, Matrix3 const & mat);
 
-	// clear
-	// ClearWithColor = SetClearColor + Clear
-	inline void ClearWithColor(Zen::Color4f);
-	
-	inline void SetClearColor(Zen::Color4f);
-	
-	inline void Clear();
-	
-	// depth.
-	inline void ClearDepthBuffer();
-	
-	inline void EnableDepthTest(bool);
-	
-	inline bool IsDepthTestEnabled();
-	
-	inline void SetDepthFunc(EDepthFunc);
-	
-	inline void SetClearDepth(float z);
-	
-	inline void EnableDepthMask(bool on);
+		inline void setUniform(GLint unif, Matrix4 const & mat);
 
-	// filter.
-	inline void SetTextureFilter(EFilter min, EFilter mag);
-	
-	inline void SetTextureWarp(EWarp x_warp, EWarp y_warp);
-	
-	inline void SetTextureFilter(GLint min, GLint mag);
-	
-	inline void SetTextureWarp(GLint x_warp, GLint y_warp);
-	
-	// blend.
-	inline bool IsBlendEnable();
-	
-	inline void EnableBlend();
-	
-	inline void DisableBlend();
-	
-	inline void SetBlendFunc(EBlendSrc sf, EBlendDst df);
-	
-	inline void SetBlendColor(float r, float g, float b, float a);
-	
-	// face.
-	inline void CullFace(bool front, bool back);
+		inline void setUniform(GLint unif, float x, float y, float z, float w);
 
-	inline void SetClockwiseAsFront(bool);
-	
-	// line.
-	inline void SetLineWidth(float width);
-	
-	inline float GetLineWidth();
+		/**
+		 more
+		 ...
+		 glUniform3f
+		 glUniform3fv
+		 glUniform4f
+		 glUniform4fv
+		 ...
+		 */
 
-	inline std::pair<float, float> GetLineWidthRange();
-}}}
+			// draw
+		inline void drawArray(eMode mode, size_t first, size_t count);
 
-//-------------------------------------------
+		inline void drawElements(eMode mode, GLint buffer, size_t count, uint8_t const * indices);
 
-namespace Zen { namespace GL { namespace Render {
+		inline void drawElements(eMode mode, GLint buffer, size_t count, uint16_t const * indices);
 
-	inline void ActiveProgram(GLuint program_id)
+		inline void drawElements(eMode mode, GLint buffer, size_t count, uint32_t const * indices);
+
+			// clear
+			// ClearWithColor = SetClearColor + Clear
+		inline void clearWithColor(Zen::Color4f);
+
+		inline void setClearColor(Zen::Color4f);
+
+		inline void clear();
+
+			// depth.
+		inline void clearDepthBuffer();
+
+		inline void enableDepthTest(bool);
+
+		inline bool isDepthTestEnabled();
+
+		inline void setDepthFunc(eDepthFunc);
+
+		inline void setClearDepth(float z);
+
+		inline void enableDepthMask(bool on);
+
+			// blend.
+		inline bool isBlendEnable();
+
+		inline void enableBlend();
+
+		inline void disableBlend();
+
+		inline void enableBlendFunction(eSrcBlend sf, eDstBlend df);
+
+		inline void setBlendColor(float r, float g, float b, float a);
+
+			// face.
+		inline void cullFace(bool front, bool back);
+
+		inline void setClockwiseAsFront(bool);
+
+			// line.
+		inline void setLineWidth(float width);
+
+		inline float getLineWidth();
+
+		inline float getMinLineWidth();
+
+		inline float getMaxLineWidth();
+	protected:
+		eSrcBlend m_src_blend = eSrcBlend::One;
+		eDstBlend m_dst_blend = eDstBlend::Zero;
+		bool m_blend_enabled = false;
+
+		float m_min_line_width = 0;
+		float m_max_line_width = 0;
+	};
+}}
+
+	//-------------------------------------------
+
+namespace Zen { namespace GL {
+
+	inline void Render::activeProgram(GLuint program_id)
 	{
 		glUseProgram(program_id);
 	}
 
-	inline void BindTexImage2D(GLint texture, int sampler)
-	{
-		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
-		glBindTexture(GL_TEXTURE_2D, texture);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
-#endif
-	}
-	inline void UnbindTexImage2D(int sampler)
-	{
-		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
-		glBindTexture(GL_TEXTURE_2D, 0);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
-#endif
-	}
-	inline void BindArrayBuffer(GLint buffer)
+	inline void Render::enableBuffer(GLint buffer)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	}
-	inline void BindElementArrayBuffer(GLint buffer)
+		//	inline void Render::activeFrame(GLuint frame_id)
+		//	{
+		//		throw __FUNCTION__;
+		//	}
+
+	inline void Render::setVertex(GLint loc, GLfloat value)
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		glDisableVertexAttribArray((GLuint)loc);
+
+		glVertexAttrib1f((GLuint)loc, value);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
+#endif
 	}
-
-	inline void ActiveFrame(GLuint frame_id);
-
-	inline void SetVertexAttribData(GLint attrib, size_t size, EType type, bool normalize, size_t stride, void const* ptr)
+	inline void Render::setVertex(GLint loc, GLfloat v0, GLfloat v1)
 	{
+		glDisableVertexAttribArray((GLuint)loc);
+
+		glVertexAttrib2f((GLuint)loc, v0, v1);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
+#endif
+	}
+	inline void Render::setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2)
+	{
+		glDisableVertexAttribArray((GLuint)loc);
+
+		glVertexAttrib3f((GLuint)loc, v0, v1, v2);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
+#endif
+	}
+	inline void Render::setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
+	{
+		glDisableVertexAttribArray((GLuint)loc);
+
+		glVertexAttrib4f((GLuint)loc, v0, v1, v2, v3);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
+#endif
+	}
+	inline void Render::setVertexData(GLint attrib, size_t size, eType type, bool normalize, size_t stride, void const* ptr)
+	{
+		glEnableVertexAttribArray((GLuint)attrib);
 		glVertexAttribPointer((GLuint)attrib, (GLint)size, (GLenum)type, (GLboolean)normalize, (GLint)stride, ptr);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set vertex attrib array", eno);
 #endif
 	}
-	inline void SetVertexAttribBuffer(GLint attrib, size_t size, EType type, bool normalize, size_t stride, size_t off)
+	inline void Render::setVertexBuffer(GLint attrib, size_t size, eType type, bool normalize, size_t stride, size_t off)
 	{
+		glEnableVertexAttribArray((GLuint)attrib);
 		glVertexAttribPointer((GLuint)attrib, (GLint)size, (GLenum)type, normalize, (GLint)stride, (char*)NULL + off);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set vertex attrib array", eno);
 #endif
 	}
-	inline void DisableVertexAttrib(GLint attrib)
-	{
-		glDisableVertexAttribArray((GLuint)attrib);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "enable vertex attrib array error", eno);
-#endif
-	}
-	inline void EnableVertexAttrib(GLint attrib)
-	{
-		glEnableVertexAttribArray((GLuint)attrib);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "enable vertex attrib array error", eno);
-#endif
-	}
-	inline void DrawArray(EDrawMode mode, int first, size_t count)
+
+	inline void Render::drawArray(eMode mode, size_t first, size_t count)
 	{
 		glDrawArrays((GLenum)mode, (GLint)first, (GLsizei)count);
 #if ZEN_DEBUG
@@ -219,84 +235,34 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "gl draw arry error", eno);
 #endif
 	}
-	inline void DrawElements(EDrawMode mode, size_t count, uint8_t const * indices)
+	inline void Render::drawElements(eMode mode, GLint buffer, size_t count, uint8_t const * indices)
 	{
-		glDrawElements((GLenum)mode, (GLint)count, (GLenum)EType::UByte, indices);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		glDrawElements((GLenum)mode, (GLint)count, (GLenum)eType::UByte, indices);
 	}
-	inline void DrawElements(EDrawMode mode, size_t count, uint16_t const * indices)
+	inline void Render::drawElements(eMode mode, GLint buffer, size_t count, uint16_t const * indices)
 	{
-		glDrawElements((GLenum)mode, (GLint)count, (GLenum)EType::UShort, indices);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		glDrawElements((GLenum)mode, (GLint)count, (GLenum)eType::UShort, indices);
 	}
-	inline void DrawElements(EDrawMode mode, size_t count, uint32_t const * indices)
+	inline void Render::drawElements(eMode mode, GLint buffer, size_t count, uint32_t const * indices)
 	{
-		glDrawElements((GLenum)mode, (GLint)count, (GLenum)EType::UInt, indices);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		glDrawElements((GLenum)mode, (GLint)count, (GLenum)eType::UInt, indices);
 	}
-	inline void SetUniformInt(GLint unif, GLint value)
+	inline void Render::setSampler(GLint unif, int sampler, GLuint texture)
 	{
-		glUniform1i(unif, value);
+		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glUniform1i(unif, sampler);
+
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
 #endif
 	}
-	inline void SetUniformInt(GLint unif, GLint v0, GLint v1)
-	{
-		glUniform2i(unif, v0, v1);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
-#endif
-	}
-	inline void SetUniformInt(GLint unif, GLint v0, GLint v1, GLint v2)
-	{
-		glUniform3i(unif, v0, v1, v2);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
-#endif
-	}
-	inline void SetUniformInt(GLint unif, GLint v0, GLint v1, GLint v2, GLint v3)
-	{
-		glUniform4i(unif, v0, v1, v2, v3);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
-#endif
-	}
-	inline void SetUniformFloat(GLint unif, GLfloat value)
-	{
-		glUniform1f(unif, value);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
-#endif
-	}
-	inline void SetUniformFloat(GLint unif, GLfloat v0, GLfloat v1)
-	{
-		glUniform2f(unif, v0, v1);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
-#endif
-	}
-	inline void SetUniformFloat(GLint unif, GLfloat v0, GLfloat v1, GLfloat v2)
-	{
-		glUniform3f(unif, v0, v1, v2);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
-#endif
-	}
-	inline void SetUniformFloat(GLint unif, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
-	{
-		glUniform4f(unif, v0, v1, v2, v3);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
-#endif
-	}
-	
-	inline void SetUniformMat(GLint unif, Matrix3 const & mat)
+
+	inline void Render::setUniform(GLint unif, Matrix3 const & mat)
 	{
 		glUniformMatrix3fv(unif, 1, GL_FALSE, (GLfloat const *)&mat);
 #if ZEN_DEBUG
@@ -304,7 +270,7 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
 #endif
 	}
-	inline void SetUniformMat(GLint unif, Matrix4 const & mat)
+	inline void Render::setUniform(GLint unif, Matrix4 const & mat)
 	{
 		glUniformMatrix4fv(unif, 1, GL_FALSE, (GLfloat const *)&mat);
 #if ZEN_DEBUG
@@ -312,129 +278,65 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
 #endif
 	}
-	inline void SetVertexAttribFloat(GLint loc, GLfloat value)
+	inline void Render::setUniform(GLint unif, float x, float y, float z, float w)
 	{
-		glVertexAttrib1f((GLuint)loc, value);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
-#endif
+		glUniform4f(unif, x, y, z, w);
 	}
-	inline void SetVertexAttribFloat(GLint loc, GLfloat v0, GLfloat v1)
-	{
-		glVertexAttrib2f((GLuint)loc, v0, v1);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
-#endif
-	}
-	inline void SetVertexAttribFloat(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2)
-	{
-		glVertexAttrib3f((GLuint)loc, v0, v1, v2);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
-#endif
-	}
-	inline void SetVertexAttribFloat(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
-	{
-		glVertexAttrib4f((GLuint)loc, v0, v1, v2, v3);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
-#endif
-	}
-}}}
+}}
 
 
-namespace Zen { namespace GL { namespace Render {
-	inline void ClearWithColor(Zen::Color4f color)
+namespace Zen { namespace GL {
+	inline void Render::clearWithColor(Zen::Color4f color)
 	{
 		glClearColor(color.red, color.green, color.blue, color.alpha);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-	inline void SetClearColor(Zen::Color4f color)
+	inline void Render::setClearColor(Zen::Color4f color)
 	{
 		glClearColor(color.red, color.green, color.blue, color.alpha);
 	}
-	inline void Clear()
+	inline void Render::clear()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-	inline void ClearDepthBuffer()
+	inline void Render::clearDepthBuffer()
 	{
 		glClear(GL_DEPTH_BUFFER_BIT);
 	}
-	inline void EnableDepthTest(bool on)
+	inline void Render::enableDepthTest(bool on)
 	{
 		if(on) glEnable(GL_DEPTH_TEST);
 		else glDisable(GL_DEPTH_TEST);
 	}
-	inline bool IsDepthTestEnable()
+	inline bool Render::isDepthTestEnabled()
 	{
 		return glIsEnabled(GL_DEPTH_TEST) == GL_TRUE;
 	}
-	inline void SetDepthFunc(EDepthFunc func)
+	inline void Render::setDepthFunc(eDepthFunc func)
 	{
 		glDepthFunc((GLenum)func);
 	}
-	inline void SetClearDepth(float z)
+	inline void Render::setClearDepth(float z)
 	{
 		glClearDepthf(z);
 	}
-	inline void EnableDepthMask(bool on)
+	inline void Render::enableDepthMask(bool on)
 	{
 		glDepthMask(on?GL_TRUE:GL_FALSE);
 	}
-	inline void SetTextureFilter(EFilter min, EFilter mag)
-	{
-		SetTextureFilter(GLint(min), GLint(mag));
-	}
-	inline void SetTextureWarp(EWarp x_warp, EWarp y_warp)
-	{
-		SetTextureWarp((GLint)x_warp, (GLint)y_warp);
-	}
-	inline void SetTextureFilter(GLint min, GLint mag)
-	{
-#if ZEN_DEBUG
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min); 
-		auto eno0 = (int)glGetError();
-		mustsn(eno0 == GL_NO_ERROR, "Failed to set min filter", eno0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
-		auto eno1 = (int)glGetError();
-		mustsn(eno1 == GL_NO_ERROR, "Failed to set mag filter", eno1);
-#else
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min); 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag); 
-#endif
-	}
-	inline void SetTextureWarp(GLint x_warp, GLint y_warp)
-	{
-#if ZEN_DEBUG
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, x_warp); 
-		auto eno0 = (int)glGetError();
-		mustsn(eno0 == GL_NO_ERROR, "Failed to set warp_s", eno0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, y_warp);
-		auto eno1 = (int)glGetError();
-		mustsn(eno1 == GL_NO_ERROR, "Failed to set warp_t", eno1);
-#else
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, x_warp); 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, y_warp);
-#endif
-	}
-	inline void EnableBlend()
+	inline void Render::enableBlend()
 	{
 		glEnable(GL_BLEND);
 	}
-	inline void DisableBlend()
+	inline void Render::disableBlend()
 	{
 		glDisable(GL_BLEND);
 	}
-	inline bool IsBlendEnable()
+	inline bool Render::isBlendEnable()
 	{
 		return glIsEnabled(GL_BLEND) == GL_TRUE;
 	}
-	inline  void SetBlendColor(float r, float g, float b, float a)
+	inline  void Render::setBlendColor(float r, float g, float b, float a)
 	{
 		glBlendColor(r, g, b, a);
 #if ZEN_DEBUG
@@ -442,15 +344,19 @@ namespace Zen { namespace GL { namespace Render {
 		mustsn(eno == GL_NO_ERROR, "failed to set blend color", eno);
 #endif
 	}
-	inline  void SetBlendFunc(EBlendSrc sf, EBlendDst df)
+	inline  void Render::enableBlendFunction(eSrcBlend sf, eDstBlend df)
 	{
+		this->enableBlend();
+		if(m_src_blend == sf && m_dst_blend == df) return;
 		glBlendFunc((GLenum)sf, (GLenum)df);
+		m_src_blend = sf;
+		m_dst_blend = df;
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set blend func", eno);
 #endif
 	}
-	inline void CullFace(bool front, bool back)
+	inline void Render::cullFace(bool front, bool back)
 	{
 		if(!front && !back)
 		{
@@ -463,62 +369,19 @@ namespace Zen { namespace GL { namespace Render {
 		}
 
 	}
-	inline void SetClockwiseAsFront(bool f)
+	inline void Render::setClockwiseAsFront(bool f)
 	{
 		glFrontFace(f?GL_CW:GL_CCW);
 	}
-	inline  void ShowFaceCW()
-	{
-		glFrontFace(GL_CW);
-		glCullFace(GL_BACK);
-		glEnable(GL_CULL_FACE);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to cull face (gl)", eno);
-#endif
-	}
-	inline  void ShowFaceCCW()
-	{
-		glFrontFace(GL_CCW);
-		glCullFace(GL_BACK);
-		glEnable(GL_CULL_FACE);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to cull face (gl)", eno);
-#endif
-	}
-	inline  void ShowFaceBoth()
-	{
-		glDisable(GL_CULL_FACE);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to cull face (gl)", eno);
-#endif
-	}
-	inline  void ShowFaceNone()
-	{
-		glCullFace(GL_FRONT_AND_BACK);
-		glEnable(GL_CULL_FACE);
-#if ZEN_DEBUG
-		auto eno = (int)glGetError();
-		mustsn(eno == GL_NO_ERROR, "failed to cull face (gl)", eno);
-#endif
-	}
-	inline float GetLineWidth()
+	inline float Render::getLineWidth()
 	{
 		GLfloat width;
 		glGetFloatv(GL_LINE_WIDTH, &width);
 		return width;
 	}
-	inline void SetLineWidth(float width)
+	inline void Render::setLineWidth(float width)
 	{
 		if(width <= 0.1f) width = 0.1f;
 		glLineWidth(width);
 	}
-	inline std::pair<float, float> GetLineWidthRange()
-	{
-		GLfloat width[2];
-		glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, width);
-		return std::pair<float, float>(width[0], width[1]);
-	}
-}}}
+}}

@@ -18,82 +18,53 @@
  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "zen_app_config.h"
 
-#import "ViewController.h"
-#import "AppRuntimeIOS.h"
-#import "AppDelegate.h"
+#if ZEN_APP_DRAW_API_OPENGLES
+
+#import "GLESViewController.h"
+#import "GLESAppDelegate.h"
+
+#include "AppRuntimeIOS.h"
 
 static const int DefaultFPS = 60;
 
-#define runtime AppRuntimeIOS::GetDefault()
+#define runtime AppRuntimeIOS::S()
 
 ViewController * G_view_controller = nil;
 
 @interface ViewController ()
-
 @property (strong, nonatomic) EAGLContext *context;
-@property (strong, nonatomic) GLKBaseEffect *effect;
 @end
 
 @implementation ViewController
 
-- (void)beginGL {
-
-	self.preferredFramesPerSecond = DefaultFPS;
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	G_view_controller = self;
 
 	self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	[EAGLContext setCurrentContext:self.context];
 
 	GLKView *view = (GLKView *)self.view;
+
 	view.context = self.context;
 	view.drawableDepthFormat = GLKViewDrawableDepthFormatNone;
 
-	[EAGLContext setCurrentContext:self.context];
-
 	self.view.multipleTouchEnabled = NO;
-}
-- (void)endGL {
-
-	if(self.effect)
-	{
-		self.effect = nil;
-	}
-	if(self.context)
-	{
-		if ([EAGLContext currentContext] == self.context) {
-			[EAGLContext setCurrentContext:nil];
-		}
-		self.context = nil;
-	}
-}
-
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-	[self beginGL];
-
-	glEnable(GL_BLEND);
-
-	self.rotatable = NO;
-
-	self.status_visible = NO;
-
-	G_view_controller = self;
+	[self setFPS:DefaultFPS];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	float w = self.view.bounds.size.width, h = self.view.bounds.size.height;
-	float s = [UIScreen mainScreen].scale;
-	runtime->launch({w*s, h*s});
+	UIScreen * main = [UIScreen mainScreen];
+	float s = main.nativeBounds.size.width / main.bounds.size.width;
+	CGSize size = self.view.bounds.size;
+
+	runtime->launch({(float)size.width * s, (float)size.height * s});
 
 	runtime->update();
-}
-
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
-	// Dispose of any resources that can be recreated.
-	[self endGL];
 }
 
 - (void)dealloc
@@ -104,7 +75,6 @@ ViewController * G_view_controller = nil;
 	}
 }
 
-
 - (void)update
 {
 	runtime->update();
@@ -113,6 +83,16 @@ ViewController * G_view_controller = nil;
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
 	runtime->draw();
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+	UIScreen * main = [UIScreen mainScreen];
+	float s = main.nativeBounds.size.width / main.bounds.size.width;
+	
+	runtime->resize({(float)size.width*s, (float)size.height*s});
+
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -178,25 +158,24 @@ ViewController * G_view_controller = nil;
 
 - (BOOL) shouldAutorotate
 {
-	return self.rotatable;
-}
-
-//- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-//{
-//	float w = self.view.bounds.size.width, h = self.view.bounds.size.height;
-//}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
-{
-	float s = [UIScreen mainScreen].scale;
-	runtime->resize({(float)size.width*s, (float)size.height*s});
-
-	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	return runtime->isRotatable();
 }
 
 - (BOOL) prefersStatusBarHidden
 {
-	return !self.status_visible;
+	return !runtime->isStatusVisible();
+}
+
+
+-(void)setFPS:(int)fps
+{
+	self.preferredFramesPerSecond = fps;
+}
+-(int)getFPS
+{
+	return (int)self.preferredFramesPerSecond;
 }
 
 @end
+
+#endif

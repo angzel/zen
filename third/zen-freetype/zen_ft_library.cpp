@@ -42,7 +42,7 @@ namespace Zen {
 			mFT_Face = face;
 		}
 
-		~FontInner()
+		virtual ~FontInner()
 		{
 			if(mFT_Face) FT_Done_Face(mFT_Face);
 		}
@@ -209,7 +209,7 @@ namespace Zen {
 			auto eno = FT_Init_FreeType(&mFT_Library);
 			mustsn(eno == 0, "FT_Init_FreeType ERROR", eno);
 		}
-		~FontLibraryInner()
+		virtual ~FontLibraryInner()
 		{
 			if(mFT_Library) FT_Done_FreeType(mFT_Library);
 		}
@@ -219,22 +219,21 @@ namespace Zen {
 		}
 	};
 
-	static auto S_library = new FontLibraryInner;
-	
-	FontLibrary * FontLibrary::GetDefault()
+	FontLibrary * FontLibrary::S()
 	{
-		return S_library;
+		static auto single = new FontLibraryInner;
+		return single;;
 	}
 	
-	Fonts * Fonts::GetDefault()
+	Fonts * Fonts::S()
 	{
-		static auto me = new Fonts;
-		return me;
+		static auto single = new Fonts;
+		return single;;
 	}
 
 	std::shared_ptr<Font> Fonts::setFont(std::string const & name, std::vector<uint8_t> const & data)
 	{
-		auto font = FontLibrary::GetDefault()->createFont(data);
+		auto font = FontLibrary::S()->createFont(data);
 		m_fonts[name] = font;
 		return font;
 	}

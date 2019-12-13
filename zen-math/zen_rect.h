@@ -22,15 +22,15 @@
 #pragma once
 
 namespace Zen {
-	struct Rect
+	struct Rect4f
 	{
 		float x, y, w, h;
 	};
-	inline Rect RectMake(float x, float y, float w, float h)
+	inline Rect4f RectMake(float x, float y, float w, float h)
 	{
 		return { x, y, w, h };
 	}
-	inline Rect RectMakeWithDoublePoints(float x0, float y0, float x1, float y1)
+	inline Rect4f RectMakeWithDoublePoints(float x0, float y0, float x1, float y1)
 	{
 		return { x0, y0, x1-x0, y1-y0 };
 	}

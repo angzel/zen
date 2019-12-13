@@ -5,10 +5,10 @@
 namespace Zen {
 	
 	/** image: grey format */
-	static void WriteChar(ImageData & image, FontChar * a, int x, int y)
+	static void WriteChar(Image * image, FontChar * a, int x, int y)
 	{
-		int iw = image.width;
-		int ih = image.height;
+		int iw = (int)image->width();
+		int ih = (int)image->height();
 		
 		x += a->bitmap_left; // image x
 		y -= a->bitmap_top;
@@ -27,30 +27,34 @@ namespace Zen {
 		w -= ax; // left out
 		h -= ay;
 		
-		auto dst = image.buffer.data() + iw * (y + ay) + (x + ax);
+		auto dst = image->bytes() + iw * (y + ay) + (x + ax);
 		auto src = a->bitmap.data() + ay * a->width + ax;
 		for(int i = 0; i < h; ++i)
 		{
-			for(int i = 0; i < w; ++i)
-			{
-				if(src[i] > dst[i]) dst[i] = src[i];
-			}
+//			for(int i = 0; i < w; ++i)
+//			{
+//				if(src[i] > dst[i]) dst[i] = src[i];
+//			}
+			::memcpy(dst, src, w);
 			dst += iw;
 			src += a->width;
 		}
 	}
-	static void WriteLine(ImageData & image, int x, int y, int w, int underline)
+	static void WriteLine(Image * image, int x, int y, int w, int underline)
 	{
-		if(y >= image.height) return;
-		if(y + underline > image.height) underline = image.height - y;
+		int iw = (int)image->width();
+		int ih = (int)image->height();
+
+		if(y >= ih) return;
+		if(y + underline > ih) underline = ih - y;
 		if(x < 0) { w = w + x; x = 0; }
-		if(x + w > image.width) w = image.width - x;
+		if(x + w > iw) w = iw - x;
 		
-		auto b = image.buffer.data() + (y * image.width) + x;
+		auto b = image->bytes() + (y * iw) + x;
 		for(int i = 0; i < underline; ++i)
 		{
 			::memset(b, 0xff, w);
-			b += image.width;
+			b += iw;
 		}
 	}
 	
@@ -110,16 +114,18 @@ namespace Zen {
 			m_out_height = (int)height;
 		}
 
-		virtual void renderToImage
-		(ImageData & image, int width, int height, int x_off, int y_off, int underline)
+		virtual std::shared_ptr<Image> render
+		(size_t width, size_t height, int x_off, int y_off, int underline)
 		override
 		{
 			if(width == 0) width = getOutputWidth();
 			if(height == 0) height = getOutputHeight();
-			
-			ImageGenerate(image, EBPP::Grey, width, height);
-			
-			_writeImageH(image, x_off, y_off, underline);
+
+			auto image = Image::Create(ePixel::Grey, width, height);
+
+			_writeImageH(image.get(), x_off, y_off, underline);
+
+			return image;
 		}
 		
 		virtual int getOutputWidth() override
@@ -235,11 +241,11 @@ namespace Zen {
 		}
 		
 		
-		void _writeImageH(ImageData & image, int x_off, int y_off)
+		void _writeImageH(Image * image, int x_off, int y_off)
 		{
 			int y = y_off + m_font_brush->getInfo().base_line_height + m_line_spacing/2;
 			
-			int w = (int)image.width;
+			int w = (int)image->width();
 			
 			for(auto & line : m_lines)
 			{
@@ -255,11 +261,11 @@ namespace Zen {
 			}
 		}
 		
-		void _writeImageH(ImageData & image, int x_off, int y_off, int underline)
+		void _writeImageH(Image * image, int x_off, int y_off, int underline)
 		{
 			int y = y_off + m_font_brush->getInfo().base_line_height + m_line_spacing/2;
 			
-			int w = (int)image.width;
+			int w = (int)image->width();
 			
 			for(auto & line : m_lines)
 			{

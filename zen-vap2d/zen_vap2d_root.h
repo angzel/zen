@@ -36,7 +36,7 @@ namespace Zen { namespace Vap2d {
 	class Root {
 
 	public:
-		static Root * GetDefault();
+		static Root * S();
 
 		/**
 		 @function run
@@ -48,8 +48,8 @@ namespace Zen { namespace Vap2d {
 		 set the delegate in the function ZenAppMain so that onLaunch could be called rightly.
 		 if reset a new one, the original delegate is not deleted here.
 		 */
-		virtual void setDelegate(RootDelegate * delegate) = 0;
-		virtual RootDelegate * getDelegate() = 0;
+		virtual void setDelegate(std::shared_ptr<RootDelegate> delegate) = 0;
+		virtual std::shared_ptr<RootDelegate> getDelegate() = 0;
 
 	public: // below functions not valid before onLaunch.
 

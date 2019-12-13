@@ -25,7 +25,7 @@
 
 namespace Zen 
 {
-	enum class EBPP : int
+	enum class ePixel : int
 	{
 		None  = 0,
 		Grey  = 1,	// grey 1 byte
@@ -34,14 +34,14 @@ namespace Zen
 		RGBA  = 4,	// 4 bytes
 	};
 	
-	class Color4;
+	class Color4b;
 	class Color4f;
 	class ColorRBG;
 	
 	/**
 	 enum usual color's name in RGB format.
 	 */
-	enum class EColor : uint32_t
+	enum class eColor : uint32_t
 	{
 		Black               = 0x000000,
 		White               = 0xFFFFFF,
@@ -54,24 +54,24 @@ namespace Zen
 		Yellow              = 0xFFFF00,
 	};
 
-	class Color3
+	class Color3b
 	{
 	public:
 		uint8_t r_byte, g_byte, b_byte;
 	public:
-		Color3()
+		Color3b()
 		{
 			r_byte = g_byte = b_byte = 0;
 		}
-		Color3(EColor rgb)
+		Color3b(eColor rgb)
 		{
 			this->set((uint32_t)rgb);
 		}
-		Color3(uint32_t rgb)
+		Color3b(uint32_t rgb)
 		{
 			this->set(rgb);
 		}
-		Color3(uint8_t r, uint8_t g, uint8_t b)
+		Color3b(uint8_t r, uint8_t g, uint8_t b)
 		{
 			this->set(r, g, b);
 		}
@@ -93,53 +93,53 @@ namespace Zen
 			return (r_byte << 16) | (g_byte << 8) | b_byte;
 		}
 		
-		bool operator == (Color3 const & o) const
+		bool operator == (Color3b const & o) const
 		{
 			return r_byte == o.r_byte && g_byte == o.g_byte && b_byte == o.b_byte;
 		}
 		
-		bool operator != (Color3 const & o) const
+		bool operator != (Color3b const & o) const
 		{
 			return !(*this == o);
 		}
 	};
 
 
-	/* C: Color4
-	 - 32bits Color4 in RGBA format, 0xRRGGBBAA.
+	/* C: Color4b
+	 - 32bits Color4b in RGBA format, 0xRRGGBBAA.
 	 */
 
 
-	class Color4
+	class Color4b
 	{
 	public:
 		uint8_t r_byte, g_byte, b_byte, a_byte;
 	public:
-		Color4(EColor e)
+		Color4b(eColor e)
 		{
-			set(Color3(e));
+			set(Color3b(e));
 		}
 		/* 0xRRGGBBAA */
-		Color4(uint32_t rgba = 0x0FF)
+		Color4b(uint32_t rgba = 0x0FF)
 		{
 			setRGBA(rgba);
 		}
 		
-		Color4(Color3 const & rgb, uint8_t a = 0xFF)
+		Color4b(Color3b const & rgb, uint8_t a = 0xFF)
 		{
 			set(rgb, a);
 		}
 
-		Color4(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF)
+		Color4b(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF)
 		{
 			set(r, g, b, a);
 		}
 
-		inline Color4(Color4f const & cf);
+		inline Color4b(Color4f const & cf);
 
 		inline void set(Color4f const &);
 
-		void set(Color3 const & rgb, uint8_t a = 0xFF)
+		void set(Color3b const & rgb, uint8_t a = 0xFF)
 		{
 			r_byte = rgb.r_byte;
 			g_byte = rgb.g_byte;
@@ -147,9 +147,9 @@ namespace Zen
 			a_byte = a;
 		}
 
-		void set(EColor value, uint8_t a = 0xFF)
+		void set(eColor value, uint8_t a = 0xFF)
 		{
-			this->set(Color3(value), a);
+			this->set(Color3b(value), a);
 		}
 		
 		void set(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF)
@@ -205,12 +205,12 @@ namespace Zen
 			((uint32_t)b_byte << 8) | ((uint32_t)a_byte);
 		}
 		
-		bool operator == (Color4 const & o)
+		bool operator == (Color4b const & o)
 		{
 			return this->getARGB() == o.getARGB();
 		}
 		
-		bool operator != (Color4 const & o)
+		bool operator != (Color4b const & o)
 		{
 			return !(*this == o);
 		}
@@ -232,16 +232,16 @@ namespace Zen
 			return b_byte / (float)0xff;
 		}
 
-		operator Color3 ()
+		operator Color3b ()
 		{
-			return Color3(r_byte, g_byte, b_byte);
+			return Color3b(r_byte, g_byte, b_byte);
 		}
 	};
 	
 
 	 
 	/** Color4f
-	 -- Color4 by 4 float
+	 -- Color4b by 4 float
 	 */
 	class Color4f
 	{
@@ -249,9 +249,9 @@ namespace Zen
 		float red, green, blue, alpha;
 		
 	public:
-		Color4f(EColor e)
+		Color4f(eColor e)
 		{
-			set(Color4(e));
+			set(Color4b(e));
 		}
 		
 		Color4f()
@@ -260,7 +260,7 @@ namespace Zen
 			alpha = 1.f;
 		}
 
-		Color4f(Color4 const & color)
+		Color4f(Color4b const & color)
 		{
 			set(color);
 		}
@@ -278,7 +278,7 @@ namespace Zen
 			alpha = a;
 		}
 		
-		void set(Color4 const & color)
+		void set(Color4b const & color)
 		{
 			red = color.rf();
 			green = color.gf();
@@ -299,12 +299,12 @@ namespace Zen
 	};
 
 	
-	inline Color4::Color4(Color4f const & cf)
+	inline Color4b::Color4b(Color4f const & cf)
 	{
 		this->set(cf);
 	}
 	
-	inline void Color4::set(Color4f const & cf)
+	inline void Color4b::set(Color4f const & cf)
 	{
 		r_byte = (uint8_t)(cf.red * 0xff + 0.5f);
 		g_byte = (uint8_t)(cf.green * 0xff + 0.5f);
@@ -327,6 +327,6 @@ namespace Zen
 		 );
 	}
 
-	typedef Color4 Color;
+	typedef Color4b Color;
 }
 								  

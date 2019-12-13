@@ -19,31 +19,18 @@
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+#include "zen_app_config.h"
 
-#include "zen_gles2.h"
+#if ZEN_APP_DRAW_API_OPENGLES
 
-namespace Zen { namespace GL {
-	class ShaderParticle
-	{
-	public:
-		GLint a_coord;
-		GLint a_color;
-		GLint a_size;
-		GLint u_transform;
-		GLint u_size;
-		GLint u_color;
-		GLint u_sampler;
-		Zen::GL::Program program;
+#import <UIKit/UIKit.h>
 
-	public:
-		static std::shared_ptr<ShaderParticle const> GetNormal();
-			// convert texture to grey channel
-		static std::shared_ptr<ShaderParticle const> GetAlpha();
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-		static std::shared_ptr<ShaderParticle const> Create(char const * vertext_shader, char const * fragment_shader);
-	protected:
-		ShaderParticle() = default;
-		ShaderParticle(ShaderParticle&) = delete;
-	};
-}}
+@property (strong, nonatomic) UIWindow *window;
+
+@end
+
+extern AppDelegate * G_app_delegate;
+
+#endif

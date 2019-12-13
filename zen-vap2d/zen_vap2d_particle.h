@@ -1,10 +1,10 @@
 #pragma once
 
+#include "zen_vap2d_config.h"
 #include "zen_vap2d_node.h"
 #include "zen_vap2d_event.h"
 #include "zen_vap2d_texture.h"
 #include "zen_rect.h"
-#include "zen_gles2_shader_particle.h"
 #include "zen_random.h"
 #include "zen_numerical.h"
 #include <vector>
@@ -13,13 +13,22 @@
 
 namespace Zen { namespace Vap2d {
 
-	class Particle : public LNode, public View {
+	class Particle : public FinalNode, public View, public Colorful {
 	protected:
 		struct Dot {
-			Color4f color;
-			Point2 coord;
+			float red;
+			float green;
+			float blue;
+			float alpha;
+			float x;
+			float y;
 			float size;
 		};
+		std::vector<Dot> m_dots;
+
+//		std::vector<Color4f> m_color_dots;
+//		std::vector<Point2> m_coord_dots;
+//		std::vector<float> m_size_dots;
 	public:
 		Particle(std::string const & name = "particle");
 
@@ -62,17 +71,11 @@ namespace Zen { namespace Vap2d {
 
 		SharedTexture getTexture();
 
-		void setColor(Zen::Color4f color);
-
-		Zen::Color4f getColor();
-
-		void setEffect(std::shared_ptr<Zen::GL::ShaderParticle const>);
-
 		virtual void draw() override;
 
 	protected:
-		virtual void initParticles() = 0;
-		virtual void updateParticles(float) = 0;
+		virtual void initParticles();
+		virtual void updateParticles(float);
 
 		std::shared_ptr<Action> m_update_action = nullptr;
 
@@ -98,14 +101,16 @@ namespace Zen { namespace Vap2d {
 		std::function<float(float s, float e, float v)> m_color_lerp;
 		std::function<float(float s, float e, float v)> m_size_lerp;
 
-		std::shared_ptr<Zen::GL::ShaderParticle const> m_shader = nullptr;
 		SharedTexture m_texture;
-		Zen::Color4f m_color = Zen::Color4f(0xff8822ff);
 		float m_point_scale = 1.f;
-		
-		Zen::GL::ArrayBuffer m_texture_buffer;
-		std::vector<Dot> m_buffer;
-		bool m_buffer_dirty = false;
+
+	private:
+		ParticleBuffer m_gpus;
+		bool m_is_buffer_dirty = false;
+
+	protected:
+		void _initParticle();
+		void _drawParticle();
 	};
 
 	class GravityParticle : public Particle {
@@ -143,7 +148,7 @@ namespace Zen { namespace Vap2d {
 		virtual void updateParticles(float) override;
 
 		void _init_a_particle(SrcItem & i);
-		void _update_a_particle(Dot & b, SrcItem & i);
+		void _update_a_particle(size_t i);
 
 		float m_emit_radians = ZEN_F_PI2;
 		float m_emit_radians_var = 0;
@@ -154,6 +159,7 @@ namespace Zen { namespace Vap2d {
 		float m_gravity_radians_var = 0.f;
 		float m_gravity_acc = 10;
 		float m_gravity_acc_var = 0;
+
 		Zen::Point2 m_emit_pos = {0, 0};
 		Zen::Point2 m_emit_pos_var = {0, 0};
 
@@ -202,8 +208,8 @@ namespace Zen { namespace Vap2d {
 		virtual void initParticles() override;
 		virtual void updateParticles(float) override;
 
-		void _init_a_particle(SrcItem & i);
-		void _update_a_particle(Dot & b, SrcItem & i);
+		void _init_a_particle(SrcItem &);
+		void _update_a_particle(size_t i);
 		
 		float m_start_radius = 0;
 		float m_start_radius_var = 0;

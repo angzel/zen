@@ -7,11 +7,13 @@
 
 namespace Zen { namespace Vap2d {
 
-	class Label : public Sprite {
+	class Label : public FinalNode, public SizeView, public Colorful, public Flipable {
 	public:
 		Label(std::string const & name = "label");
 
 		void setFont(std::shared_ptr<FontBrush>);
+
+		void setTextAlignment(float alignment);
 
 		void setMaxWidthInPixels(int pixels);
 
@@ -19,40 +21,38 @@ namespace Zen { namespace Vap2d {
 
 		void setLinesSpacingInPixels(int pixels);
 
-		void setTextAlignment(float alignment);
-
-		void setTextureBackground(float grey);
-
-		void setUnderline(int width);
-
-		void setText(std::string const & str);
-		std::string getText();
+		void setUnderlineInPixels(int width);
 
 		void setFontSize(float size);
 		float getFontSize();
 
-		void clearLabelDirty();
-		
+		void setText(std::string const & str);
+		std::string getText();
+
+		void clearSizeDirty();
+
 		virtual void draw() override;
 
 	protected:
-		using Sprite::setSize;
-		using Sprite::setTexture;
-		using Sprite::setTextureRect;
-		using Sprite::clearSpriteDirty;
-	protected:
 		std::string m_text;
 		std::shared_ptr<FontBrush> m_font;
+		float m_alignment = 0;
 		int m_max_width_px = 0;
 		int m_char_spacing_px = 0;
 		int m_line_spacing_px = 0;
-		float m_alignment = 0;
-		float m_background_grey = 0;
-		float m_font_size = 0;
-		int m_underline = 0;
+		int m_underline_px = 0;
 		bool m_is_text_dirty = true;
-		bool m_is_size_dirty = true;
 		bool m_is_texture_empty = true;
 	protected:
+		SharedTexture m_texture;
+		float m_font_size = 16;
+		bool m_is_size_dirty = true;
+		
+	protected:
+		SpriteBuffer m_gpus;
+		bool m_is_buffer_dirty = false;
+
+		void _initLabel();
+		void _drawLabel();
 	};
 }}

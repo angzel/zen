@@ -1,6 +1,7 @@
-#import <UIKit/UIKit.h>
-#import "AppDelegate.h"
-#import "zen_app_runtime.h"
+#include "zen_app_config.h"
+#include "zen_app_runtime.h"
+
+#include "AppRuntimeIOS.h"
 
 int main(int argc, char * argv[]) {
 	

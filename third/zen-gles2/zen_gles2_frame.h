@@ -33,7 +33,7 @@ namespace Zen {
 		public:
 			FrameBuffer();
 			
-			~FrameBuffer();
+			virtual ~FrameBuffer();
 			
 			void create(uint32_t width, uint32_t height, ETextureFmt fmt, int lvl);
 			

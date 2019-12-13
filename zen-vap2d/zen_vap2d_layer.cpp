@@ -3,18 +3,18 @@
 
 namespace Zen { namespace Vap2d {
 	Layer::Layer(std::string const & name)
-	: BNode(name)
+	: BranchNode(name)
 	{
 	}
 	void Layer::draw()
 	{
 		if(m_nodes.empty()) return;
 
-		bool dirty = this->updateWorldMatrix();
+		bool dirty = this->updateMatrix();
 
-		RenderStackGuard rg(&m_world_matrix, dirty, this->getAlpha(), m_blend);
+		DrawStack::GuardAll rg(&m_world_matrix, dirty, this->getAlpha(), m_blend);
 
-		BNode::draw();
+		BranchNode::draw();
 	}
 
 }}

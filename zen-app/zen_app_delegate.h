@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include "zen_object.h"
 #include "zen_vector.h"
 
 namespace Zen {
@@ -37,9 +36,10 @@ namespace Zen {
 	};
 
 	class AppRuntimeDelegate
-	: public virtual Zen::Object
 	{
 	public:
+		virtual ~AppRuntimeDelegate() = default;
+		
 		virtual void onLaunch(Zen::Size2 view_size) {}
 
 		virtual void onResize(Zen::Size2 view_size) {}

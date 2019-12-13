@@ -19,16 +19,15 @@
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#import "AppRuntimeIOS.h"
-#import "AppDelegate.h"
-#import "ViewController.h"
-
+#include "AppRuntimeIOS.h"
+#include "GLESAppDelegate.h"
+#include "GLESViewController.h"
 
 AppRuntimeIOS * AppRuntimeIOS::_me = new AppRuntimeIOS();
 
-Zen::AppRuntime * Zen::AppRuntime::GetDefault()
+Zen::AppRuntime * Zen::AppRuntime::S()
 {
-	return AppRuntimeIOS::GetDefault();
+	return AppRuntimeIOS::S();
 }
 
 
@@ -61,14 +60,17 @@ void AppRuntimeIOS::exit()
 
 void AppRuntimeIOS::pause()
 {
+	if(m_is_paused) return;
+	m_is_paused = true;
 	mDelegate->onPause();
 }
 
 void AppRuntimeIOS::resume()
 {
+	if(!m_is_paused) return;
 	mDelegate->onResume();
+	m_is_paused = true;
 }
-
 
 void AppRuntimeIOS::touchDown(Zen::AppTouch touch)
 {

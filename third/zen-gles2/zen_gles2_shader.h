@@ -26,60 +26,49 @@
 
 namespace Zen { namespace GL {
 	template<GLenum tType>
-	class Shader
+	class tShader
 	{
 	private:
-		Shader(Shader const &);
-
-		void operator = (Shader const &);
-
+		tShader(tShader const &);
+		
+		void operator = (tShader const &);
+		
 		static GLenum const Type = tType;
 	public:
-
+		
 	public:
-		inline Shader();
-
-		inline ~Shader();
-
-		inline void create();
-
-		inline void release();
-
-		inline GLuint getObject() const;
-
+		inline tShader();
+		
+		inline virtual ~tShader();
+		
+		inline GLuint getID() const;
+		
 		inline void compile(const char * str);
-
+		
 		inline std::string getStatus();
-
+		
 	protected:
 		GLuint mData;
 	};
-
-	typedef Shader<GL_VERTEX_SHADER> VertexShader;
-
-	typedef Shader<GL_FRAGMENT_SHADER> FragmentShader;;
+	
+	typedef tShader<GL_VERTEX_SHADER> VertexShader;
+	
+	typedef tShader<GL_FRAGMENT_SHADER> FragmentShader;;
 } }
 
 
 namespace Zen { namespace GL { 
-	class Program
+	class ShaderProgram
 	{
 	private:
-		Program(Program const &);
+		ShaderProgram(ShaderProgram const &);
 		
-		void operator = (Program const &);
-		
-	public:
-		static void ActiveNone();
+		void operator = (ShaderProgram const &);
 		
 	public:
-		Program();
+		ShaderProgram();
 		
-		virtual ~Program();
-		
-		void createProgram();
-		
-		void releaseProgram();
+		virtual ~ShaderProgram();
 		
 		void makeAttachAndLink(char const * vertexSrc, char const * fragmentSrc);
 		
@@ -88,7 +77,7 @@ namespace Zen { namespace GL {
 		/* @ isValidate 
 		 This is just for debug, it's so slowly.
 		 */
-		int getValidateStatus() const;
+		int getDebugValidateStatus() const;
 		
 		int getUniformCount() const;
 		
@@ -97,13 +86,12 @@ namespace Zen { namespace GL {
 		int getAttributeCount() const;
 		
 		int getAttributeMaxLength() const;
-		
-		
+
 		GLint getUniformLocation(char const * name) const;
 		
 		GLint getAttributeLocation(char const * name) const;
 		
-		GLuint getObject() const;
+		GLuint getID() const;
 		
 		std::string getStateInfo();
 		
@@ -113,46 +101,30 @@ namespace Zen { namespace GL {
 } }
 
 
-/// class Shader
+	/// class tShader
 namespace Zen { namespace GL {
-
+	
 	template<GLenum tType>
-	inline Shader<tType>::Shader()
+	inline tShader<tType>::tShader()
 	{
-		mData = 0;
-	}
-	template<GLenum tType>
-	inline void Shader<tType>::release()
-	{
-		if(mData == 0) return;
-		glDeleteShader(mData);
-		mData = 0;
-	}
-	template<GLenum tType>
-	inline void Shader<tType>::create()
-	{
-		if(mData == 0)
-		{
-			mData = glCreateShader(Type);
-		}
+		mData = glCreateShader(Type);
 #if ZEN_DEBUG
 		mustsn(mData != 0, "Failed to create shader", (int)glGetError());
 #endif
 	}
 	template<GLenum tType>
-	inline GLuint Shader<tType>::getObject() const
+	inline GLuint tShader<tType>::getID() const
 	{
 		return mData;
 	}
 	template<GLenum tType>
-	inline Shader<tType>::~Shader()
+	inline tShader<tType>::~tShader()
 	{
 		if(mData != 0) glDeleteShader(mData);
 	}
 	template<GLenum tType>
-	inline void Shader<tType>::compile(const char * str)
+	inline void tShader<tType>::compile(const char * str)
 	{
-		create();
 		glShaderSource(mData, (GLsizei)1, &str, nullptr);
 		glCompileShader(mData);
 		GLint compiled;
@@ -166,7 +138,7 @@ namespace Zen { namespace GL {
 		musts(compiled, "failed to compile shader");
 	}
 	template<GLenum tType>
-	inline std::string Shader<tType>::getStatus()
+	inline std::string tShader<tType>::getStatus()
 	{
 		GLint infoLen = 0;
 		glGetShaderiv (mData, GL_INFO_LOG_LENGTH, &infoLen );
@@ -182,17 +154,17 @@ namespace Zen { namespace GL {
 			return "";
 		}
 	}
-
+	
 } }
 
-// class Program
+	// class ShaderProgram
 namespace Zen { namespace GL {
 	
 	inline static void ActiveNone()
 	{
 		glUseProgram(0);
 	}
-	inline void Program::makeAttachAndLink(char const * vertexSrc, char const * fragmentSrc)
+	inline void ShaderProgram::makeAttachAndLink(char const * vertexSrc, char const * fragmentSrc)
 	{
 		VertexShader vertex;
 		FragmentShader fragment;
@@ -200,11 +172,10 @@ namespace Zen { namespace GL {
 		fragment.compile(fragmentSrc);
 		makeAttachAndLink(vertex, fragment);
 	}
-	inline void Program::makeAttachAndLink(VertexShader const & vertex, FragmentShader const & fragment)
+	inline void ShaderProgram::makeAttachAndLink(VertexShader const & vertex, FragmentShader const & fragment)
 	{
-		createProgram();
-		glAttachShader(mData, vertex.getObject());
-		glAttachShader(mData, fragment.getObject());
+		glAttachShader(mData, vertex.getID());
+		glAttachShader(mData, fragment.getID());
 		glLinkProgram(mData);
 #if ZEN_DEBUG
 		GLint linked;
@@ -216,7 +187,7 @@ namespace Zen { namespace GL {
 		}
 #endif
 	}
-	inline std::string Program::getStateInfo()
+	inline std::string ShaderProgram::getStateInfo()
 	{
 		GLint infoLen = 0; 
 		glGetProgramiv(mData, GL_INFO_LOG_LENGTH, &infoLen); 
@@ -230,61 +201,49 @@ namespace Zen { namespace GL {
 		}
 		return "";
 	}
-	inline Program::Program()
+	inline ShaderProgram::ShaderProgram()
 	{
-		mData = 0;
-	}
-	inline Program::~Program()
-	{
-		if(mData != 0) glDeleteProgram(mData);
-	}
-	inline void Program::createProgram()
-	{
-		if(mData != 0) releaseProgram();
-
 		mData = glCreateProgram();
 #if ZEN_DEBUG
 		mustsn(mData != 0,  "failed to create program", (int)glGetError());
 #endif
 	}
-	inline void Program::releaseProgram()
+	inline ShaderProgram::~ShaderProgram()
 	{
-		if(mData == 0) return;
-		glDeleteProgram(mData);
-		mData = 0;
+		if(mData != 0) glDeleteProgram(mData);
 	}
-	inline int Program::getValidateStatus() const
+	inline int ShaderProgram::getDebugValidateStatus() const
 	{
 		GLint status;
 		glValidateProgram(mData);
 		glGetProgramiv(mData, GL_VALIDATE_STATUS, &status);
 		return status;
 	}
-	inline int Program::getUniformCount() const
+	inline int ShaderProgram::getUniformCount() const
 	{
 		GLint numUniforms;     
 		glGetProgramiv(mData, GL_ACTIVE_UNIFORMS, &numUniforms);
 		return numUniforms;
 	}
-	inline int Program::getUniformMaxLength() const
+	inline int ShaderProgram::getUniformMaxLength() const
 	{
 		GLint length;
 		glGetProgramiv(mData, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
 		return length;
 	}
-	inline int Program::getAttributeCount() const
+	inline int ShaderProgram::getAttributeCount() const
 	{
 		GLint value;     
 		glGetProgramiv(mData, GL_ACTIVE_ATTRIBUTES, &value);
 		return value;
 	}
-	inline int Program::getAttributeMaxLength() const
+	inline int ShaderProgram::getAttributeMaxLength() const
 	{
 		GLint value;     
 		glGetProgramiv(mData, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &value);
 		return value;
 	}
-	inline GLint Program::getUniformLocation(char const * name) const
+	inline GLint ShaderProgram::getUniformLocation(char const * name) const
 	{
 #if ZEN_DEBUG
 		auto ret = glGetUniformLocation(mData, name);
@@ -294,7 +253,7 @@ namespace Zen { namespace GL {
 		return glGetUniformLocation(mData, name);
 #endif
 	}
-	inline GLint Program::getAttributeLocation(char const * name) const
+	inline GLint ShaderProgram::getAttributeLocation(char const * name) const
 	{
 #if ZEN_DEBUG
 		auto ret = glGetAttribLocation(mData, name);
@@ -304,7 +263,7 @@ namespace Zen { namespace GL {
 		return glGetAttribLocation(mData, name);
 #endif
 	}
-	inline GLuint Program::getObject() const
+	inline GLuint ShaderProgram::getID() const
 	{
 		return mData;
 	}

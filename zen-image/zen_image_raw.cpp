@@ -52,24 +52,8 @@ namespace Zen
 		}
 	};
 	
-	void ImageEncoderRaw::save(ImageData const & img, std::fstream & outs)
+	std::shared_ptr<Image> ImageDecoderRaw::decode(std::vector<uint8_t> const & data)
 	{
-		musts(outs.good(), "file error");
-		
-		ImageCoderRawHead head;
-		head.set(img.width, img.height, (uint32_t)img.format);
-		auto head_buf = reinterpret_cast<char const *>(&head);
-
-		outs.write((const char*)head_buf, sizeof(head));
-		outs.write((const char*)img.buffer.data(), img.buffer.size());
-		
-		musts(outs.good(), "write file error");
-	}
-	
-	void ImageDecoderRaw::decode(ImageData & img, std::vector<uint8_t> const & data)
-	{
-		img.format = Zen::EBPP::None;
-		
 		Zen::BufferReader reader(&data);
 		
 		ImageCoderRawHead head;
@@ -81,7 +65,7 @@ namespace Zen
 		uint32_t width = HostNet32(head.width);
 		uint32_t height = HostNet32(head.height);
 		
-		auto format = (Zen::EBPP)HostNet16(head.format);
+		auto format = (Zen::ePixel)HostNet16(head.format);
 		
 		uint32_t bpp = (int)format;
 		musts(bpp > 0, "invalid format");
@@ -89,26 +73,23 @@ namespace Zen
 		uint32_t sz = width * height * bpp;
 		
 		musts(reader.getReadPointer() + sz <= data.size(), "too few data length");
-		
-		img.buffer.resize(sz);
-		
-		reader.read(img.buffer.data(), img.buffer.size());
 
-		img.width = width;
-		img.height = height;
-		img.format = format;
+		auto image = Image::Create(format, width, height);
+		reader.read(image->bytes(), image->size());
+		return image;
 	}
-	std::vector<uint8_t> ImageEncoderRaw::encode(ImageData const & img)
+	std::vector<uint8_t> ImageEncoderRaw::encode(Image const * image)
 	{
 		ImageCoderRawHead head;
-		head.set(img.width, img.height, (uint32_t)img.format);
+
+		head.set((uint32_t)image->width(), (uint32_t)image->height(), (uint32_t)image->format());
 		
 		auto head_buf = reinterpret_cast<char const *>(&head);
 		
 		std::vector<uint8_t> data;
-		data.reserve(sizeof(head) + img.buffer.size());
+		data.reserve(sizeof(head) + image->size());
 		data.assign(head_buf, head_buf + sizeof(head));
-		data.insert(data.end(), img.buffer.begin(), img.buffer.end());
+		data.insert(data.end(), image->bytes(), image->bytes() + image->size());
 		
 		return data;
 	}

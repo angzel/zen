@@ -1,6 +1,6 @@
 #pragma once
 
-#include "zen_app_runtime.h"
+#include "zen_vap2d_config.h"
 #include "zen_vap2d_node.h"
 #include <vector>
 #include <mutex>

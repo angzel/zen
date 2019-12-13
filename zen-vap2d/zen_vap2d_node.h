@@ -1,12 +1,13 @@
 #pragma once
 
-#include "zen_gles2.h"
+#include "zen_vap2d_config.h"
 #include "zen_matrix.h"
 #include "zen_app_runtime.h"
 #include <vector>
 #include <mutex>
 
 namespace Zen { namespace Vap2d {
+	
 	class VapObject
 	{
 	public:
@@ -21,62 +22,35 @@ namespace Zen { namespace Vap2d {
 	};
 
 	/**
-	 @class BNode
+	 @class BranchNode
 	 a Branch node.
 	 can add sub nodes.
 	 */
-	class BNode;
+	class BranchNode;
 
 	/**
-	 @class LNode
+	 @class FinalNode
 	 a Leaf Node.
 	 this is an end node without sub nodes.
 	 */
-	class LNode;
-
+	class FinalNode;
+	
 	/**
 	 @ref zen_vap2d_event.h
 	 */
 	class Action;
 
-	class Node : public VapObject
+	class Node : virtual public VapObject
 	{
-		friend class LNode;
-		friend class BNode;
+		friend class FinalNode;
+		friend class BranchNode;
 	public:
-
-		/**
-		 @function setOrder
-		 - drawing order, just compare with brother-nodes.
-		 - less first draw. so larger is in front.
-		 */
-		virtual void setOrder(int index);
-
-		/**
-		 if not visible, the draw will not be called.
-		 */
-		virtual void setVisible(bool);
-
-		virtual int getOrder() const;
-
-		virtual bool isVisible() const;
-
 		/**
 		 @function draw
 		 - render the node. generally this function will be called from Root automatically.
 		 */
 		virtual void draw() {}
-		/**
-		 @function remove
-		 remove this node from tree.
-		 - if the node has already add to other upper <BNode>,  dont <delete> it anymore,
-		 you can remove() this node, or remove the upper node, it will be deleted automatically after current Update frame.
-		 - or please <delete> if <new>ed.
-		 */
-		virtual void remove();
 
-		BNode * getUpperNode();
-	public:
 		virtual Node * onTouchDown(AppTouch const & touch) { return nullptr; }
 
 		virtual Node * onTouchMove(AppTouch const & touch) { return this; }
@@ -84,6 +58,33 @@ namespace Zen { namespace Vap2d {
 		virtual Node * onTouchUp(AppTouch const & touch) { return this; }
 
 		virtual Node * onTouchCancel(AppTouch const & touch) { return this; }
+	public:
+		/**
+		 @function setOrder
+		 - drawing order, just compare with brother-nodes.
+		 - less first draw. so larger is in front.
+		 */
+		void setOrder(int index);
+
+		/**
+		 if not visible, the draw will not be called.
+		 */
+		void setVisible(bool);
+
+		int getOrder() const;
+
+		bool isVisible() const;
+
+		/**
+		 @function remove
+		 remove this node from tree.
+		 - if the node has already add to other upper <BranchNode>,  dont <delete> it anymore,
+		 you can remove() this node, or remove the upper node, it will be deleted automatically after current Update frame.
+		 - or please <delete> if <new>ed.
+		 */
+		void remove();
+
+		BranchNode * getUpperNode();
 
 	public:
 		void runAction(std::shared_ptr<Action> action);
@@ -94,41 +95,54 @@ namespace Zen { namespace Vap2d {
 		void stopAction(std::shared_ptr<Action> action);
 
 		void stopAllActions();
+
+	public:
+		void setBlend(eBlend blend);
+
+		eBlend getBlend();
+
+		void setAlpha(float alpha);
+		
+		float getAlpha();
 	public:
 		Node(std::string const & name = "node");
 
 		virtual ~Node();
 	protected:
 
-		BNode * m_upper = nullptr;
+		BranchNode * m_upper = nullptr;
 		int m_order = 0;
 		bool m_is_visible = true;
+
+		eBlend m_blend = eBlend::Inherit;
+		float m_alpha = 1.0f;
+
 	};
 
-	class BNode : public Node
+	class BranchNode : public Node
 	{
-		friend class LNode;
+		friend class FinalNode;
 		friend class Node;
 	protected:
 		std::vector<Node*> m_nodes;
 		bool m_nodes_dirty = false;
 
 	public:
-		BNode(std::string const & name = "branch node");
+		BranchNode(std::string const & name = "branch node");
 
-		virtual ~BNode();
+		virtual ~BranchNode();
 
-		virtual void draw() override;
+		void addNode(Node * node);
 
-		virtual void addNode(Node * node);
+		void removeAllNodes();
 
-		virtual void removeAllNodes();
+		void setNodesDirty();
 
-		virtual void setNodesDirty();
-
-		virtual void clearNodesDirty();
+		void clearNodesDirty();
 
 	public:
+
+		virtual void draw() override;
 		virtual Node * onTouchDown(AppTouch const & touch) override;
 
 		virtual Node * onTouchMove(AppTouch const & touch) override;
@@ -138,52 +152,126 @@ namespace Zen { namespace Vap2d {
 		virtual Node * onTouchCancel(AppTouch const & touch) override;
 	};
 
-	class LNode : public Node
+	class FinalNode : public Node
 	{
-		friend class BNode;
+		friend class BranchNode;
 		friend class Node;
 	public:
-		LNode(std::string const & name = "leaf node");
-		~LNode();
+		FinalNode(std::string const & name = "leaf node");
+		virtual ~FinalNode();
 	};
 
-	enum class EBlend {
-		Inherit,
-		Normal,
-		Add,
-		Reverse,
-	};
-
-	class RenderStack
-	{
-	protected:
-		struct MatrixInfo {
-			Matrix4 const * mat;
-			bool dirty;
-		};
-		EBlend m_performed_blend;
-		
-		std::vector<MatrixInfo> m_mats;
-		std::vector<float> m_alphas;
-		std::vector<EBlend> m_blends;
-
-		RenderStack();
+	class Matrixing : public virtual VapObject {
 	public:
-		static RenderStack * GetDefault();
+		Matrixing() = default;
+		virtual ~Matrixing() = default;
+
+		bool updateMatrix();
+	protected:
+		virtual void _clearInnerMatrixDirty() = 0;
+
+		Matrix4 m_world_matrix;
+		Matrix4 m_matrix = Matrix4MakeIdentity();
+		bool m_is_matrix_dirty = true;
+	};
+
+	class View : public Matrixing {
+
+	public:
+		virtual void _clearInnerMatrixDirty() override;
+	public:
+		void setPosition(float x, float y);
+		void setX(float x);
+		void setY(float y);
+		void setScale(float sx, float sy);
+		void setScaleX(float sx);
+		void setScaleY(float sy);
+		void setSkew(float kx, float ky);
+		void setSkewX(float kx);
+		void setSkewY(float ky);
+		void setRotation(float radians);
+		Point2 getPosition();
+		void setPosition(Point2 pos);
+		float getX();
+		float getY();
+		Point2 getScale();
+		void setScale(Point2 scale);
+		float getScaleX();
+		float getScaleY();
+		Point2 getSkew();
+		void setSkew(Point2 skew);
+		float getSkewX();
+		float getSkewY();
+		float getRotation();
+
+	protected:
+		Point2 m_pos = {0, 0};
+		Point2 m_scale = {1, 1};
+		Point2 m_skew = {1, 1};
+		float m_rotation = 0;	};
+	
+	class SizeView : public View {
+	public:
+		virtual void _clearInnerMatrixDirty() override;
+
+	public:
+		void setAnchor(float ax, float ay);
+		void setAnchorX(float ax);
+		void setAnchorY(float ay);
+		Point2 getAnchor();
+		float getAnchorX();
+		float getAnchorY();
+		void setAnchor(Point2 anchor);
+
+
+	protected:
+		void _setScale2(float x, float y);
+
+		Size2 m_scale2 = { 1, 1 };
+		Point2 m_anchor = { 0, 0 };
+	};
+
+	class Colorful : public virtual VapObject
+	{
+	public:
+		Colorful() = default;
+		virtual ~Colorful() = default;
+
+		void setColor(Zen::Color4f color);
+		Zen::Color4f getColor();
+
+		void setGreyMode(bool);
+		bool isGreyMode();
+	protected:
+		Zen::Color4f m_color = Zen::eColor::White;
+		bool m_is_grey_mode = false;
+		bool m_is_color_dirty = true;
+	};
+	class Flipable : public virtual VapObject
+	{
+	public:
+		Flipable() = default;
+		virtual ~Flipable() = default;
+
+		void setFlipX(bool x);
+
+		void setFlipY(bool y);
+
+		bool isFlipX();
+
+		bool isFlipY();
+	protected:
+		bool m_is_flip_x = false;
+		bool m_is_flip_y = false;
+		bool m_is_flip_dirty = true;
+	};
+
+	class DrawStack
+	{
+	public:
+		static DrawStack * S();
 
 		void reset();
-
-		void pushMatrix(Matrix4 const * mat, bool dirty);
-
-		void popMatrix();
-
-		void pushAlpha(float a);
-
-		void popAlpha();
-
-		void pushBlend(EBlend blend);
-
-		void popBlend();
 
 		Matrix4 const * getTopMatrix4();
 
@@ -191,89 +279,88 @@ namespace Zen { namespace Vap2d {
 
 		float getTopAlpha();
 
-		EBlend getTopBlend();
-
-		void performBlend(EBlend blend);
-	};
-
-	class RenderStackGuard
-	{
-	public:
-		RenderStackGuard(Matrix4 const * mat, bool mat_dirty, float alpha, EBlend blend);
-		~RenderStackGuard();
-	};
-
-	class View {
-	public:
-		View();
-		virtual ~View();
-		virtual void setPosition(float x, float y);
-		virtual void setX(float x);
-		virtual void setY(float y);
-		virtual void setScale(float sx, float sy);
-		virtual void setScaleX(float sx);
-		virtual void setScaleY(float sy);
-		virtual void setSkew(float kx, float ky);
-		virtual void setSkewX(float kx);
-		virtual void setSkewY(float ky);
-		virtual void setRotation(float radians);
-		virtual Point2 getPosition();
-		virtual void setPosition(Point2 pos);
-		virtual float getX();
-		virtual float getY();
-		virtual Point2 getScale();
-		virtual void setScale(Point2 scale);
-		virtual float getScaleX();
-		virtual float getScaleY();
-		virtual Point2 getSkew();
-		virtual void setSkew(Point2 skew);
-		virtual float getSkewX();
-		virtual float getSkewY();
-		virtual float getRotation();
-		virtual void setBlend(EBlend blend);
-		virtual EBlend getBlend();
-		virtual void setAlpha(float alpha);
-		virtual float getAlpha();
-	public:
-		virtual bool isViewDirty();
-		virtual void setViewDirty();
-		virtual void clearViewDirty();
-		virtual bool updateWorldMatrix();
-		
-	protected:
-		Matrix4 m_world_matrix;
-		Matrix4 m_matrix;
-		bool m_is_view_dirty = true;
-		Point2 m_pos = {0, 0};
-		Point2 m_scale = {1, 1};
-		Point2 m_skew = {1, 1};
-		float m_rotation = 0;
-		EBlend m_blend = EBlend::Inherit;
-		float m_alpha = 1.0f;
-	};
-	
-	class SizeView : public View {
-	public:
-		virtual void setAnchor(float ax, float ay);
-		virtual void setAnchorX(float ax);
-		virtual void setAnchorY(float ay);
-		virtual void setSize(float width, float height);
-		virtual void setWidth(float w);
-		virtual void setHeight(float h);
-		virtual Size2 getSize();
-		virtual float getWidth();
-		virtual float getHeight();
-		virtual Point2 getAnchor();
-		virtual float getAnchorX();
-		virtual float getAnchorY();
-		virtual void setSize(Size2 size);
-		virtual void setAnchor(Point2 anchor);
+		eBlend getTopBlend();
 
 	public:
-		virtual void clearViewDirty() override;
+
+		struct GuardAll
+		{
+			GuardAll(Matrix4 const * mat, bool mat_dirty, float alpha, eBlend blend)
+			{
+				S()->pushMatrix(mat, mat_dirty);
+				S()->pushAlpha(alpha);
+				S()->pushBlend(blend);
+			}
+			~GuardAll()
+			{
+				S()->popMatrix();
+				S()->popAlpha();
+				S()->popBlend();
+			}
+
+		};
+
+		struct GuardMatrix
+		{
+			GuardMatrix(Matrix4 const * mat, bool mat_dirty)
+			{
+				S()->pushMatrix(mat, mat_dirty);
+			}
+			~GuardMatrix()
+			{
+				S()->popMatrix();
+			}
+		};
+
+		struct GuardAlpha
+		{
+			GuardAlpha(float alpha)
+			{
+				S()->pushAlpha(alpha);
+			}
+			~GuardAlpha()
+			{
+				S()->popAlpha();
+			}
+		};
+
+		struct GuardBlend
+		{
+			GuardBlend(eBlend blend)
+			{
+				S()->pushBlend(blend);
+			}
+			~GuardBlend()
+			{
+				S()->popBlend();
+			}
+		};
 
 	protected:
-		Size2 m_size = { 0, 0 };
-		Point2 m_anchor = { 0, 0 };
+		struct MatrixInfo {
+			Matrix4 const * mat;
+			bool dirty;
+		};
+		eBlend m_performed_blend;
+
+		std::vector<MatrixInfo> m_mats;
+		std::vector<float> m_alphas;
+		std::vector<eBlend> m_blends;
+
+	protected:
+		DrawStack();
+		virtual ~DrawStack();
+
+		void pushMatrix(Matrix4 const * mat, bool dirty);
+
+		void popMatrix();
+
+		void pushAlpha(float alpha);
+
+		void popAlpha();
+
+		void pushBlend(eBlend);
+
+		void popBlend();
 	};
 }}

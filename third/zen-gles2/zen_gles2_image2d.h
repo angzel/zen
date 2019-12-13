@@ -33,73 +33,93 @@ namespace Zen { namespace GL {
 		RGBA   = GL_RGBA,
 	};
 
-	class TexImage2D
+	class Texture2DBuffer
 	{
 	private:
-		TexImage2D(TexImage2D const &);
+		Texture2DBuffer(Texture2DBuffer const &);
 		
-		void operator=(TexImage2D const &);
+		void operator=(Texture2DBuffer const &);
 		
 	public:
-		inline TexImage2D();
+		inline Texture2DBuffer();
 		
-		inline ~TexImage2D();
-		
-		inline void create();
-		
-		inline void release();
-		
-		inline void bindData(uint32_t width, uint32_t height, EBPP bytes, void const * data, int level);
+		inline ~Texture2DBuffer();
 
-		inline GLuint getObject() const;
+		inline void create(size_t width, size_t height, eFilter filter, ePixel bytes);
+
+		inline void createWithData(size_t width, size_t height, eFilter filter, ePixel bytes, void const * data);
+
+		inline void fill(int xoff, int yoff, size_t width, size_t height, const void *data);
+
+		inline GLuint getID() const;
 		
 	protected:
 		GLuint mID;
+		GLint m_format = 0;
 	};
 }}
 
-	/// class TexImage2D
+	/// class Texture2DBuffer
 namespace Zen { namespace GL {
-	inline TexImage2D::TexImage2D()
+	inline Texture2DBuffer::Texture2DBuffer()
 	{
-		mID = 0;
+		glGenTextures (1, &mID);
 	}
-	inline TexImage2D::~TexImage2D()
+	inline Texture2DBuffer::~Texture2DBuffer()
 	{
-		this->release();
+		glDeleteTextures(1, &mID);
 	}
-	inline GLuint TexImage2D::getObject() const
+	inline GLuint Texture2DBuffer::getID() const
 	{
 		return mID;
 	}
-	inline void TexImage2D::release()
+	inline void Texture2DBuffer::create(size_t width, size_t height, eFilter filter, ePixel bpp)
 	{
-		if(mID == 0) return;
-		glDeleteTextures(1, &mID);
-		mID = 0;
-	}
-	inline void TexImage2D::create()
-	{
-		if(mID != 0) return;
-		glGenTextures (1, &mID);
-#if ZEN_DEBUG
-		mustsn(mID != 0, "failed to generate gl texture", (int)glGetError());
-#endif
-	}
-	inline void TexImage2D::bindData(uint32_t width, uint32_t height, EBPP bpp, void const * data, int level)
-	{
-		int i = (int)bpp;
-		GLint format = (i==1?GL_ALPHA:(i==3?GL_RGB:(i==4?GL_RGBA:0)));
-		musts(format, "invalid format");
+		GLint format = ((int)bpp==1?GL_ALPHA:((int)bpp==3?GL_RGB:((int)bpp==4?GL_RGBA:0)));
 
-		glPixelStorei(GL_UNPACK_ALIGNMENT, (int)bpp==4?4:1);
+		musts(format, "invalid format");
+		m_format = format;
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, m_format == GL_RGBA?4:1);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)filter);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, level, (GLint)format, (int)width, (int)height, 0, (GLenum)format, GL_UNSIGNED_BYTE, data);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, (GLsizei)width, (GLsizei)height,
+					 0, (GLenum)format, GL_UNSIGNED_BYTE, nullptr);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to bind data to gl texture", eno);
+#endif
+	}
+	inline void Texture2DBuffer::createWithData(size_t width, size_t height, eFilter filter,  ePixel bpp, void const * data)
+	{
+		GLint format = ((int)bpp==1?GL_ALPHA:((int)bpp==3?GL_RGB:((int)bpp==4?GL_RGBA:0)));
+
+		musts(format, "invalid format");
+		m_format = format;
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, m_format == GL_RGBA?4:1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLint)filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLint)filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, (GLsizei)width, (GLsizei)height,
+					 0, (GLenum)format, GL_UNSIGNED_BYTE, data);
+	}
+	inline void Texture2DBuffer::fill(int xoff, int yoff, size_t width, size_t height, const void *data)
+	{
+		glPixelStorei(GL_UNPACK_ALIGNMENT, m_format == GL_RGBA?4:1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mID);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, (GLint)xoff, (GLint)yoff,
+						(GLsizei)width, (GLsizei)height, (GLenum)m_format, GL_UNSIGNED_BYTE,  data);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to bind data to gl texture", eno);

@@ -31,7 +31,6 @@
 #include <map>
 #include <memory>
 
-#include "zen_object.h"
 #include "zen_exception.h"
 
 namespace Zen {
@@ -60,11 +59,11 @@ namespace Zen {
 		float bold_y = 0;
 	};
 	
-	class Font : public Zen::Object
+	class Font
 	{
 	protected:
 		Font() = default;
-		
+		virtual ~Font() = default;
 	public:
 		struct Info {
 			int width = 0;
@@ -80,10 +79,10 @@ namespace Zen {
 		virtual Info getInfo(FontConfig const & config) = 0;
 	};
 	
-	class FontLibrary : public Zen::Object
+	class FontLibrary
 	{
 	public:
-		static FontLibrary * GetDefault();
+		static FontLibrary * S();
 		
 		virtual std::shared_ptr<Font> createFont(std::vector<uint8_t> const & data) = 0;
 		
@@ -92,15 +91,8 @@ namespace Zen {
 		virtual ~FontLibrary() = default;
 	};
 
-	class FontBrush : public Zen::Object
+	class FontBrush
 	{
-	protected:
-		FontConfig m_config;
-		std::shared_ptr<Font> m_font;
-		std::map<uint32_t, std::shared_ptr<FontChar> > m_chars;
-		Font::Info m_font_info;
-		int m_line_base = 0;
-		int m_line_height = 0;
 	public:
 		static std::shared_ptr<FontBrush> Create(std::shared_ptr<Font> font, FontConfig const & config);
 
@@ -111,20 +103,34 @@ namespace Zen {
 		FontConfig const & getConfig() const;
 
 		Font::Info const & getInfo() const;
+
+	public:
+		virtual ~FontBrush() = default;
+
 	protected:
 		FontBrush() = default;
+	protected:
+		FontConfig m_config;
+		std::shared_ptr<Font> m_font;
+		std::map<uint32_t, std::shared_ptr<FontChar> > m_chars;
+		Font::Info m_font_info;
+		int m_line_base = 0;
+		int m_line_height = 0;
 	};
 
-	class Fonts : public Zen::Object
+	class Fonts
 	{
 	public:
-		static Fonts * GetDefault();
+		static Fonts * S();
 
 		std::shared_ptr<Font> setFont(std::string const & name, std::vector<uint8_t> const & data);
 
 		std::shared_ptr<Font> getFont(std::string const & name);
 	protected:
-
+		Fonts() = default;
+		virtual ~Fonts() = default;
+		
+	protected:
 		std::map<std::string, std::shared_ptr<Font> > m_fonts;
 	};
 }

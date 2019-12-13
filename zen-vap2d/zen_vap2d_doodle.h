@@ -1,20 +1,18 @@
 #pragma once
 
+#include "zen_vap2d_config.h"
 #include "zen_vap2d_node.h"
 #include "zen_vap2d_texture.h"
 #include "zen_rect.h"
-#include "zen_gles2_shader_color.h"
 #include <vector>
 #include <mutex>
 
 namespace Zen { namespace Vap2d {
 
-	using Zen::GL::EDrawMode;
-
-	class Doodle : public LNode, public SizeView {
+	class Doodle : public FinalNode, public SizeView, public Colorful {
 
 	public:
-		Doodle(std::string const & name = "sprite");
+		Doodle(std::string const & name = "doodle");
 
 		void addCoord(Zen::Point2, Zen::Color4f);
 
@@ -22,26 +20,27 @@ namespace Zen { namespace Vap2d {
 
 		void clearCoords();
 
-		void setDrawMode(Zen::GL::EDrawMode mode, float point_size);
+		void setLineMode(bool strip);
 
-		void setColor(Zen::Color4f color);
-		Zen::Color4f getColor();
+		void setTriangleMode(bool strip);
 
 		virtual void draw() override;
 
+		void setAreaSize(Size2 size);
+
+		Size2 getAreaSize();
 	protected:
 		struct Dot {
 			Zen::Color4f color;
 			Zen::Point2 coord;
 		};
-		Zen::GL::ArrayBuffer m_array_buffer;
-		std::shared_ptr<Zen::GL::ShaderColor const> m_shader = nullptr;
-		std::vector<Dot> m_buffer;
-		Zen::Color4f m_color = Zen::EColor::White;
-		Zen::GL::EDrawMode m_mode = Zen::GL::EDrawMode::Triangles;
-		int m_mode_i = 2; // 0 points, 1 line, 2 triangle
-		float m_point_size = 1;
+		DoodleBuffer m_gpus;
+		std::vector<Dot> m_dots;
+		eMode m_mode = eMode::Point;
 		bool m_is_buffer_dirty = false;
+
+		void _initDoodle();
+		void _drawDoodle();
 	};
 
 	class DoodleColors : public Doodle
@@ -54,12 +53,11 @@ namespace Zen { namespace Vap2d {
 		void setCoordColor(int index, Zen::Color4f color);
 		Zen::Color4f getCoordColor(int index);
 
-		using Doodle::setColor;
-		using Doodle::getColor;
 	protected:
 		using Doodle::addCoord;
 		using Doodle::clearCoords;
-		using Doodle::setDrawMode;
+		using Doodle::setLineMode;
+		using Doodle::setTriangleMode;
 	};
 
 	/**
@@ -79,13 +77,10 @@ namespace Zen { namespace Vap2d {
 		Zen::Point2 getBeginCoord();
 		Zen::Point2 getEndCoord();
 
-		void setLineWidth(float width);
-
-		using Doodle::setColor;
-		using Doodle::getColor;
 	protected:
 		using Doodle::addCoord;
 		using Doodle::clearCoords;
-		using Doodle::setDrawMode;
+		using Doodle::setLineMode;
+		using Doodle::setTriangleMode;
 	};
 }}

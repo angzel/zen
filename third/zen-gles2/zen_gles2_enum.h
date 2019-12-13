@@ -26,14 +26,14 @@
 #include "zen_log.h"
 
 #if defined(ZEN_OS_MAC)
-// glTexImage2D alow size not 2^N?
+// glTexImage2D alow size with 2^N value?
 #   define ZEN_GL_2D_ANY_SZ 1
 #   include <OpenGL/OpenGL.h>
 #   include <OpenGL/gl3.h>
 #   include <OpenGL/glext.h>
 
 #elif defined(ZEN_OS_IOS)
-#   define ZEN_GL_2D_ANY_SZ 0
+#   define ZEN_GL_2D_ANY_SZ 1
 #   include <OpenGLES/ES2/gl.h>
 #   include <OpenGLES/ES2/glext.h>
 
@@ -52,72 +52,74 @@
 #endif
 
 namespace Zen { namespace GL {
-	enum class EType
+	enum class eType
 	{
-		Byte                = GL_BYTE,
-		UByte               = GL_UNSIGNED_BYTE,
-		Short               = GL_SHORT,
-		UShort              = GL_UNSIGNED_SHORT,
-		Int                 = GL_INT,
-		UInt                = GL_UNSIGNED_INT,
-		Float               = GL_FLOAT,
-		Fixed               = GL_FIXED,
+		Byte   = GL_BYTE,
+		UByte  = GL_UNSIGNED_BYTE,
+		Short  = GL_SHORT,
+		UShort = GL_UNSIGNED_SHORT,
+		Int    = GL_INT,
+		UInt   = GL_UNSIGNED_INT,
+		Float  = GL_FLOAT,
+		Fixed  = GL_FIXED,
 	};
-	enum class EDrawMode
+//	enum class ePixel
+//	{
+//		Alpha     = GL_ALPHA,
+//		RGB       = GL_RGB,
+//		RGBA      = GL_RGBA,
+//		Depth     = GL_DEPTH_COMPONENT,
+//		Lumi      = GL_LUMINANCE,
+//		LumiAlpha = GL_LUMINANCE_ALPHA,
+//	};
+	enum class eMode
 	{
-		Points              = GL_POINTS,
-		Lines               = GL_LINES,
-		LineLoop            = GL_LINE_LOOP,
-		LineStrip           = GL_LINE_STRIP,
-		Triangles           = GL_TRIANGLES,
-		TriangleStrip       = GL_TRIANGLE_STRIP,
-		TriangleFan         = GL_TRIANGLE_FAN,
+		Point         = GL_POINTS,
+		Line          = GL_LINES,
+		LineLoop      = GL_LINE_LOOP,
+		LineStrip     = GL_LINE_STRIP,
+		Triangle      = GL_TRIANGLES,
+		TriangleStrip = GL_TRIANGLE_STRIP,
+		TriangleFan   = GL_TRIANGLE_FAN,
 	};
 	
 	// SrcBlend * srcColor + DstBlend * destColor
-	enum class EBlendSrc
+	enum class eSrcBlend
 	{
-		Zero                = GL_ZERO,//0.f
-		One                 = GL_ONE,//1.f
-		DstColor            = GL_DST_COLOR,//bg.color
-		OneMinusDstColor    = GL_ONE_MINUS_DST_COLOR,//1-bg.color
-		SrcAlphaSaturate    = GL_SRC_ALPHA_SATURATE,//
-		SrcAlpha            = GL_SRC_ALPHA,//1-fg.alpha
-		OneMinusSrcAlpha    = GL_ONE_MINUS_SRC_ALPHA,//1-fg.alpha
-		DstAlpha            = GL_DST_ALPHA,//bg.alpha
-		OneMinusDstAlpha    = GL_ONE_MINUS_DST_ALPHA,//1-bg.alpha
+		Zero             = GL_ZERO,//0.f
+		One              = GL_ONE,//1.f
+		DstColor         = GL_DST_COLOR,//bg.color
+		OneMinusDstColor = GL_ONE_MINUS_DST_COLOR,//1-bg.color
+		SrcAlphaSaturate = GL_SRC_ALPHA_SATURATE,//
+		SrcAlpha         = GL_SRC_ALPHA,//1-fg.alpha
+		OneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA,//1-fg.alpha
+		DstAlpha         = GL_DST_ALPHA,//bg.alpha
+		OneMinusDstAlpha = GL_ONE_MINUS_DST_ALPHA,//1-bg.alpha
 	};
-	enum class EBlendDst
+	enum class eDstBlend
 	{
-		Zero                = GL_ZERO,
-		One                 = GL_ONE,
-		SrcColor            = GL_SRC_COLOR  ,
-		OneMinusSrcColor    = GL_ONE_MINUS_SRC_COLOR,
-		SrcAlpha            = GL_SRC_ALPHA  ,
-		OneMinusSrcAlpha    = GL_ONE_MINUS_SRC_ALPHA,
-		DstAlpha            = GL_DST_ALPHA  ,
-		OneMinusDstAlpha    = GL_ONE_MINUS_DST_ALPHA,
+		Zero             = GL_ZERO,
+		One              = GL_ONE,
+		SrcColor         = GL_SRC_COLOR  ,
+		OneMinusSrcColor = GL_ONE_MINUS_SRC_COLOR,
+		SrcAlpha         = GL_SRC_ALPHA  ,
+		OneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA,
+		DstAlpha         = GL_DST_ALPHA  ,
+		OneMinusDstAlpha = GL_ONE_MINUS_DST_ALPHA,
 	};
-	enum class EDepthFunc
+	enum class eDepthFunc
 	{
-		Never               = GL_NEVER,
-		Less                = GL_LESS,
-		Equal               = GL_EQUAL,
-		Lequal              = GL_LEQUAL,
-		Greater             = GL_GREATER,
-		Notequal            = GL_NOTEQUAL,
-		Gequal              = GL_GEQUAL,
-		Always              = GL_ALWAYS,
-	};
-	enum class EFace
-	{
-		None = 0,
-		ClockWise,
-		CounterClockWise,
-		Both,
+		Never    = GL_NEVER,
+		Less     = GL_LESS,
+		Equal    = GL_EQUAL,
+		Lequal   = GL_LEQUAL,
+		Greater  = GL_GREATER,
+		Notequal = GL_NOTEQUAL,
+		Gequal   = GL_GEQUAL,
+		Always   = GL_ALWAYS,
 	};
 	
-	enum class EFilter
+	enum class eFilter
 	{
 		Nearest             = GL_NEAREST,
 		Linear              = GL_LINEAR,
@@ -129,10 +131,10 @@ namespace Zen { namespace GL {
 		LinearMipmapLinear  = GL_LINEAR_MIPMAP_LINEAR,
 #endif
 	};
-	enum class EWarp
+	enum class eWarp
 	{
-		Repeat              = GL_REPEAT,
-		MirrorRepeat        = GL_MIRRORED_REPEAT,
-		ClampToEdge         = GL_CLAMP_TO_EDGE,
+		Repeat       = GL_REPEAT,
+		MirrorRepeat = GL_MIRRORED_REPEAT,
+		ClampToEdge  = GL_CLAMP_TO_EDGE,
 	};
 }}

@@ -44,8 +44,9 @@ namespace Zen {
 		 image_height: final image height, 0 for auto set
 		 underline: line width in base line
 		 */
-		virtual void renderToImage
-		(ImageData & image, int width, int height, int x_off, int y_off, int underline) = 0;
+		virtual std::shared_ptr<Image> render
+		(size_t width, size_t height,
+		 int x_off, int y_off, int underline) = 0;
 
 		virtual int getOutputWidth() = 0;
 

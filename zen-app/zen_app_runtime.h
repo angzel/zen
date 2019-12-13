@@ -21,19 +21,19 @@
 
 #pragma once
 
-#include "zen_object.h"
 #include "zen_app_delegate.h"
 
 extern int ZenAppMain(int argc, char const ** argv);
 
 namespace Zen {
 
-	class AppRuntime : public virtual Zen::Object
+	class AppRuntime 
 	{
 	protected:
 		AppRuntime() = default;
+		virtual ~AppRuntime() = default;
 	public:
-		static AppRuntime * GetDefault();
+		static AppRuntime * S();
 
 		/**
 		 @function setRuntimeDelegate

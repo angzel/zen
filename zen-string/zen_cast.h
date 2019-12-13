@@ -33,10 +33,10 @@ namespace Zen {
 	template<typename _ValueType>
 	inline _ValueType ToNumber(std::string const & value)
 	{
-		std::stringstream ss;
-		ss << value;
+		std::stringstream sha;
+		sha << value;
 		_ValueType num = 0;
-		ss >> num;
+		sha >> num;
 		return num;
 	}
 	
@@ -45,10 +45,10 @@ namespace Zen {
 	inline std::string ToString(_ValueType value)
 	{
 #if defined(__ANDROID__)
-		std::stringstream ss;
-		ss << value;
+		std::stringstream sha;
+		sha << value;
 		std::string str;
-		ss >> str;
+		sha >> str;
 		return str;
 #else
 		return std::move(std::to_string(value));

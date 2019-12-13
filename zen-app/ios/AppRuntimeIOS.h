@@ -21,8 +21,18 @@
 
 #pragma once
 
-#import "AppDelegate.h"
-#import "ViewController.h"
+#include "zen_app_config.h"
+
+#if ZEN_APP_DRAW_API_METAL
+#import "MetalAppDelegate.h"
+#import "MetalViewController.h"
+#elif ZEN_APP_DRAW_API_OPENGLES
+#import "GLESAppDelegate.h"
+#import "GLESViewController.h"
+#else
+#error "no valid DRAW API select"
+#endif
+
 #include "zen_app_delegate.h"
 #include "zen_app_runtime.h"
 
@@ -33,10 +43,16 @@ protected:
 
 	Zen::Size2 mViewSize;
 
+	bool m_rotatable = false;
+
+	bool m_status_visible = false;
+
+	bool m_is_paused = false;
+	
 	static AppRuntimeIOS * _me;
 
 public:
-	static AppRuntimeIOS * GetDefault()
+	static AppRuntimeIOS * S()
 	{
 		return _me;
 	}
@@ -63,11 +79,11 @@ public:
 
 	virtual float getFramesPerSecond()
 	{
-		return G_view_controller.preferredFramesPerSecond;
+		return [G_view_controller getFPS];
 	}
-	virtual void  setFramesPerSecond(float frames)
+	virtual void setFramesPerSecond(float frames)
 	{
-		G_view_controller.preferredFramesPerSecond = (int)frames;
+		[G_view_controller setFPS:(int)frames];
 	}
 
 	virtual bool isMultiTouch()
@@ -81,20 +97,20 @@ public:
 
 	virtual bool isRotatable()
 	{
-		return G_view_controller.rotatable;
+		return m_rotatable;
 	}
-	virtual void setRotatable(bool ena)
+	virtual void setRotatable(bool r)
 	{
-		G_view_controller.rotatable = ena;
+		m_rotatable = r;
 	}
 
 	virtual bool isStatusVisible()
 	{
-		return G_view_controller.status_visible;
+		return m_status_visible;
 	}
 	virtual void setStatusVisible(bool show)
 	{
-		G_view_controller.status_visible = show;
+		m_status_visible = show;
 	}
 
 public:

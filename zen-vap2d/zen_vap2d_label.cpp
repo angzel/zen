@@ -6,9 +6,9 @@
 namespace Zen { namespace Vap2d {
 
 	Label::Label(std::string const & name)
-	: Sprite(name)
+	: FinalNode(name)
 	{
-		this->setTexture(SharedTexture(new Texture));
+		_initLabel();
 	}
 
 	void Label::setFont(std::shared_ptr<FontBrush> font)
@@ -56,16 +56,10 @@ namespace Zen { namespace Vap2d {
 		m_is_text_dirty = true;
 	}
 
-	void Label::setTextureBackground(float grey)
+	void Label::setUnderlineInPixels(int width)
 	{
-		if(grey == m_background_grey) return;
-		m_background_grey = grey;
-		m_is_text_dirty = true;
-	}
-	void Label::setUnderline(int width)
-	{
-		if(width == m_underline) return;
-		m_underline = width;
+		if(width == m_underline_px) return;
+		m_underline_px = width;
 		m_is_text_dirty = true;
 	}
 
@@ -81,7 +75,7 @@ namespace Zen { namespace Vap2d {
 		return m_text;
 	}
 
-	void Label::clearLabelDirty()
+	void Label::clearSizeDirty()
 	{
 		if(m_is_text_dirty)
 		{
@@ -93,39 +87,31 @@ namespace Zen { namespace Vap2d {
 			(m_font, text32, m_alignment, m_char_spacing_px,
 			 m_line_spacing_px, m_max_width_px);
 
-			ImageData image;
 			auto w = render->getOutputWidth();
 			auto h = render->getOutputHeight();
 			if(w == 0 || h == 0)
 			{
 				m_is_texture_empty = true;
-				this->setSize(0, 0);
 				return;
 			}
 
-			render->renderToImage(image, w+2, h+2, 1, 1, m_underline);
+			auto image = render->render(w, h, 0, 0, m_underline_px);
 
-			if(image.format != EBPP::Grey) return;
-
-			if(m_background_grey > 0.9f/255)
+			if(m_texture == nullptr)
 			{
-				for(auto & i : image.buffer)
-				{
-					auto v = (int)((255 - i) * m_background_grey + i);
-					i = (v > 255)?0xff:(uint8_t)v;
-				}
+				m_texture = Texture::Create();
 			}
-
-			m_texture->set(image.width, image.height, image.format, image.buffer.data());
-			m_is_texture_dirty = true;
+			m_texture->set(image.get());
 			m_is_size_dirty = true;
 			m_is_texture_empty = false;
+
+			m_is_buffer_dirty = true;
 		}
 		if(m_is_size_dirty)
 		{
-			float s = m_font_size / m_font->getConfig().width;
-			this->setSize(m_texture->size().w * s, m_texture->size().h * s);
 			m_is_size_dirty = false;
+			float s = m_font_size / m_font->getConfig().width;
+			this->_setScale2(m_texture->size().w * s, m_texture->size().h * s);
 		}
 	}
 
@@ -133,9 +119,10 @@ namespace Zen { namespace Vap2d {
 	{
 		if(m_text.empty() || m_font == nullptr) return;
 
-		this->clearLabelDirty();
+		this->clearSizeDirty();
+
 		if(m_is_texture_empty) return;
 
-		Sprite::draw();
+		this->_drawLabel();
 	}
 }}
