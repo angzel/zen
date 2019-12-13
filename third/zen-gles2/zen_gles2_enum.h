@@ -33,7 +33,7 @@
 #   include <OpenGL/glext.h>
 
 #elif defined(ZEN_OS_IOS)
-#   define ZEN_GL_2D_ANY_SZ 1
+#   define ZEN_GL_2D_ANY_SZ 0
 #   include <OpenGLES/ES2/gl.h>
 #   include <OpenGLES/ES2/glext.h>
 

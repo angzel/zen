@@ -28,6 +28,8 @@ namespace Zen { namespace Vap2d {
 		void setTextureRect(Zen::Rect rect);
 		Zen::Rect getTextureRect();
 
+		void clearSpriteDirty();
+
 		void setColor(Zen::Color4f color);
 		Zen::Color4f getColor();
 

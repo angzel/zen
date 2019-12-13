@@ -5,23 +5,21 @@
 
 namespace Zen { namespace Vap2d {
 	class Texture {
-	protected:
-		Zen::GL::TexImage2D m_texture;
-		Zen::Size2 m_size;
-		Zen::Size2 m_real_size;
-		Zen::Size2 m_gl_size;
-		EBPP m_format;
 	public:
 		Texture() {printf("texture new\n");}
 		Texture(Texture&) = delete;
 	public:
 		Zen::GL::TexImage2D const & image2d() { return m_texture; }
 		Zen::Size2 const & size() { return  m_size; }
-		Zen::Size2 const & real_size() { return m_real_size; }
-		Zen::Size2 const & gl_size() { return m_gl_size; };
+		Zen::Size2 const & using_size() { return m_using_size; };
 		EBPP format() { return m_format; }
 	public:
 		void set(uint32_t width, uint32_t height, EBPP bpp, void const * data);
+	protected:
+		Zen::GL::TexImage2D m_texture;
+		Zen::Size2 m_size;
+		Zen::Size2 m_using_size;
+		EBPP m_format;
 	};
 
 	typedef std::shared_ptr<Texture> SharedTexture;

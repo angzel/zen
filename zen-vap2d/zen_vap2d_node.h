@@ -99,10 +99,10 @@ namespace Zen { namespace Vap2d {
 
 		virtual ~Node();
 	protected:
+
+		BNode * m_upper = nullptr;
 		int m_order = 0;
 		bool m_is_visible = true;
-	protected:
-		BNode * m_upper = nullptr;
 	};
 
 	class BNode : public Node
@@ -239,6 +239,7 @@ namespace Zen { namespace Vap2d {
 		virtual void setViewDirty();
 		virtual void clearViewDirty();
 		virtual bool updateWorldMatrix();
+		
 	protected:
 		Matrix4 m_world_matrix;
 		Matrix4 m_matrix;
@@ -252,9 +253,6 @@ namespace Zen { namespace Vap2d {
 	};
 	
 	class SizeView : public View {
-	protected:
-		Size2 m_size = { 0, 0 };
-		Point2 m_anchor = { 0, 0 };
 	public:
 		virtual void setAnchor(float ax, float ay);
 		virtual void setAnchorX(float ax);
@@ -273,5 +271,9 @@ namespace Zen { namespace Vap2d {
 
 	public:
 		virtual void clearViewDirty() override;
+
+	protected:
+		Size2 m_size = { 0, 0 };
+		Point2 m_anchor = { 0, 0 };
 	};
 }}

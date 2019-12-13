@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,7 +27,7 @@
 		8DD7CDCA23977D3200D9D5D0 /* zen_csv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDC123977D3100D9D5D0 /* zen_csv.cpp */; };
 		8DD7CDCB23977D3200D9D5D0 /* zen_base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDC223977D3100D9D5D0 /* zen_base64.cpp */; };
 		8DD7CDCF23978ABC00D9D5D0 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDCE23978ABB00D9D5D0 /* GLKit.framework */; };
-		8DD7CDD123978AFE00D9D5D0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */; };
+		8DD7CDD123978AFE00D9D5D0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */; platformFilter = ios; };
 		8DD7CDD323978B0300D9D5D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDD223978B0300D9D5D0 /* UIKit.framework */; };
 		8DD7CDDF23978EAF00D9D5D0 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDD723978EAF00D9D5D0 /* ViewController.mm */; };
 		8DD7CDE023978EAF00D9D5D0 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDD923978EAF00D9D5D0 /* main.mm */; };
@@ -38,10 +38,10 @@
 		8DDCAA06239BFC7100F6455D /* zen_vap2d_label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DDCAA05239BFC7100F6455D /* zen_vap2d_label.cpp */; };
 		8DDCAA0E239BFCA700F6455D /* zen_ft_library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DDCAA08239BFCA700F6455D /* zen_ft_library.cpp */; };
 		8DDCAA10239BFCA700F6455D /* zen_ft_render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DDCAA0C239BFCA700F6455D /* zen_ft_render.cpp */; };
-		8DDCAA12239BFCCB00F6455D /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DDCAA11239BFCCB00F6455D /* libfreetype.a */; };
 		8DDCAA16239C06DC00F6455D /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DDCAA15239C06DC00F6455D /* Arial.ttf */; };
 		8DF3621C239CE8EA005826DD /* zen_gles2_shader_particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3621A239CE8E9005826DD /* zen_gles2_shader_particle.cpp */; };
 		8DF3621F239CEAC7005826DD /* zen_vap2d_particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3621D239CEAC7005826DD /* zen_vap2d_particle.cpp */; };
+		8DFC500623A28E3000E4A50F /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFC500523A28E3000E4A50F /* libfreetype.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -136,12 +136,13 @@
 		8DDCAA0A239BFCA700F6455D /* zen_ft_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ft_render.h; sourceTree = "<group>"; };
 		8DDCAA0C239BFCA700F6455D /* zen_ft_render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_ft_render.cpp; sourceTree = "<group>"; };
 		8DDCAA0D239BFCA700F6455D /* zen_ft_library.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ft_library.h; sourceTree = "<group>"; };
-		8DDCAA11239BFCCB00F6455D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../../../../../github/zen-external/external/freetype2/prebuilt/ios/libfreetype.a"; sourceTree = "<group>"; };
 		8DDCAA15239C06DC00F6455D /* Arial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Arial.ttf; sourceTree = "<group>"; };
 		8DF3621A239CE8E9005826DD /* zen_gles2_shader_particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_shader_particle.cpp; sourceTree = "<group>"; };
 		8DF3621B239CE8E9005826DD /* zen_gles2_shader_particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_shader_particle.h; sourceTree = "<group>"; };
 		8DF3621D239CEAC7005826DD /* zen_vap2d_particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_particle.cpp; sourceTree = "<group>"; };
 		8DF3621E239CEAC7005826DD /* zen_vap2d_particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_particle.h; sourceTree = "<group>"; };
+		8DFC500523A28E3000E4A50F /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = "../../../zen-external.git/external/freetype2/prebuilt/ios/libfreetype.a"; sourceTree = "<group>"; };
+		8DFC500723A28EED00E4A50F /* app-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-ios.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +153,7 @@
 				8DD7CDD323978B0300D9D5D0 /* UIKit.framework in Frameworks */,
 				8DD7CDD123978AFE00D9D5D0 /* OpenGLES.framework in Frameworks */,
 				8DD7CDCF23978ABC00D9D5D0 /* GLKit.framework in Frameworks */,
-				8DDCAA12239BFCCB00F6455D /* libfreetype.a in Frameworks */,
+				8DFC500623A28E3000E4A50F /* libfreetype.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +244,7 @@
 		8DD7CD4823977B5D00D9D5D0 = {
 			isa = PBXGroup;
 			children = (
+				8DFC500723A28EED00E4A50F /* app-ios.entitlements */,
 				8DDCAA07239BFCA700F6455D /* zen-freetype */,
 				8D8B7252239B7AA3001AC2E8 /* zen-vap2d */,
 				8D8B724F239B7914001AC2E8 /* gles_src */,
@@ -333,7 +335,7 @@
 		8DD7CDCD23978ABB00D9D5D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8DDCAA11239BFCCB00F6455D /* libfreetype.a */,
+				8DFC500523A28E3000E4A50F /* libfreetype.a */,
 				8DD7CDD223978B0300D9D5D0 /* UIKit.framework */,
 				8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */,
 				8DD7CDCE23978ABB00D9D5D0 /* GLKit.framework */,
@@ -621,20 +623,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "app-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 87629D3R4B;
 				ENABLE_BITCODE = NO;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../../../github/zen-external/external/freetype2/include/ios\"";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/include/ios\"";
 				INFOPLIST_FILE = gles_debug/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../../../github/zen-external/external/freetype2/prebuilt/ios\"";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/prebuilt/ios\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "lea.meher.mac.gles-debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -643,20 +647,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "app-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 87629D3R4B;
 				ENABLE_BITCODE = NO;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../../../github/zen-external/external/freetype2/include/ios\"";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/include/ios\"";
 				INFOPLIST_FILE = gles_debug/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../../../github/zen-external/external/freetype2/prebuilt/ios\"";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/prebuilt/ios\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "lea.meher.mac.gles-debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

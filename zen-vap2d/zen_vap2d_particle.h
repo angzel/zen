@@ -20,9 +20,6 @@ namespace Zen { namespace Vap2d {
 			Point2 coord;
 			float size;
 		};
-		Zen::GL::ArrayBuffer m_texture_buffer;
-		std::vector<Dot> m_buffer;
-		bool m_buffer_dirty = false;
 	public:
 		Particle(std::string const & name = "particle");
 
@@ -105,6 +102,10 @@ namespace Zen { namespace Vap2d {
 		SharedTexture m_texture;
 		Zen::Color4f m_color = Zen::Color4f(0xff8822ff);
 		float m_point_scale = 1.f;
+		
+		Zen::GL::ArrayBuffer m_texture_buffer;
+		std::vector<Dot> m_buffer;
+		bool m_buffer_dirty = false;
 	};
 
 	class GravityParticle : public Particle {
@@ -181,7 +182,6 @@ namespace Zen { namespace Vap2d {
 			float start_radius;
 			float end_radius;
 		};
-		static const size_t S_particle_size = 8;
 	public:
 		GalaxyParticle(std::string const & name = "gravity particle");
 

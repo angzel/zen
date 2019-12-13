@@ -4,6 +4,13 @@
 
 namespace Zen { namespace Vap2d {
 
+	inline uint32_t GetTextureExtendSize(uint32_t s)
+	{
+		for (int i = 0; i < 16; ++i) {
+			if (s < (1U << i)) return (1U << i);
+		}
+		return 0;
+	}
 	void Texture::set(uint32_t width, uint32_t height, EBPP format, void const * data)
 	{
 		this->m_format = format;
@@ -11,13 +18,12 @@ namespace Zen { namespace Vap2d {
 		this->m_size = { (float)width, (float)height };
 #if ZEN_GL_2D_ANY_SZ
 		this->m_texture.bindData(width, height, format, data, 0);
-		this->m_real_size = this->m_size;
-		this->m_gl_size = { 1.f, 1.f };
+		this->m_using_size = { 1.f, 1.f };
 #else
-		int bpp = (ETextureFmt::Alpha == format?1:(ETextureFmt::RGB == format?3:4));
+		int bpp = (int)format;
 
-		auto w = GetTextureExtendSize(width);
-		auto h = GetTextureExtendSize(height);
+		auto w = Zen::GetMinPowerTwo(width);
+		auto h = Zen::GetMinPowerTwo(height);
 
 		if(w == width)
 		{
@@ -53,8 +59,7 @@ namespace Zen { namespace Vap2d {
 			}
 			this->m_texture.bindData(w, h, format, buf.data(), 0);
 		}
-		this->m_real_size = {(float)w, (float)h};
-		this->m_gl_size = {(float)width /(float)w, (float)height /(float)h};
+		this->m_using_size = {(float)width /(float)w, (float)height /(float)h};
 #endif
 	}
 

@@ -58,33 +58,36 @@ namespace Zen { namespace Vap2d {
 		return m_is_flip_y;
 	}
 
+	void Sprite::clearSpriteDirty()
+	{
+		if(!m_is_texture_dirty) return;
+		m_is_texture_dirty = false;
+
+		float x0 = m_texture_rect.x * m_texture->using_size().w;
+		float y0 = m_texture_rect.y * m_texture->using_size().h;
+		float x1 = m_texture_rect.w * m_texture->using_size().w + x0;
+		float y1 = m_texture_rect.h * m_texture->using_size().w + y0;
+		if(m_is_flip_x) std::swap(x0, x1);
+		if(m_is_flip_y) std::swap(y0, y1);
+		float coords[] = {
+			x0, y1, x1, y1, x0, y0, x1, y0,// sampler
+		};
+		m_texture_buffer.updateData(0, sizeof(float)*8, coords);
+		/**
+		 if the size is zero, reset as texture size.
+		 */
+		if(this->getWidth() == 0 || this->getHeight() == 0)
+		{
+			auto w = m_texture->size().w * m_texture_rect.w;
+			auto h = m_texture->size().h * m_texture_rect.h;
+			this->setSize(w, h);
+		}
+	}
 	void Sprite::draw()
 	{
 		if(!m_texture) return;
 
-		if(m_is_texture_dirty)
-		{
-			float x0 = m_texture_rect.x * m_texture->gl_size().w;
-			float y0 = m_texture_rect.y * m_texture->gl_size().h;
-			float x1 = m_texture_rect.w * m_texture->gl_size().w + x0;
-			float y1 = m_texture_rect.h * m_texture->gl_size().w + y0;
-			if(m_is_flip_x) std::swap(x0, x1);
-			if(m_is_flip_y) std::swap(y0, y1);
-			float coords[] = {
-				x0, y1, x1, y1, x0, y0, x1, y0,// sampler
-			};
-			m_texture_buffer.updateData(0, sizeof(float)*8, coords);
-			m_is_texture_dirty = false;
-			/**
-			 if the size is zero, reset as texture size.
-			 */
-			if(this->getWidth() == 0 || this->getHeight() == 0)
-			{
-				auto w = m_texture->size().w * m_texture_rect.w;
-				auto h = m_texture->size().h * m_texture_rect.h;
-				this->setSize(w, h);
-			}
-		}
+		this->clearSpriteDirty();
 
 		this->updateWorldMatrix();
 

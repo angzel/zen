@@ -105,11 +105,4 @@ namespace Zen { namespace GL {
 		mustsn(eno == GL_NO_ERROR, "failed to bind data to gl texture", eno);
 #endif
 	}
-	inline uint32_t GetTextureExtendSize(uint32_t s)
-	{
-		for (int i = 0; i < 16; ++i) {
-			if (s < (1U << i)) return (1U << i);
-		}
-		return 0;
-	}
 } }

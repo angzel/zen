@@ -81,26 +81,25 @@ namespace Zen { namespace Vap2d {
 		return m_text;
 	}
 
-	void Label::draw()
+	void Label::clearLabelDirty()
 	{
-		if(m_text.empty() || m_font == nullptr) return;
-
 		if(m_is_text_dirty)
 		{
 			m_is_text_dirty = false;
 
 			auto text32 = Zen::UTF8ToUnicode(m_text);
-			
+
 			auto render = FontRender::Create
 			(m_font, text32, m_alignment, m_char_spacing_px,
 			 m_line_spacing_px, m_max_width_px);
-			
+
 			ImageData image;
 			auto w = render->getOutputWidth();
 			auto h = render->getOutputHeight();
 			if(w == 0 || h == 0)
 			{
 				m_is_texture_empty = true;
+				this->setSize(0, 0);
 				return;
 			}
 
@@ -122,16 +121,20 @@ namespace Zen { namespace Vap2d {
 			m_is_size_dirty = true;
 			m_is_texture_empty = false;
 		}
-		if(m_is_texture_empty)
-		{
-			return;
-		}
 		if(m_is_size_dirty)
 		{
 			float s = m_font_size / m_font->getConfig().width;
 			this->setSize(m_texture->size().w * s, m_texture->size().h * s);
 			m_is_size_dirty = false;
 		}
+	}
+
+	void Label::draw()
+	{
+		if(m_text.empty() || m_font == nullptr) return;
+
+		this->clearLabelDirty();
+		if(m_is_texture_empty) return;
 
 		Sprite::draw();
 	}

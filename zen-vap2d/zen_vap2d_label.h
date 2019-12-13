@@ -8,21 +8,6 @@
 namespace Zen { namespace Vap2d {
 
 	class Label : public Sprite {
-	protected:
-		std::string m_text;
-		std::shared_ptr<FontBrush> m_font;
-		int m_max_width_px = 0;
-		int m_char_spacing_px = 0;
-		int m_line_spacing_px = 0;
-		float m_alignment = 0;
-		float m_background_grey = 0;
-		float m_font_size = 0;
-		int m_underline = 0;
-		bool m_is_text_dirty = true;
-		bool m_is_size_dirty = true;
-		bool m_is_texture_empty = true;
-	protected:
-		using Sprite::setTexture;
 	public:
 		Label(std::string const & name = "label");
 
@@ -46,6 +31,28 @@ namespace Zen { namespace Vap2d {
 		void setFontSize(float size);
 		float getFontSize();
 
+		void clearLabelDirty();
+		
 		virtual void draw() override;
+
+	protected:
+		using Sprite::setSize;
+		using Sprite::setTexture;
+		using Sprite::setTextureRect;
+		using Sprite::clearSpriteDirty;
+	protected:
+		std::string m_text;
+		std::shared_ptr<FontBrush> m_font;
+		int m_max_width_px = 0;
+		int m_char_spacing_px = 0;
+		int m_line_spacing_px = 0;
+		float m_alignment = 0;
+		float m_background_grey = 0;
+		float m_font_size = 0;
+		int m_underline = 0;
+		bool m_is_text_dirty = true;
+		bool m_is_size_dirty = true;
+		bool m_is_texture_empty = true;
+	protected:
 	};
 }}

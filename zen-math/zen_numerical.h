@@ -72,4 +72,37 @@ namespace Zen {
 
 		return n;
 	}
+	inline uint16_t GetMinPowerTwo(uint16_t v)
+	{
+		if(v == 0) return 0;
+		--v;
+		v |= v >> 1;
+		v |= v >> 2;
+		v |= v >> 4;
+		v |= v >> 8;
+		return v + 1;
+	}
+	inline uint32_t GetMinPowerTwo(uint32_t v)
+	{
+		if(v == 0) return 0;
+		--v;
+		v |= v >> 1;
+		v |= v >> 2;
+		v |= v >> 4;
+		v |= v >> 8;
+		v |= v >> 16;
+		return v + 1;
+	}
+	inline uint64_t GetMinPowerTwo(uint64_t v)
+	{
+		if(v == 0) return 0;
+		--v;
+		v |= v >> 1;
+		v |= v >> 2;
+		v |= v >> 4;
+		v |= v >> 8;
+		v |= v >> 16;
+		v |= v >> 32;
+		return v + 1;
+	}
 }
