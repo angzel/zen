@@ -1,15 +1,1 @@
-# vi
-*.swp
-# mac
-.DS_Store
-xcuserdata
-
-# android
-local.properties
-gradle.properties
-.gradle
-.idea
-.externalNativeBuild
-# build
-build
-gradle
+gitignore
