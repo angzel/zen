@@ -29,6 +29,7 @@ namespace Zen { namespace Vap2d {
 		void setAreaSize(Size2 size);
 
 		Size2 getAreaSize();
+		
 	protected:
 		struct Dot {
 			Zen::Color4f color;

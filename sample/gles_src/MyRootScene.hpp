@@ -55,10 +55,7 @@ public:
 		this->addSpriteE(200, 300, true);
 		this->addSpriteE(200, 400, false);
 
-//		for(int i = 0; i < 800; ++i)
-//		{
-//			this->addSpriteE(m_size.w * ra.nextf(), m_size.h * ra.nextf(), ra.next(2));
-//		}
+
 		this->addPar1(m_size.w/2, m_size.h/2);
 		this->addPar2(m_size.w*0.7, m_size.h/4);
 		this->addDoodle(m_size.w * 0.5, m_size.h*0.8);
@@ -81,7 +78,7 @@ public:
 	void addSpriteE(float x, float y, float grey)
 	{
 		auto sprite = new Sprite;
-		sprite->setTexture(Textures::S()->getTexture("a.raw"));
+		sprite->setTexture(Textures::S()->getTexture("res/o64.png"));
 		sprite->setPosition(x, y);
 		sprite->setAnchor(0.5, 0.5);
 		sprite->setScale(1, 1);
@@ -92,7 +89,7 @@ public:
 	void addSpriteD(Rect4f rect, float ax, float ay, Color4f color, float scale)
 	{
 		auto sprite = new Sprite;
-		sprite->setTexture(Textures::S()->getTexture("a.raw"));
+		sprite->setTexture(Textures::S()->getTexture("res/o64.png"));
 		sprite->setTextureRect(rect);
 		sprite->setPosition(100, 500);
 		sprite->setAnchor(ax, ay);
@@ -106,7 +103,7 @@ public:
 	void addSpriteC(Rect4f rect, float ax, float ay, Color4f color)
 	{
 		auto sprite = new Sprite;
-		sprite->setTexture(Textures::S()->getTexture("a.raw"));
+		sprite->setTexture(Textures::S()->getTexture("res/o64.png"));
 		sprite->setTextureRect(rect);
 		sprite->setPosition(100, 400);
 		sprite->setAnchor(ax, ay);
@@ -118,7 +115,7 @@ public:
 	void addSpriteB(Rect4f rect, float ax, float ay, Color4f color)
 	{
 		auto sprite = new Sprite;
-		sprite->setTexture(Textures::S()->getTexture("a.raw"));
+		sprite->setTexture(Textures::S()->getTexture("res/o64.png"));
 		sprite->setTextureRect(rect);
 		sprite->setPosition(100, 300);
 		sprite->setAnchor(ax, ay);
@@ -130,7 +127,7 @@ public:
 	void addSpriteA(float ax, float ay, float sx, float sy, Color4f color)
 	{
 		auto sprite = new Sprite;
-		sprite->setTexture(Textures::S()->getTexture("a.raw"));
+		sprite->setTexture(Textures::S()->getTexture("res/o64.png"));
 		sprite->setPosition(100, 200);
 		sprite->setAnchor(ax, ay);
 		sprite->setScale(sx, sy);
@@ -222,7 +219,7 @@ public:
 	void addSprite()
 	{
 		auto texture = Textures::S()->getCircleTexture();
-		if(ra.next(2)) texture = Textures::S()->getTexture("a.raw");
+		if(ra.next(2)) texture = Textures::S()->getTexture("res/o64.png");
 
 		auto sprite = new Sprite;
 		sprite->setTexture(texture);
@@ -254,7 +251,7 @@ public:
 		rep->init(std::shared_ptr<Action>(seq), 100);
 		sprite->runAction(std::shared_ptr<Action>(rep));
 
-		if(ra.next(2)) sprite->setBlend(eBlend::None);
+//		if(ra.next(2)) sprite->setBlend(eBlend::None);
 
 		m_sprite_layer->addNode(sprite);
 	}

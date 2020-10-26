@@ -78,18 +78,18 @@ namespace Zen
 		reader.read(image->bytes(), image->size());
 		return image;
 	}
-	std::vector<uint8_t> ImageEncoderRaw::encode(Image const * image)
+	std::vector<uint8_t> ImageEncoderRaw::encode(Image const & image)
 	{
 		ImageCoderRawHead head;
 
-		head.set((uint32_t)image->width(), (uint32_t)image->height(), (uint32_t)image->format());
+		head.set((uint32_t)image.width(), (uint32_t)image.height(), (uint32_t)image.format());
 		
 		auto head_buf = reinterpret_cast<char const *>(&head);
 		
 		std::vector<uint8_t> data;
-		data.reserve(sizeof(head) + image->size());
+		data.reserve(sizeof(head) + image.size());
 		data.assign(head_buf, head_buf + sizeof(head));
-		data.insert(data.end(), image->bytes(), image->bytes() + image->size());
+		data.insert(data.end(), image.bytes(), image.bytes() + image.size());
 		
 		return data;
 	}

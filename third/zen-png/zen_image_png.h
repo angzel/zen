@@ -26,13 +26,11 @@
 
 namespace Zen
 {
-	class ImageCoderPNG : public ImageCoder
+	class ImagePNGCoder : public ImageDecoder, public ImageEncoder
 	{
 	public:
-		virtual void load(ImageData & img, std::string const & file) override;
-		virtual void save(ImageData const & img, std::string const & file) override;
-		virtual void decode(ImageData & img, std::vector<uint8_t> const & data) override;
-		virtual std::vector<uint8_t> encode(ImageData const & img) override;
+		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) override;
+		virtual std::vector<uint8_t> encode(Image const &) override;
 	};
 }
 

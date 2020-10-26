@@ -84,25 +84,8 @@ namespace Zen { namespace MyJPG {
 
 namespace Zen
 {
-	void ImageCoderJPG::load(ImageData & img, std::string const & file)
+	std::shared_ptr<Image> ImageJPGCoder::decode(std::vector<uint8_t> const & data)
 	{
-		img.format = Zen::EImageFormat::None;
-
-		auto data = Zen::LoadFileToBuffer(file);
-		musts(data.size(), "read file error");
-
-		this->decode(img, data);
-	}
-	void ImageCoderJPG::save(ImageData const & img, std::string const & file)
-	{
-		auto data = encode(img);
-		musts(Zen::WriteBufferToFile(file, data), "write file error");
-	}
-
-	void ImageCoderJPG::decode(ImageData & img, std::vector<uint8_t> const & data)
-	{
-		img.format = Zen::EImageFormat::None;
-
 		MyJPG::ReadInfo jpg;
 
 		::jpeg_mem_src(&jpg.cinfo, (unsigned char *)data.data(), data.size());
@@ -113,12 +96,9 @@ namespace Zen
 
 		auto bpp = jpg.cinfo.output_components;
 
-		Zen::EImageFormat format = Zen::EImageFormat::None;
+		musts(bpp == 1 || bpp == 3 || bpp == 4, "unsuported pixel format");
 
-		if(bpp == 1) format = Zen::EImageFormat::Grey;
-		else if(bpp == 3) format = Zen::EImageFormat::RGB;
-		else if(bpp == 4) format = Zen::EImageFormat::RGBA;
-		else throws("unsuported pixel format");
+		ePixel format = (ePixel)bpp;
 
 		auto width = (int)(jpg.cinfo.output_width);
 		auto height = (int)(jpg.cinfo.output_height);
@@ -136,17 +116,11 @@ namespace Zen
 
 		::jpeg_finish_decompress(&jpg.cinfo);
 
-		img.width = width;
-		img.height = height;
-		img.format = format;
-		img.buffer = std::move(buffer);
+		return Image::CreateWidthData(format, width, height, buffer.data());
 	}
-	std::vector<uint8_t> ImageCoderJPG::encode(ImageData const & img_o)
+	std::vector<uint8_t> ImageJPGCoder::encode(Image const & image)
 	{
-		ImageData colors;
-		ImageData const & img = Zen::ImageSeparateColor(colors, img_o)?colors:img_o;
-
-		auto bpp = GetBytesOfImageFormat(img.format);
+		auto bpp = (int)image.format();
 
 		J_COLOR_SPACE color_space = J_COLOR_SPACE::JCS_UNKNOWN;
 		if(bpp == 1) color_space = JCS_GRAYSCALE;
@@ -160,8 +134,8 @@ namespace Zen
 
 		jpeg_mem_dest(&jpg.cinfo, &buffer, &size);
 
-		jpg.cinfo.image_width = img.width;
-		jpg.cinfo.image_height = img.height;
+		jpg.cinfo.image_width = (JDIMENSION)image.width();
+		jpg.cinfo.image_height = (JDIMENSION)image.height();
 		jpg.cinfo.input_components = bpp;
 		jpg.cinfo.in_color_space = color_space;
 
@@ -169,12 +143,12 @@ namespace Zen
 		::jpeg_set_quality(&jpg.cinfo, m_quality, (boolean)1);
 		::jpeg_start_compress(&jpg.cinfo, (boolean)1);
 
-		auto rowbytes = (unsigned)bpp * img.width;
+		auto rowbytes = (unsigned)bpp * image.width();
 
 		auto & ri = jpg.cinfo.next_scanline;
-		while (ri < img.height)
+		while (ri < image.height())
 		{
-			JSAMPROW row_pointers = (JSAMPROW)(img.buffer.data() + ri * rowbytes);
+			JSAMPROW row_pointers = (JSAMPROW)(image.bytes() + ri * rowbytes);
 			::jpeg_write_scanlines(&jpg.cinfo, &row_pointers, 1);
 		}
 
@@ -188,12 +162,12 @@ namespace Zen
 		return data;
 	}
 
-	void ImageCoderJPG::setQuality(int q)
+	void ImageJPGCoder::setQuality(int q)
 	{
 		m_quality = q;
 	}
 
-	int ImageCoderJPG::getQuality() const
+	int ImageJPGCoder::getQuality() const
 	{
 		return m_quality;
 	}

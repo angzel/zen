@@ -29,15 +29,13 @@ namespace Zen
 	@class ImageCoderJPG
 	when encode the alpha channel will be thrown away.
 	 */
-	class ImageCoderJPG : public ImageCoder
+	class ImageJPGCoder : public ImageDecoder, public ImageEncoder
 	{
 	public:
-		virtual void load(ImageData & img, std::string const & file) override;
-		virtual void save(ImageData const & img, std::string const & file) override;
-		virtual void decode(ImageData & img, std::vector<uint8_t> const & data) override;
-		virtual std::vector<uint8_t> encode(ImageData const & img) override;
+		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) override;
+		virtual std::vector<uint8_t> encode(Image const &) override;
 
-		void setQuality(int);
+		void setQuality(int); /* 0 - 100 */
 		int getQuality() const;
 	protected:
 		int m_quality = 100;

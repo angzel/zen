@@ -33,7 +33,7 @@ namespace Zen
 	class ImageEncoderRaw : public ImageEncoder
 	{
 	public:
-		virtual std::vector<uint8_t> encode(Image const *) override;
+		virtual std::vector<uint8_t> encode(Image const &) override;
 	};
 }
 

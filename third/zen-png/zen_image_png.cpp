@@ -128,25 +128,9 @@ namespace Zen
 
 namespace Zen
 {
-	void ImageCoderPNG::load(ImageData & img, std::string const & file)
+//	void ImagePNGCoder::decode(ImageData & img, std::vector<uint8_t> const & data)
+	std::shared_ptr<Image> ImagePNGCoder::decode(std::vector<uint8_t> const & data)
 	{
-		img.format = Zen::EImageFormat::None;
-		
-		auto data = Zen::LoadFileToBuffer(file);
-		musts(data.size(), "read file error");
-		
-		this->decode(img, data);
-	}
-	void ImageCoderPNG::save(ImageData const & img, std::string const & file)
-	{
-		auto data = encode(img);
-		musts(Zen::WriteBufferToFile(file, data), "write file error");
-	}
-
-	void ImageCoderPNG::decode(ImageData & img, std::vector<uint8_t> const & data)
-	{
-		img.format = Zen::EImageFormat::None;
-
 		static int const HeadLen = 8;
 		
 		musts(data.size() >= HeadLen, "invalid png data");
@@ -206,24 +190,8 @@ namespace Zen
 		
 		musts(rowbytes % width == 0, "unsupported row stride");
 
-		Zen::EImageFormat format = Zen::EImageFormat::None;
-		switch(channel)
-		{
-			case 1:
-				format = Zen::EImageFormat::Grey;
-				break;
-			case 2:
-				format = Zen::EImageFormat::GreyA;
-				break;
-			case 3:
-				format = Zen::EImageFormat::RGB;
-				break;
-			case 4:
-				format = Zen::EImageFormat::RGBA;
-				break;
-			default:
-				throws("unsupported pixel format");
-		}
+		ePixel format = (ePixel)channel;
+		musts(channel > 0 && channel <= 4, "unsupported pixel format");
 		
 		std::vector<uint8_t> buffer;
 		buffer.resize(rowbytes * height);
@@ -236,38 +204,35 @@ namespace Zen
 		::png_read_image(png.png_ptr, row_pointers.data());
 		
 		::png_read_end(png.png_ptr, nullptr);
-		
-		img.width = width;
-		img.height = height;
-		img.format = format;
-		img.buffer = std::move(buffer);
+
+		return Image::CreateWidthData(format, width, height, buffer.data());
 	}
-	std::vector<uint8_t> ImageCoderPNG::encode(ImageData const & img)
+	std::vector<uint8_t> ImagePNGCoder::encode(Image const & image)
 	{
-		size_t bpp = GetBytesOfImageFormat(img.format);
-		musts(bpp, "invalid pixel format");
+		size_t channel = (size_t)image.format();
+		musts(channel > 0 && channel <= 4, "unsupported pixel format");
 		
-		size_t rowbytes = bpp * img.width;
+		size_t rowbytes = channel * image.width();
 		
-		std::vector<png_bytep> row_pointers(img.height);
-		for (size_t i = 0; i < img.height; i++)
+		std::vector<png_bytep> row_pointers(image.height());
+		for (size_t i = 0; i < image.height(); i++)
 		{
-			row_pointers[i] = (png_bytep)(img.buffer.data() + rowbytes * i);
+			row_pointers[i] = (png_bytep)(image.bytes() + rowbytes * i);
 		}
 		
 		int color_type = 0;
-		switch (img.format)
+		switch (image.format())
 		{
-			case Zen::EImageFormat::Grey:
+			case ePixel::Grey:
 				color_type = PNG_COLOR_TYPE_GRAY;
 				break;
-			case Zen::EImageFormat::GreyA:
+			case ePixel::GA:
 				color_type = PNG_COLOR_TYPE_GRAY_ALPHA;
 				break;
-			case Zen::EImageFormat::RGB:
+			case ePixel::RGB:
 				color_type = PNG_COLOR_TYPE_RGB;
 				break;
-			case Zen::EImageFormat::RGBA:
+			case ePixel::RGBA:
 				color_type = PNG_COLOR_TYPE_RGBA;
 				break;
 			default:
@@ -282,7 +247,7 @@ namespace Zen
 		
 		::png_set_write_fn(png.png_ptr, &source, &MyPNG::WriteCallback, nullptr);
 
-		::png_set_IHDR(png.png_ptr, png.info_ptr, img.width, img.height, 8, (int)color_type, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+		::png_set_IHDR(png.png_ptr, png.info_ptr, (png_uint_32)image.width(), (png_uint_32)image.height(), 8, (int)color_type, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
 		::png_write_info(png.png_ptr, png.info_ptr);
 		

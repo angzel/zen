@@ -84,7 +84,7 @@ namespace Zen {
 	class ImageEncoder
 	{
 	public:
-		virtual std::vector<uint8_t> encode(Image const *) = 0;
+		virtual std::vector<uint8_t> encode(Image const &) = 0;
 		virtual ~ImageEncoder() = default;
 	};
 

@@ -2,6 +2,7 @@
 #include "zen_file.h"
 #include "zen_numerical.h"
 #include "zen_system.h"
+#include "zen_exception.h"
 
 namespace Zen { namespace Vap2d {
 
@@ -85,6 +86,7 @@ namespace Zen { namespace Vap2d {
 
 		auto texture = this->loadImage(key);
 		if(texture) this->addTexture(key, texture);
+		musts(texture, "cannot find image");
 		return texture;
 	}
 	void Textures::clearTextures(bool all)

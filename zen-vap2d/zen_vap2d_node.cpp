@@ -1,5 +1,6 @@
 
 #include "zen_vap2d_node.h"
+#include "zen_log.h"
 
 namespace Zen { namespace Vap2d {
 
@@ -12,7 +13,7 @@ namespace Zen { namespace Vap2d {
 	VapObject::~VapObject()
 	{
 #if ZEN_DEBUG
-		Zen::LogV("delete vap: %s", m_vap_name.data());
+		Zen::LogV("delete vap-object: %s", m_vap_name.data());
 #endif
 	}
 

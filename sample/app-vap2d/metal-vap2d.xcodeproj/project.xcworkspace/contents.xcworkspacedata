@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/lover/home/work/github/zena/sample/app-ios/app-ios.xcodeproj">
+      location = "self:/Users/lover/home/work/github/zen.git/sample/app-gles/metal-vap2d.xcodeproj">
    </FileRef>
 </Workspace>

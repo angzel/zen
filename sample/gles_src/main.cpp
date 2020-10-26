@@ -15,10 +15,15 @@
 #include "MySprite.h"
 #include "MyRootScene.hpp"
 #include "zen_cast.h"
+#include "zen_image_jpg.h"
+#include "zen_image_png.h"
+#include "zen_cast.h"
 
 Zen::Random ra;
 
 Zen::ImageDecoderRaw raw_decoder;
+Zen::ImageJPGCoder jpg_coder;
+Zen::ImagePNGCoder png_coder;
 
 class ScreenColorDelegate : public Zen::Vap2d::RootDelegate {
 
@@ -49,6 +54,8 @@ public:
 	void loadSource()
 	{
 		Textures::S()->setImageDecoder("raw", &raw_decoder);
+		Textures::S()->setImageDecoder("png", &png_coder);
+		Textures::S()->setImageDecoder("jpg", &jpg_coder);
 
 		auto font_data = Zen::LoadResourceContent("Arial.ttf");
 		Zen::Fonts::S()->setFont("arial", font_data);
@@ -76,13 +83,12 @@ public:
 		this->loadSource();
 
 		auto layer = new MyRootScene;
-
 		root->replaceRootNode(layer);
 
-		this->loadLabel(w/2, h/4);
+		this->loadFPSLabel(w/2, h/4);
 		layer->addNode(m_label);
 	}
-	void loadLabel(float x, float y)
+	void loadFPSLabel(float x, float y)
 	{
 		auto label = new Zen::Vap2d::Label;
 

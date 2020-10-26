@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8D1EBCFF23A8CE5000FD3627 /* zen_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D1EBCFE23A8CE5000FD3627 /* zen_image.cpp */; };
-		8D1EBD0323A8D56C00FD3627 /* 1.raw in Resources */ = {isa = PBXBuildFile; fileRef = 8D1EBD0223A8D56C00FD3627 /* 1.raw */; };
 		8D57187923A4019E00230B7E /* zen_vap2d_label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D57186A23A4019E00230B7E /* zen_vap2d_label.cpp */; };
 		8D57187A23A4019E00230B7E /* zen_vap2d_particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D57186C23A4019E00230B7E /* zen_vap2d_particle.cpp */; };
 		8D57187B23A4019E00230B7E /* zen_vap2d_root.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D57186D23A4019E00230B7E /* zen_vap2d_root.cpp */; };
@@ -20,8 +19,13 @@
 		8D57188123A4019E00230B7E /* zen_vap2d_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D57187823A4019E00230B7E /* zen_vap2d_layer.cpp */; };
 		8D57188423A4055700230B7E /* zen_vap2d_gles2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D57188323A4055700230B7E /* zen_vap2d_gles2.cpp */; };
 		8D57188723A405D800230B7E /* zen_vap2d_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D57188623A405D800230B7E /* zen_vap2d_metal.mm */; };
-		8D5E91ED239FC48700B7AD16 /* a.raw in Resources */ = {isa = PBXBuildFile; fileRef = 8D5E91EC239FC48600B7AD16 /* a.raw */; };
-		8D7853C123A7369D001F335E /* MyRootScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D7853BF23A7369D001F335E /* MyRootScene.cpp */; };
+		8D6EA1752413791500DD665E /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D6EA1742413791500DD665E /* Arial.ttf */; };
+		8D78258223FFA22A00ACD50F /* zen_image_png.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D78257C23FFA22A00ACD50F /* zen_image_png.cpp */; };
+		8D78258423FFA22A00ACD50F /* zen_image_jpg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D78258023FFA22A00ACD50F /* zen_image_jpg.cpp */; };
+		8D78258823FFA28C00ACD50F /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D78258623FFA28C00ACD50F /* libjpeg.a */; };
+		8D78258923FFA28C00ACD50F /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D78258723FFA28C00ACD50F /* libpng.a */; };
+		8D78258B23FFA93E00ACD50F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D78258A23FFA93E00ACD50F /* libz.tbd */; };
+		8D78258D23FFABD200ACD50F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 8D78258C23FFABD200ACD50F /* res */; };
 		8D7853C423A73CA3001F335E /* zen_metal_render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D7853C323A73CA3001F335E /* zen_metal_render.mm */; };
 		8D7853C723A73D09001F335E /* zen_metal_texture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D7853C623A73D09001F335E /* zen_metal_texture.mm */; };
 		8D7853CB23A7461C001F335E /* zen_gles2_render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D7853CA23A7461C001F335E /* zen_gles2_render.cpp */; };
@@ -39,7 +43,6 @@
 		8DD7CDEB23978FA400D9D5D0 /* zen_image_raw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDE823978FA400D9D5D0 /* zen_image_raw.cpp */; };
 		8DDCAA0E239BFCA700F6455D /* zen_ft_library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DDCAA08239BFCA700F6455D /* zen_ft_library.cpp */; };
 		8DDCAA10239BFCA700F6455D /* zen_ft_render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DDCAA0C239BFCA700F6455D /* zen_ft_render.cpp */; };
-		8DDCAA16239C06DC00F6455D /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DDCAA15239C06DC00F6455D /* Arial.ttf */; };
 		8DDE184923A4A5B4003B1AF9 /* zen_gles2_prepare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DDE184823A4A5B4003B1AF9 /* zen_gles2_prepare.cpp */; };
 		8DDEBCCF23A35FB50090C366 /* AppRuntimeIOSMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEBCC823A35FB50090C366 /* AppRuntimeIOSMain.mm */; };
 		8DDEBCD023A35FB50090C366 /* GLESViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEBCCA23A35FB50090C366 /* GLESViewController.mm */; };
@@ -49,7 +52,6 @@
 		8DDEBCE723A379850090C366 /* MetalAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEBCE323A379840090C366 /* MetalAppDelegate.mm */; };
 		8DDEBCEA23A37D2A0090C366 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DDEBCE823A37D2A0090C366 /* MetalKit.framework */; };
 		8DDEBCEB23A37D2A0090C366 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DDEBCE923A37D2A0090C366 /* Metal.framework */; };
-		8DDEBCF123A3889B0090C366 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEBCEF23A3889B0090C366 /* Shaders.metal */; };
 		8DDEBCF323A38D1F0090C366 /* ModelIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DDEBCF223A38D1F0090C366 /* ModelIO.framework */; };
 		8DDEBCF823A3A9E90090C366 /* zen_metal_device.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEBCF723A3A9E90090C366 /* zen_metal_device.mm */; };
 		8DDEBCFC23A3DEF60090C366 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DDEBCFB23A3DEF60090C366 /* main.cpp */; };
@@ -60,7 +62,6 @@
 
 /* Begin PBXFileReference section */
 		8D1EBCFE23A8CE5000FD3627 /* zen_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image.cpp; sourceTree = "<group>"; };
-		8D1EBD0223A8D56C00FD3627 /* 1.raw */ = {isa = PBXFileReference; lastKnownFileType = file; name = 1.raw; path = ../../../../../../Desktop/1.raw; sourceTree = "<group>"; };
 		8D57186523A4019E00230B7E /* zen_vap2d_label.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_label.h; sourceTree = "<group>"; };
 		8D57186623A4019E00230B7E /* zen_vap2d_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_config.h; sourceTree = "<group>"; };
 		8D57186723A4019E00230B7E /* zen_vap2d_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_event.h; sourceTree = "<group>"; };
@@ -85,9 +86,18 @@
 		8D57188323A4055700230B7E /* zen_vap2d_gles2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_gles2.cpp; sourceTree = "<group>"; };
 		8D57188523A405C600230B7E /* zen_vap2d_metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_metal.h; sourceTree = "<group>"; };
 		8D57188623A405D800230B7E /* zen_vap2d_metal.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zen_vap2d_metal.mm; sourceTree = "<group>"; };
-		8D5E91EC239FC48600B7AD16 /* a.raw */ = {isa = PBXFileReference; lastKnownFileType = file; path = a.raw; sourceTree = "<group>"; };
 		8D5E91EF239FD50600B7AD16 /* MySprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySprite.h; sourceTree = "<group>"; };
-		8D7853BF23A7369D001F335E /* MyRootScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MyRootScene.cpp; sourceTree = "<group>"; };
+		8D6EA1742413791500DD665E /* Arial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Arial.ttf; path = ../Arial.ttf; sourceTree = "<group>"; };
+		8D78257B23FFA22A00ACD50F /* zen_image_png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_png.h; sourceTree = "<group>"; };
+		8D78257C23FFA22A00ACD50F /* zen_image_png.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_png.cpp; sourceTree = "<group>"; };
+		8D78257D23FFA22A00ACD50F /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		8D78257F23FFA22A00ACD50F /* zen_image_jpg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_jpg.h; sourceTree = "<group>"; };
+		8D78258023FFA22A00ACD50F /* zen_image_jpg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_jpg.cpp; sourceTree = "<group>"; };
+		8D78258123FFA22A00ACD50F /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		8D78258623FFA28C00ACD50F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = "../../../zen-external.git/external/jpeg/prebuilt/ios/libjpeg.a"; sourceTree = "<group>"; };
+		8D78258723FFA28C00ACD50F /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = "../../../zen-external.git/external/png/prebuilt/ios/libpng.a"; sourceTree = "<group>"; };
+		8D78258A23FFA93E00ACD50F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		8D78258C23FFABD200ACD50F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		8D7853C023A7369D001F335E /* MyRootScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MyRootScene.hpp; sourceTree = "<group>"; };
 		8D7853C223A73C9B001F335E /* zen_metal_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_metal_render.h; sourceTree = "<group>"; };
 		8D7853C323A73CA3001F335E /* zen_metal_render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zen_metal_render.mm; sourceTree = "<group>"; };
@@ -108,7 +118,7 @@
 		8D8B7279239BA311001AC2E8 /* zen_rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_rect.h; sourceTree = "<group>"; };
 		8D8B727E239BDB62001AC2E8 /* zen_system.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zen_system.mm; sourceTree = "<group>"; };
 		8D8B7319239BDB62001AC2E8 /* zen_system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_system.h; sourceTree = "<group>"; };
-		8DD7CD5123977B5D00D9D5D0 /* app-ios1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "app-ios1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DD7CD5123977B5D00D9D5D0 /* metal API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "metal API.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DD7CD6323977B6300D9D5D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DD7CD6523977B6300D9D5D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -154,7 +164,6 @@
 		8DDCAA0A239BFCA700F6455D /* zen_ft_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ft_render.h; sourceTree = "<group>"; };
 		8DDCAA0C239BFCA700F6455D /* zen_ft_render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_ft_render.cpp; sourceTree = "<group>"; };
 		8DDCAA0D239BFCA700F6455D /* zen_ft_library.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ft_library.h; sourceTree = "<group>"; };
-		8DDCAA15239C06DC00F6455D /* Arial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Arial.ttf; sourceTree = "<group>"; };
 		8DDE183D23A4A2EA003B1AF9 /* zen_gles2_prepare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_prepare.h; sourceTree = "<group>"; };
 		8DDE184823A4A5B4003B1AF9 /* zen_gles2_prepare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_prepare.cpp; sourceTree = "<group>"; };
 		8DDEBCC723A35FB50090C366 /* AppRuntimeIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppRuntimeIOS.h; sourceTree = "<group>"; };
@@ -171,8 +180,6 @@
 		8DDEBCE523A379840090C366 /* MetalAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalAppDelegate.h; sourceTree = "<group>"; };
 		8DDEBCE823A37D2A0090C366 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		8DDEBCE923A37D2A0090C366 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
-		8DDEBCEF23A3889B0090C366 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
-		8DDEBCF023A3889B0090C366 /* ShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		8DDEBCF223A38D1F0090C366 /* ModelIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ModelIO.framework; path = System/Library/Frameworks/ModelIO.framework; sourceTree = SDKROOT; };
 		8DDEBCF523A3A62D0090C366 /* zen_metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_metal.h; sourceTree = "<group>"; };
 		8DDEBCF623A3A67B0090C366 /* zen_metal_id.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_metal_id.h; sourceTree = "<group>"; };
@@ -192,11 +199,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D78258B23FFA93E00ACD50F /* libz.tbd in Frameworks */,
 				8DDEBCF323A38D1F0090C366 /* ModelIO.framework in Frameworks */,
 				8DDEBCEA23A37D2A0090C366 /* MetalKit.framework in Frameworks */,
 				8DDEBCEB23A37D2A0090C366 /* Metal.framework in Frameworks */,
 				8DD7CDD323978B0300D9D5D0 /* UIKit.framework in Frameworks */,
 				8DD7CDD123978AFE00D9D5D0 /* OpenGLES.framework in Frameworks */,
+				8D78258923FFA28C00ACD50F /* libpng.a in Frameworks */,
+				8D78258823FFA28C00ACD50F /* libjpeg.a in Frameworks */,
 				8DD7CDCF23978ABC00D9D5D0 /* GLKit.framework in Frameworks */,
 				8DFC500623A28E3000E4A50F /* libfreetype.a in Frameworks */,
 			);
@@ -237,6 +247,28 @@
 			path = "../../zen-vap2d";
 			sourceTree = "<group>";
 		};
+		8D78257A23FFA22A00ACD50F /* zen-png */ = {
+			isa = PBXGroup;
+			children = (
+				8D78257B23FFA22A00ACD50F /* zen_image_png.h */,
+				8D78257C23FFA22A00ACD50F /* zen_image_png.cpp */,
+				8D78257D23FFA22A00ACD50F /* README.txt */,
+			);
+			name = "zen-png";
+			path = "../../third/zen-png";
+			sourceTree = "<group>";
+		};
+		8D78257E23FFA22A00ACD50F /* zen-jpg */ = {
+			isa = PBXGroup;
+			children = (
+				8D78257F23FFA22A00ACD50F /* zen_image_jpg.h */,
+				8D78258023FFA22A00ACD50F /* zen_image_jpg.cpp */,
+				8D78258123FFA22A00ACD50F /* README.txt */,
+			);
+			name = "zen-jpg";
+			path = "../../third/zen-jpg";
+			sourceTree = "<group>";
+		};
 		8D8B71FB239B645B001AC2E8 /* zen-gles2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -259,15 +291,11 @@
 		8D8B724F239B7914001AC2E8 /* gles_src */ = {
 			isa = PBXGroup;
 			children = (
+				8D6EA1742413791500DD665E /* Arial.ttf */,
+				8D78258C23FFABD200ACD50F /* res */,
 				8D7853C023A7369D001F335E /* MyRootScene.hpp */,
 				8DDEBCFB23A3DEF60090C366 /* main.cpp */,
-				8D1EBD0223A8D56C00FD3627 /* 1.raw */,
-				8D5E91EC239FC48600B7AD16 /* a.raw */,
-				8DDCAA15239C06DC00F6455D /* Arial.ttf */,
-				8DDEBCEF23A3889B0090C366 /* Shaders.metal */,
-				8DDEBCF023A3889B0090C366 /* ShaderTypes.h */,
 				8D5E91EF239FD50600B7AD16 /* MySprite.h */,
-				8D7853BF23A7369D001F335E /* MyRootScene.cpp */,
 			);
 			name = gles_src;
 			path = ../gles_src;
@@ -295,10 +323,12 @@
 			isa = PBXGroup;
 			children = (
 				8DFC500723A28EED00E4A50F /* app-ios.entitlements */,
+				8D8B724F239B7914001AC2E8 /* gles_src */,
+				8D78257E23FFA22A00ACD50F /* zen-jpg */,
+				8D78257A23FFA22A00ACD50F /* zen-png */,
 				8D57186423A4019E00230B7E /* zen-vap2d */,
 				8DDEBCF423A3A62D0090C366 /* zen-metal */,
 				8DDCAA07239BFCA700F6455D /* zen-freetype */,
-				8D8B724F239B7914001AC2E8 /* gles_src */,
 				8D8B71FB239B645B001AC2E8 /* zen-gles2 */,
 				8D8B727C239BDB62001AC2E8 /* zen-system */,
 				8DD7CDE523978FA400D9D5D0 /* zen-image */,
@@ -315,7 +345,7 @@
 		8DD7CD5223977B5D00D9D5D0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DD7CD5123977B5D00D9D5D0 /* app-ios1.app */,
+				8DD7CD5123977B5D00D9D5D0 /* metal API.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -386,6 +416,9 @@
 		8DD7CDCD23978ABB00D9D5D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8D78258A23FFA93E00ACD50F /* libz.tbd */,
+				8D78258623FFA28C00ACD50F /* libjpeg.a */,
+				8D78258723FFA28C00ACD50F /* libpng.a */,
 				8DDEBCF223A38D1F0090C366 /* ModelIO.framework */,
 				8DDEBCE923A37D2A0090C366 /* Metal.framework */,
 				8DDEBCE823A37D2A0090C366 /* MetalKit.framework */,
@@ -509,7 +542,7 @@
 			);
 			name = "app-ios";
 			productName = gles_debug;
-			productReference = 8DD7CD5123977B5D00D9D5D0 /* app-ios1.app */;
+			productReference = 8DD7CD5123977B5D00D9D5D0 /* metal API.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -526,7 +559,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "app-ios" */;
+			buildConfigurationList = 8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "metal-vap2d" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -549,11 +582,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D1EBD0323A8D56C00FD3627 /* 1.raw in Resources */,
 				8DD7CD6423977B6300D9D5D0 /* LaunchScreen.storyboard in Resources */,
-				8D5E91ED239FC48700B7AD16 /* a.raw in Resources */,
+				8D78258D23FFABD200ACD50F /* res in Resources */,
+				8D6EA1752413791500DD665E /* Arial.ttf in Resources */,
 				8DD7CD6123977B6300D9D5D0 /* Assets.xcassets in Resources */,
-				8DDCAA16239C06DC00F6455D /* Arial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,13 +612,14 @@
 				8DD7CDC823977D3200D9D5D0 /* zen_md5.cpp in Sources */,
 				8D7853CD23A7702E001F335E /* zen_metal_prepare.mm in Sources */,
 				8DD7CDCA23977D3200D9D5D0 /* zen_csv.cpp in Sources */,
+				8D78258223FFA22A00ACD50F /* zen_image_png.cpp in Sources */,
 				8D57187F23A4019E00230B7E /* zen_vap2d_texture.cpp in Sources */,
 				8DDFDCAC23A6728800260FED /* zen_metal_pipe.mm in Sources */,
 				8D57187923A4019E00230B7E /* zen_vap2d_label.cpp in Sources */,
 				8D57188723A405D800230B7E /* zen_vap2d_metal.mm in Sources */,
 				8DDEBCE623A379850090C366 /* MetalViewController.mm in Sources */,
-				8DDEBCF123A3889B0090C366 /* Shaders.metal in Sources */,
 				8D57187B23A4019E00230B7E /* zen_vap2d_root.cpp in Sources */,
+				8D78258423FFA22A00ACD50F /* zen_image_jpg.cpp in Sources */,
 				8D8B731A239BDB62001AC2E8 /* zen_system.mm in Sources */,
 				8DDE184923A4A5B4003B1AF9 /* zen_gles2_prepare.cpp in Sources */,
 				8D7853CB23A7461C001F335E /* zen_gles2_render.cpp in Sources */,
@@ -594,7 +627,6 @@
 				8DDFDCAF23A6827A00260FED /* zen_metal_shader.metal in Sources */,
 				8DDEBCD223A35FB50090C366 /* AppRuntimeIOS.mm in Sources */,
 				8D57187E23A4019E00230B7E /* zen_vap2d_sprite.cpp in Sources */,
-				8D7853C123A7369D001F335E /* MyRootScene.cpp in Sources */,
 				8D57188123A4019E00230B7E /* zen_vap2d_layer.cpp in Sources */,
 				8D57188023A4019E00230B7E /* zen_vap2d_doodle.cpp in Sources */,
 				8DDEBCE723A379850090C366 /* MetalAppDelegate.mm in Sources */,
@@ -734,19 +766,35 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "app-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
 				DEVELOPMENT_TEAM = 87629D3R4B;
 				ENABLE_BITCODE = NO;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/include/ios\"";
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					ZEN_P_USE_METAL,
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../zen-external.git/external/freetype2/include/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/jpeg/include/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/png/include/ios\"",
+				);
 				INFOPLIST_FILE = gles_debug/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/prebuilt/ios\"";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../zen-external.git/external/freetype2/prebuilt/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/jpeg/prebuilt/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/png/prebuilt/ios\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "lea.meher.mac.gles-debug1";
-				PRODUCT_NAME = "app-ios1";
+				PRODUCT_NAME = "metal API";
+				STRIP_PNG_TEXT = NO;
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -758,19 +806,31 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "app-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
 				DEVELOPMENT_TEAM = 87629D3R4B;
 				ENABLE_BITCODE = NO;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/include/ios\"";
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = ZEN_P_USE_METAL;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../zen-external.git/external/freetype2/include/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/jpeg/include/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/png/include/ios\"",
+				);
 				INFOPLIST_FILE = gles_debug/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../zen-external.git/external/freetype2/prebuilt/ios\"";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../zen-external.git/external/freetype2/prebuilt/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/jpeg/prebuilt/ios\"",
+					"\"$(SRCROOT)/../../../zen-external.git/external/png/prebuilt/ios\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "lea.meher.mac.gles-debug1";
-				PRODUCT_NAME = "app-ios1";
+				PRODUCT_NAME = "metal API";
+				STRIP_PNG_TEXT = NO;
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -779,7 +839,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "app-ios" */ = {
+		8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "metal-vap2d" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8DD7CD6823977B6300D9D5D0 /* Debug */,

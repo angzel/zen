@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D8E75F923FFB09C00676548 /* GLESAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D8E75ED23FFB09C00676548 /* GLESAppDelegate.mm */; };
+		8D8E75FA23FFB09C00676548 /* GLESViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D8E75EE23FFB09C00676548 /* GLESViewController.mm */; };
+		8D8E75FB23FFB09C00676548 /* MetalViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D8E75F223FFB09C00676548 /* MetalViewController.mm */; };
+		8D8E75FC23FFB09C00676548 /* MetalAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D8E75F323FFB09C00676548 /* MetalAppDelegate.mm */; };
+		8D8E75FD23FFB09C00676548 /* AppRuntimeIOSMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D8E75F723FFB09C00676548 /* AppRuntimeIOSMain.mm */; };
+		8D8E75FE23FFB09C00676548 /* AppRuntimeIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D8E75F823FFB09C00676548 /* AppRuntimeIOS.mm */; };
 		8DD7CD6123977B6300D9D5D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */; };
 		8DD7CD6423977B6300D9D5D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CD6223977B6300D9D5D0 /* LaunchScreen.storyboard */; };
 		8DD7CDC823977D3200D9D5D0 /* zen_md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDBE23977D3100D9D5D0 /* zen_md5.cpp */; };
@@ -16,16 +22,26 @@
 		8DD7CDCF23978ABC00D9D5D0 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDCE23978ABB00D9D5D0 /* GLKit.framework */; };
 		8DD7CDD123978AFE00D9D5D0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */; };
 		8DD7CDD323978B0300D9D5D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDD223978B0300D9D5D0 /* UIKit.framework */; };
-		8DD7CDDF23978EAF00D9D5D0 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDD723978EAF00D9D5D0 /* ViewController.mm */; };
-		8DD7CDE023978EAF00D9D5D0 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDD923978EAF00D9D5D0 /* main.mm */; };
-		8DD7CDE123978EAF00D9D5D0 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDDA23978EAF00D9D5D0 /* AppDelegate.mm */; };
-		8DD7CDE223978EAF00D9D5D0 /* AppRuntimeIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDDD23978EAF00D9D5D0 /* AppRuntimeIOS.mm */; };
 		8DD7CDE423978EC200D9D5D0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDE323978EC200D9D5D0 /* main.cpp */; };
 		8DD7CDEB23978FA400D9D5D0 /* zen_image_raw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7CDE823978FA400D9D5D0 /* zen_image_raw.cpp */; };
 		8DD7CDEC23978FA400D9D5D0 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CDE923978FA400D9D5D0 /* README.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D78259C23FFAE6F00ACD50F /* zen_app_runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_runtime.h; sourceTree = "<group>"; };
+		8D78259D23FFAE6F00ACD50F /* zen_app_delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_delegate.h; sourceTree = "<group>"; };
+		8D78259E23FFAE6F00ACD50F /* zen_app_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_config.h; sourceTree = "<group>"; };
+		8D8E75ED23FFB09C00676548 /* GLESAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLESAppDelegate.mm; sourceTree = "<group>"; };
+		8D8E75EE23FFB09C00676548 /* GLESViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLESViewController.mm; sourceTree = "<group>"; };
+		8D8E75EF23FFB09C00676548 /* GLESViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESViewController.h; sourceTree = "<group>"; };
+		8D8E75F023FFB09C00676548 /* GLESAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESAppDelegate.h; sourceTree = "<group>"; };
+		8D8E75F223FFB09C00676548 /* MetalViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalViewController.mm; sourceTree = "<group>"; };
+		8D8E75F323FFB09C00676548 /* MetalAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalAppDelegate.mm; sourceTree = "<group>"; };
+		8D8E75F423FFB09C00676548 /* MetalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalViewController.h; sourceTree = "<group>"; };
+		8D8E75F523FFB09C00676548 /* MetalAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalAppDelegate.h; sourceTree = "<group>"; };
+		8D8E75F623FFB09C00676548 /* AppRuntimeIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppRuntimeIOS.h; sourceTree = "<group>"; };
+		8D8E75F723FFB09C00676548 /* AppRuntimeIOSMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppRuntimeIOSMain.mm; sourceTree = "<group>"; };
+		8D8E75F823FFB09C00676548 /* AppRuntimeIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppRuntimeIOS.mm; sourceTree = "<group>"; };
 		8DD7CD5123977B5D00D9D5D0 /* app-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "app-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DD7CD6323977B6300D9D5D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -62,15 +78,6 @@
 		8DD7CDCE23978ABB00D9D5D0 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8DD7CDD223978B0300D9D5D0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		8DD7CDD523978EAF00D9D5D0 /* zen_app_delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_delegate.h; sourceTree = "<group>"; };
-		8DD7CDD723978EAF00D9D5D0 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
-		8DD7CDD823978EAF00D9D5D0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		8DD7CDD923978EAF00D9D5D0 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
-		8DD7CDDA23978EAF00D9D5D0 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		8DD7CDDB23978EAF00D9D5D0 /* AppRuntimeIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppRuntimeIOS.h; sourceTree = "<group>"; };
-		8DD7CDDC23978EAF00D9D5D0 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		8DD7CDDD23978EAF00D9D5D0 /* AppRuntimeIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppRuntimeIOS.mm; sourceTree = "<group>"; };
-		8DD7CDDE23978EAF00D9D5D0 /* zen_app_runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_runtime.h; sourceTree = "<group>"; };
 		8DD7CDE323978EC200D9D5D0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 		8DD7CDE623978FA400D9D5D0 /* zen_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image.h; sourceTree = "<group>"; };
 		8DD7CDE723978FA400D9D5D0 /* zen_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_color.h; sourceTree = "<group>"; };
@@ -93,6 +100,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8D8E75EB23FFB09C00676548 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				8D8E75EC23FFB09C00676548 /* gles2 */,
+				8D8E75F123FFB09C00676548 /* metal */,
+				8D8E75F623FFB09C00676548 /* AppRuntimeIOS.h */,
+				8D8E75F723FFB09C00676548 /* AppRuntimeIOSMain.mm */,
+				8D8E75F823FFB09C00676548 /* AppRuntimeIOS.mm */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		8D8E75EC23FFB09C00676548 /* gles2 */ = {
+			isa = PBXGroup;
+			children = (
+				8D8E75ED23FFB09C00676548 /* GLESAppDelegate.mm */,
+				8D8E75EE23FFB09C00676548 /* GLESViewController.mm */,
+				8D8E75EF23FFB09C00676548 /* GLESViewController.h */,
+				8D8E75F023FFB09C00676548 /* GLESAppDelegate.h */,
+			);
+			path = gles2;
+			sourceTree = "<group>";
+		};
+		8D8E75F123FFB09C00676548 /* metal */ = {
+			isa = PBXGroup;
+			children = (
+				8D8E75F223FFB09C00676548 /* MetalViewController.mm */,
+				8D8E75F323FFB09C00676548 /* MetalAppDelegate.mm */,
+				8D8E75F423FFB09C00676548 /* MetalViewController.h */,
+				8D8E75F523FFB09C00676548 /* MetalAppDelegate.h */,
+			);
+			path = metal;
+			sourceTree = "<group>";
+		};
 		8DD7CD4823977B5D00D9D5D0 = {
 			isa = PBXGroup;
 			children = (
@@ -192,26 +233,13 @@
 		8DD7CDD423978EAF00D9D5D0 /* zen-app */ = {
 			isa = PBXGroup;
 			children = (
-				8DD7CDDE23978EAF00D9D5D0 /* zen_app_runtime.h */,
-				8DD7CDD523978EAF00D9D5D0 /* zen_app_delegate.h */,
-				8DD7CDD623978EAF00D9D5D0 /* ios */,
+				8D8E75EB23FFB09C00676548 /* ios */,
+				8D78259E23FFAE6F00ACD50F /* zen_app_config.h */,
+				8D78259D23FFAE6F00ACD50F /* zen_app_delegate.h */,
+				8D78259C23FFAE6F00ACD50F /* zen_app_runtime.h */,
 			);
 			name = "zen-app";
 			path = "../../zen-app";
-			sourceTree = "<group>";
-		};
-		8DD7CDD623978EAF00D9D5D0 /* ios */ = {
-			isa = PBXGroup;
-			children = (
-				8DD7CDD723978EAF00D9D5D0 /* ViewController.mm */,
-				8DD7CDD823978EAF00D9D5D0 /* AppDelegate.h */,
-				8DD7CDD923978EAF00D9D5D0 /* main.mm */,
-				8DD7CDDA23978EAF00D9D5D0 /* AppDelegate.mm */,
-				8DD7CDDB23978EAF00D9D5D0 /* AppRuntimeIOS.h */,
-				8DD7CDDC23978EAF00D9D5D0 /* ViewController.h */,
-				8DD7CDDD23978EAF00D9D5D0 /* AppRuntimeIOS.mm */,
-			);
-			path = ios;
 			sourceTree = "<group>";
 		};
 		8DD7CDE523978FA400D9D5D0 /* zen-image */ = {
@@ -261,7 +289,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "app-ios" */;
+			buildConfigurationList = 8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "opengles-app" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -299,14 +327,16 @@
 			files = (
 				8DD7CDEB23978FA400D9D5D0 /* zen_image_raw.cpp in Sources */,
 				8DD7CDCB23977D3200D9D5D0 /* zen_base64.cpp in Sources */,
-				8DD7CDE223978EAF00D9D5D0 /* AppRuntimeIOS.mm in Sources */,
-				8DD7CDE123978EAF00D9D5D0 /* AppDelegate.mm in Sources */,
-				8DD7CDDF23978EAF00D9D5D0 /* ViewController.mm in Sources */,
-				8DD7CDE023978EAF00D9D5D0 /* main.mm in Sources */,
 				8DD7CDC823977D3200D9D5D0 /* zen_md5.cpp in Sources */,
+				8D8E75F923FFB09C00676548 /* GLESAppDelegate.mm in Sources */,
+				8D8E75FE23FFB09C00676548 /* AppRuntimeIOS.mm in Sources */,
+				8D8E75FB23FFB09C00676548 /* MetalViewController.mm in Sources */,
 				8DD7CDCA23977D3200D9D5D0 /* zen_csv.cpp in Sources */,
 				8DD7CDE423978EC200D9D5D0 /* main.cpp in Sources */,
 				8DD7CDC923977D3200D9D5D0 /* zen_urlcoding.cpp in Sources */,
+				8D8E75FC23FFB09C00676548 /* MetalAppDelegate.mm in Sources */,
+				8D8E75FA23FFB09C00676548 /* GLESViewController.mm in Sources */,
+				8D8E75FD23FFB09C00676548 /* AppRuntimeIOSMain.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +469,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 87629D3R4B;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = gles_debug/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -456,6 +491,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 87629D3R4B;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = gles_debug/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -471,7 +508,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "app-ios" */ = {
+		8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "opengles-app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8DD7CD6823977B6300D9D5D0 /* Debug */,
