@@ -39,7 +39,7 @@ namespace Zen {
 		virtual ~Object() = default;
 	};
 	
-	class Uncopyable
+	class Uncopyable : public Object
 	{
 	public:
 		Uncopyable() = default;
@@ -71,7 +71,6 @@ protected: type name
 public: type const & get_method() const { return name; } \
 public: void set_method(type const & v) { this->name = v; } \
 protected: type name
-
 
 #define PUBLIC_MEMBER_GET(type, name, get_method) \
 public: type const & get_method() const { return name; } \

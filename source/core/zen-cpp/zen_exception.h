@@ -59,7 +59,7 @@ namespace Zen {
 			Zen::LogE("Exception@ %s %d (%s) E=%d", file, line, whatStr, error);
 #endif
 		}
-		virtual char const * what() const throw() 
+		virtual char const * what() const throw() override
 		{
 			return mWhat.data();
 		}

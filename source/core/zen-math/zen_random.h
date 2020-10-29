@@ -115,7 +115,7 @@ namespace Zen
 		}
 	};
 	
-	/* @ RandRNG
+	/* @ RandomNG
 	 tRandRun: raw random function. has operator() and ctor(uint)/ctor()/ctor(copy).
 	 VMax: tRandRun will generate the numbers in the range [0, VMax).
 	 */

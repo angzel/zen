@@ -1,5 +1,6 @@
 # vi
 *.swp
+
 # mac
 .DS_Store
 xcuserdata
@@ -10,6 +11,7 @@ gradle.properties
 .gradle
 .idea
 .externalNativeBuild
+
 # build
 build
 gradle
