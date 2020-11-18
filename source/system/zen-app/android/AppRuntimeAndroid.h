@@ -23,7 +23,7 @@
 
 #if defined(__ANDROID__)
 
-#include "zen_app_runtime.h"
+#include "zen_app.h"
 #include "zen_log.h"
 #include "zen_vector.h"
 #include "AppNative.h"
@@ -33,7 +33,7 @@
 #include <string>
 
 namespace Zen {
-	class AppRuntimeAndroid : public AppRuntime
+	class AppRuntimeAndroid : public App
 	{
 	protected:
 		Zen::AppRuntimeDelegate* mDelegate = nullptr;

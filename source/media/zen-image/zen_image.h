@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -31,13 +31,16 @@ namespace Zen {
 	class Image
 	{
 	public:
-		inline static std::shared_ptr<Image> Create(ePixel format, size_t width, size_t height);
-		inline static std::shared_ptr<Image> CreateWidthData(ePixel format, size_t width, size_t height, void const * data);
-		inline static std::shared_ptr<Image> CreateWidthByte(ePixel format, size_t width, size_t height, uint8_t byte);
+		static std::shared_ptr<Image> Create(ePixel format, size_t width, size_t height);
+		static std::shared_ptr<Image> CreateWidthData(ePixel format, size_t width, size_t height, void const * data);
+		/*
+		 use {byte} to fill data area.
+		 **/
+		static std::shared_ptr<Image> CreateWidthByte(ePixel format, size_t width, size_t height, uint8_t byte);
 
-		uint8_t * bytes() { return m_buffer.data(); }
+		uint8_t * data() { return m_buffer.data(); }
 		size_t size() const { return m_buffer.size(); }
-		uint8_t const * bytes() const { return m_buffer.data(); }
+		uint8_t const * data() const { return m_buffer.data(); }
 		ePixel format() const { return m_format; }
 		size_t width() const { return m_width; }
 		size_t height() const { return m_height; }
@@ -88,40 +91,4 @@ namespace Zen {
 		virtual ~ImageEncoder() = default;
 	};
 
-}
-
-namespace Zen {
-
-	inline std::shared_ptr<Image> Image::CreateWidthData(ePixel format, size_t width, size_t height, void const * data)
-	{
-		if(data == nullptr)
-			return nullptr;
-
-		auto a = std::shared_ptr<Image>(new Image);
-
-		a->m_width = width;
-		a->m_height = height;
-		a->m_format = format;
-		auto size = width * height *  (int)format;
-		auto buf = (uint8_t const*)data;
-		a->m_buffer.assign(buf, buf + size);
-
-		return a;
-	}
-	inline std::shared_ptr<Image> Image::CreateWidthByte(ePixel format, size_t width, size_t height, uint8_t byte)
-	{
-		auto a = std::shared_ptr<Image>(new Image);
-
-		a->m_width = width;
-		a->m_height = height;
-		a->m_format = format;
-		auto size = width * height *  (int)format;
-		a->m_buffer.assign(size, byte);
-
-		return a;
-	}
-	inline std::shared_ptr<Image> Image::Create(ePixel format, size_t width, size_t height)
-	{
-		return CreateWidthByte(format, width, height, 0);
-	}
 }

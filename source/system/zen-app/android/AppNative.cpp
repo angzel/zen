@@ -13,7 +13,7 @@
 #define CLASS_NAME "zen/app/AppNative"
 
 #include "zen_android.h"
-#include "zen_app_runtime.h"
+#include "zen_app.h"
 #include "zen_log.h"
 #include "zen_exception.h"
 #include "AppNative.h"

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -20,12 +20,14 @@
  */
 
 #include "AppRuntimeIOS.h"
+
+#if defined(ZEN_OS_IOS)
 #include "GLESAppDelegate.h"
 #include "GLESViewController.h"
 
 AppRuntimeIOS * AppRuntimeIOS::_me = new AppRuntimeIOS();
 
-Zen::AppRuntime * Zen::AppRuntime::S()
+Zen::App * Zen::App::S()
 {
 	return AppRuntimeIOS::S();
 }
@@ -69,7 +71,7 @@ void AppRuntimeIOS::resume()
 {
 	if(!m_is_paused) return;
 	mDelegate->onResume();
-	m_is_paused = true;
+	m_is_paused = false;
 }
 
 void AppRuntimeIOS::touchDown(Zen::AppTouch touch)
@@ -91,3 +93,4 @@ void AppRuntimeIOS::touchMove(Zen::AppTouch touch)
 {
 	mDelegate->onTouchMove(touch);
 }
+#endif

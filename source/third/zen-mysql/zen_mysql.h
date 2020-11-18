@@ -34,3 +34,8 @@
  ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY ':password';
 
  */
+
+/**
+make sure dynamic libraries have been included.
+ LD_RUNPATH_SEARCH_PATHS = <....>/mysql8/lib
+ */

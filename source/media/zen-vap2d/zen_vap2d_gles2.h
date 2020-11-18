@@ -47,9 +47,13 @@ namespace Zen { namespace Vap2d {
 		GL::Render::S()->clear();
 	}
 
-	inline void _endRender()
+	inline void _EndRender()
 	{
 	}
 
+	/**
+	 only for gl
+	 */
+	void _PerformBlend(eBlend blend);
 }}
 

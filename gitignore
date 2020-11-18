@@ -1,21 +1,65 @@
-# vi
-*.swp
-
-# mac
-.DS_Store
-xcuserdata
-
-# android
-local.properties
-gradle.properties
-.gradle
-.idea
-.externalNativeBuild
-
-# build
-build
-gradle
-
-# alias
+# ignore library reference.
 /external
 
+# for mac/iOS
+xcuserdata
+.DS_Store
+
+#
+# below for android
+# from stackoverflow by sam
+#
+# http://stackoverflow.com/questions/16736856/what-should-be-in-my-gitignore-for-an-android-studio-project
+#
+
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+
+.DS_Store
+
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+*.iml
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/
+
+#NDK
+obj/
+
+
+*.swp
+*~

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "zen_app_runtime.h"
+#include "zen_app.h"
 #include "zen_ticker.h"
 #include <vector>
 #include <mutex>
@@ -40,15 +40,10 @@ namespace Zen { namespace Vap2d {
 
 		/**
 		 @function run
-		 - call this in Main function.
+		 - call this in your MAIN (maybe 'ZenAppMain') function (must & only once).
 		 */
-		virtual void run() = 0;
-		/**
-		 @function setDelegate
-		 set the delegate in the function ZenAppMain so that onLaunch could be called rightly.
-		 if reset a new one, the original delegate is not deleted here.
-		 */
-		virtual void setDelegate(std::shared_ptr<RootDelegate> delegate) = 0;
+		virtual void run(std::shared_ptr<RootDelegate> delegate) = 0;
+
 		virtual std::shared_ptr<RootDelegate> getDelegate() = 0;
 
 	public: // below functions not valid before onLaunch.
@@ -58,6 +53,7 @@ namespace Zen { namespace Vap2d {
 		 - design size
 		 */
 		virtual void setViewSize(Size2 size) = 0;
+
 		virtual Size2 getViewSize() = 0;
 
 		/**
@@ -73,10 +69,14 @@ namespace Zen { namespace Vap2d {
 		virtual Zen::Color4f getBackgroundColor() = 0;
 
 		/**
-		 total running time. ( not include paused time)
+		 total running time ( not includes paused time)
 		 */
-		virtual double getRunningTime() = 0;
+		virtual std::chrono::microseconds getRunningTime() = 0;
 
+		/**
+		 total time since app started (includes paused time).
+		 */
+		virtual std::chrono::microseconds getTotalTime() = 0;
 		/**
 		 @function replaceRootNode
 		 the original root node will auto remove(). dont remove() or delete any more.

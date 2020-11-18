@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -26,11 +26,18 @@
 
 namespace Zen
 {
-	class ImagePNGCoder : public ImageDecoder, public ImageEncoder
+	class ImagePNGDecoder : public ImageDecoder
 	{
 	public:
 		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) override;
+	};
+	class ImagePNGEncoder : public ImageEncoder
+	{
+	public:
 		virtual std::vector<uint8_t> encode(Image const &) override;
+	};
+	class ImagePNGCoder : public ImagePNGDecoder, public ImagePNGEncoder
+	{
 	};
 }
 

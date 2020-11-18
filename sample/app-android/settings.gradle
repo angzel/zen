@@ -1,6 +1,0 @@
-include ':app'
-include ':zen-app'
-project(':zen-app').projectDir = new File(settingsDir, '../../zen-app/android/as/')
-include ':zen-system'
-project(':zen-system').projectDir = new File(settingsDir, '../../zen-system/android/as/')
-

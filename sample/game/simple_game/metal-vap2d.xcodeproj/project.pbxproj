@@ -1,0 +1,884 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D348F21254E91000074912A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F1E254E91000074912A /* main.cpp */; };
+		8D349006254E91180074912A /* zen_image_jpg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F49254E91170074912A /* zen_image_jpg.cpp */; };
+		8D349008254E91180074912A /* zen_image_png.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F4D254E91170074912A /* zen_image_png.cpp */; };
+		8D34900D254E91180074912A /* zen_ft_library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F58254E91170074912A /* zen_ft_library.cpp */; };
+		8D34900F254E91180074912A /* zen_ft_render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F5C254E91170074912A /* zen_ft_render.cpp */; };
+		8D349017254E91180074912A /* zen_al_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F74254E91170074912A /* zen_al_player.cpp */; };
+		8D349018254E91180074912A /* zen_gles2_prepare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F7E254E91170074912A /* zen_gles2_prepare.cpp */; };
+		8D349019254E91180074912A /* zen_gles2_render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348F81254E91170074912A /* zen_gles2_render.cpp */; };
+		8D349041254E91180074912A /* zen_audio_raw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FDE254E91180074912A /* zen_audio_raw.cpp */; };
+		8D349042254E91180074912A /* zen_audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FE0254E91180074912A /* zen_audio.cpp */; };
+		8D349043254E91180074912A /* zen_audio_wav.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FE1254E91180074912A /* zen_audio_wav.cpp */; };
+		8D349044254E91180074912A /* zen_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FE4254E91180074912A /* zen_image.cpp */; };
+		8D349045254E91180074912A /* zen_image_raw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FE6254E91180074912A /* zen_image_raw.cpp */; };
+		8D349047254E91180074912A /* zen_vap2d_label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FEF254E91180074912A /* zen_vap2d_label.cpp */; };
+		8D349048254E91180074912A /* zen_vap2d_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FF1254E91180074912A /* zen_vap2d_metal.mm */; };
+		8D349049254E91180074912A /* zen_vap2d_particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FF2254E91180074912A /* zen_vap2d_particle.cpp */; };
+		8D34904A254E91180074912A /* zen_vap2d_root.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FF3254E91180074912A /* zen_vap2d_root.cpp */; };
+		8D34904B254E91180074912A /* zen_vap2d_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FF5254E91180074912A /* zen_vap2d_event.cpp */; };
+		8D34904C254E91180074912A /* zen_vap2d_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FF7254E91180074912A /* zen_vap2d_node.cpp */; };
+		8D34904D254E91180074912A /* zen_vap2d_sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FF8254E91180074912A /* zen_vap2d_sprite.cpp */; };
+		8D34904E254E91180074912A /* zen_vap2d_texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FFA254E91180074912A /* zen_vap2d_texture.cpp */; };
+		8D34904F254E91180074912A /* zen_vap2d_gles2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FFB254E91180074912A /* zen_vap2d_gles2.cpp */; };
+		8D349050254E91180074912A /* zen_vap2d_doodle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D348FFF254E91180074912A /* zen_vap2d_doodle.cpp */; };
+		8D349051254E91180074912A /* zen_vap2d_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D349001254E91180074912A /* zen_vap2d_layer.cpp */; };
+		8D349064254EAA1C0074912A /* libfreetype-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D349061254EAA1B0074912A /* libfreetype-ios.a */; };
+		8D349065254EAA1C0074912A /* libjpeg-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D349062254EAA1B0074912A /* libjpeg-ios.a */; };
+		8D349066254EAA1C0074912A /* libpng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D349063254EAA1C0074912A /* libpng-ios.a */; };
+		8D349069254EAC170074912A /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D349068254EAC170074912A /* OpenAL.framework */; };
+		8D34906E254EAF410074912A /* res in Resources */ = {isa = PBXBuildFile; fileRef = 8D34906D254EAF410074912A /* res */; };
+		8D4BC27B256577CC00B3AB05 /* zen_info.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC241256577CB00B3AB05 /* zen_info.mm */; };
+		8D4BC289256577CC00B3AB05 /* GLESAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC25B256577CB00B3AB05 /* GLESAppDelegate.mm */; };
+		8D4BC28A256577CC00B3AB05 /* GLESViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC25C256577CB00B3AB05 /* GLESViewController.mm */; };
+		8D4BC28B256577CC00B3AB05 /* MetalViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC260256577CB00B3AB05 /* MetalViewController.mm */; };
+		8D4BC28C256577CC00B3AB05 /* MetalAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC261256577CB00B3AB05 /* MetalAppDelegate.mm */; };
+		8D4BC28D256577CC00B3AB05 /* AppRuntimeIOSMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC265256577CB00B3AB05 /* AppRuntimeIOSMain.mm */; };
+		8D4BC28E256577CC00B3AB05 /* AppRuntimeIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC266256577CB00B3AB05 /* AppRuntimeIOS.mm */; };
+		8D6AFEB92563EF2F00258AFA /* zen_md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D6AFEAA2563EF2F00258AFA /* zen_md5.cpp */; };
+		8D6AFEBA2563EF2F00258AFA /* zen_urlcoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D6AFEAB2563EF2F00258AFA /* zen_urlcoding.cpp */; };
+		8D6AFEBB2563EF2F00258AFA /* zen_csv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D6AFEAD2563EF2F00258AFA /* zen_csv.cpp */; };
+		8D6AFEBC2563EF2F00258AFA /* zen_base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D6AFEAE2563EF2F00258AFA /* zen_base64.cpp */; };
+		8D78258B23FFA93E00ACD50F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D78258A23FFA93E00ACD50F /* libz.tbd */; };
+		8DD7CD6123977B6300D9D5D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */; };
+		8DD7CD6423977B6300D9D5D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DD7CD6223977B6300D9D5D0 /* LaunchScreen.storyboard */; };
+		8DD7CDCF23978ABC00D9D5D0 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDCE23978ABB00D9D5D0 /* GLKit.framework */; };
+		8DD7CDD123978AFE00D9D5D0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */; platformFilter = ios; };
+		8DD7CDD323978B0300D9D5D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DD7CDD223978B0300D9D5D0 /* UIKit.framework */; };
+		8DDEBCF323A38D1F0090C366 /* ModelIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DDEBCF223A38D1F0090C366 /* ModelIO.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8D348F1C254E91000074912A /* MySprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySprite.h; sourceTree = "<group>"; };
+		8D348F1D254E91000074912A /* MyRootScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyRootScene.h; sourceTree = "<group>"; };
+		8D348F1E254E91000074912A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		8D348F48254E91170074912A /* zen_image_jpg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_jpg.h; sourceTree = "<group>"; };
+		8D348F49254E91170074912A /* zen_image_jpg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_jpg.cpp; sourceTree = "<group>"; };
+		8D348F4C254E91170074912A /* zen_image_png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_png.h; sourceTree = "<group>"; };
+		8D348F4D254E91170074912A /* zen_image_png.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_png.cpp; sourceTree = "<group>"; };
+		8D348F58254E91170074912A /* zen_ft_library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_ft_library.cpp; sourceTree = "<group>"; };
+		8D348F59254E91170074912A /* zen_freetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_freetype.h; sourceTree = "<group>"; };
+		8D348F5A254E91170074912A /* zen_ft_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ft_render.h; sourceTree = "<group>"; };
+		8D348F5C254E91170074912A /* zen_ft_render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_ft_render.cpp; sourceTree = "<group>"; };
+		8D348F5D254E91170074912A /* zen_ft_library.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ft_library.h; sourceTree = "<group>"; };
+		8D348F6F254E91170074912A /* zen_al_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_al_player.h; sourceTree = "<group>"; };
+		8D348F70254E91170074912A /* zen_al_platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_al_platform.h; sourceTree = "<group>"; };
+		8D348F71254E91170074912A /* zen_al_source.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_al_source.h; sourceTree = "<group>"; };
+		8D348F72254E91170074912A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8D348F73254E91170074912A /* zen_al.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_al.h; sourceTree = "<group>"; };
+		8D348F74254E91170074912A /* zen_al_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_al_player.cpp; sourceTree = "<group>"; };
+		8D348F75254E91170074912A /* zen_al_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_al_buffer.h; sourceTree = "<group>"; };
+		8D348F77254E91170074912A /* zen_gles2_enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_enum.h; sourceTree = "<group>"; };
+		8D348F78254E91170074912A /* zen_gles2_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_buffer.h; sourceTree = "<group>"; };
+		8D348F79254E91170074912A /* zen_gles2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2.h; sourceTree = "<group>"; };
+		8D348F7A254E91170074912A /* zen_gles2_frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_frame.h; sourceTree = "<group>"; };
+		8D348F7B254E91170074912A /* zen_gles2_image2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_image2d.h; sourceTree = "<group>"; };
+		8D348F7C254E91170074912A /* zen_gles2_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_render.h; sourceTree = "<group>"; };
+		8D348F7D254E91170074912A /* zen_gles2_prepare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_prepare.h; sourceTree = "<group>"; };
+		8D348F7E254E91170074912A /* zen_gles2_prepare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_prepare.cpp; sourceTree = "<group>"; };
+		8D348F7F254E91170074912A /* zen_egl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_egl.h; sourceTree = "<group>"; };
+		8D348F80254E91170074912A /* zen_gles2_shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_gles2_shader.h; sourceTree = "<group>"; };
+		8D348F81254E91170074912A /* zen_gles2_render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_gles2_render.cpp; sourceTree = "<group>"; };
+		8D348FDC254E91180074912A /* zen_audio_raw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio_raw.h; sourceTree = "<group>"; };
+		8D348FDD254E91180074912A /* zen_audio_wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio_wav.h; sourceTree = "<group>"; };
+		8D348FDE254E91180074912A /* zen_audio_raw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_audio_raw.cpp; sourceTree = "<group>"; };
+		8D348FDF254E91180074912A /* zen_audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_audio.h; sourceTree = "<group>"; };
+		8D348FE0254E91180074912A /* zen_audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_audio.cpp; sourceTree = "<group>"; };
+		8D348FE1254E91180074912A /* zen_audio_wav.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_audio_wav.cpp; sourceTree = "<group>"; };
+		8D348FE3254E91180074912A /* zen_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image.h; sourceTree = "<group>"; };
+		8D348FE4254E91180074912A /* zen_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image.cpp; sourceTree = "<group>"; };
+		8D348FE5254E91180074912A /* zen_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_color.h; sourceTree = "<group>"; };
+		8D348FE6254E91180074912A /* zen_image_raw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_raw.cpp; sourceTree = "<group>"; };
+		8D348FE8254E91180074912A /* zen_image_raw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_raw.h; sourceTree = "<group>"; };
+		8D348FEA254E91180074912A /* zen_vap2d_label.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_label.h; sourceTree = "<group>"; };
+		8D348FEB254E91180074912A /* zen_vap2d_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_config.h; sourceTree = "<group>"; };
+		8D348FEC254E91180074912A /* zen_vap2d_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_event.h; sourceTree = "<group>"; };
+		8D348FED254E91180074912A /* zen_vap2d_root.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_root.h; sourceTree = "<group>"; };
+		8D348FEE254E91180074912A /* zen_vap2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d.h; sourceTree = "<group>"; };
+		8D348FEF254E91180074912A /* zen_vap2d_label.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_label.cpp; sourceTree = "<group>"; };
+		8D348FF0254E91180074912A /* zen_vap2d_layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_layer.h; sourceTree = "<group>"; };
+		8D348FF1254E91180074912A /* zen_vap2d_metal.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zen_vap2d_metal.mm; sourceTree = "<group>"; };
+		8D348FF2254E91180074912A /* zen_vap2d_particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_particle.cpp; sourceTree = "<group>"; };
+		8D348FF3254E91180074912A /* zen_vap2d_root.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_root.cpp; sourceTree = "<group>"; };
+		8D348FF4254E91180074912A /* zen_vap2d_doodle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_doodle.h; sourceTree = "<group>"; };
+		8D348FF5254E91180074912A /* zen_vap2d_event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_event.cpp; sourceTree = "<group>"; };
+		8D348FF6254E91180074912A /* zen_vap2d_texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_texture.h; sourceTree = "<group>"; };
+		8D348FF7254E91180074912A /* zen_vap2d_node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_node.cpp; sourceTree = "<group>"; };
+		8D348FF8254E91180074912A /* zen_vap2d_sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_sprite.cpp; sourceTree = "<group>"; };
+		8D348FF9254E91180074912A /* zen_vap2d_particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_particle.h; sourceTree = "<group>"; };
+		8D348FFA254E91180074912A /* zen_vap2d_texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_texture.cpp; sourceTree = "<group>"; };
+		8D348FFB254E91180074912A /* zen_vap2d_gles2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_gles2.cpp; sourceTree = "<group>"; };
+		8D348FFC254E91180074912A /* zen_vap2d_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_node.h; sourceTree = "<group>"; };
+		8D348FFD254E91180074912A /* zen_vap2d_sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_sprite.h; sourceTree = "<group>"; };
+		8D348FFE254E91180074912A /* zen_vap2d_metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_metal.h; sourceTree = "<group>"; };
+		8D348FFF254E91180074912A /* zen_vap2d_doodle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_doodle.cpp; sourceTree = "<group>"; };
+		8D349000254E91180074912A /* zen_vap2d_gles2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vap2d_gles2.h; sourceTree = "<group>"; };
+		8D349001254E91180074912A /* zen_vap2d_layer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_vap2d_layer.cpp; sourceTree = "<group>"; };
+		8D349061254EAA1B0074912A /* libfreetype-ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfreetype-ios.a"; path = "../../../../zen-external.git/external/ios/prebuilt/libfreetype-ios.a"; sourceTree = "<group>"; };
+		8D349062254EAA1B0074912A /* libjpeg-ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libjpeg-ios.a"; path = "../../../../zen-external.git/external/ios/prebuilt/libjpeg-ios.a"; sourceTree = "<group>"; };
+		8D349063254EAA1C0074912A /* libpng-ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-ios.a"; path = "../../../../zen-external.git/external/ios/prebuilt/libpng-ios.a"; sourceTree = "<group>"; };
+		8D349068254EAC170074912A /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		8D34906D254EAF410074912A /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
+		8D4BC23F256577CB00B3AB05 /* zen_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_info.h; sourceTree = "<group>"; };
+		8D4BC241256577CB00B3AB05 /* zen_info.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zen_info.mm; sourceTree = "<group>"; };
+		8D4BC242256577CB00B3AB05 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8D4BC256256577CB00B3AB05 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8D4BC258256577CB00B3AB05 /* zen_app_delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_delegate.h; sourceTree = "<group>"; };
+		8D4BC25B256577CB00B3AB05 /* GLESAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLESAppDelegate.mm; sourceTree = "<group>"; };
+		8D4BC25C256577CB00B3AB05 /* GLESViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLESViewController.mm; sourceTree = "<group>"; };
+		8D4BC25D256577CB00B3AB05 /* GLESViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESViewController.h; sourceTree = "<group>"; };
+		8D4BC25E256577CB00B3AB05 /* GLESAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESAppDelegate.h; sourceTree = "<group>"; };
+		8D4BC260256577CB00B3AB05 /* MetalViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalViewController.mm; sourceTree = "<group>"; };
+		8D4BC261256577CB00B3AB05 /* MetalAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalAppDelegate.mm; sourceTree = "<group>"; };
+		8D4BC262256577CB00B3AB05 /* MetalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalViewController.h; sourceTree = "<group>"; };
+		8D4BC263256577CB00B3AB05 /* MetalAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetalAppDelegate.h; sourceTree = "<group>"; };
+		8D4BC264256577CB00B3AB05 /* AppRuntimeIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppRuntimeIOS.h; sourceTree = "<group>"; };
+		8D4BC265256577CB00B3AB05 /* AppRuntimeIOSMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppRuntimeIOSMain.mm; sourceTree = "<group>"; };
+		8D4BC266256577CB00B3AB05 /* AppRuntimeIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppRuntimeIOS.mm; sourceTree = "<group>"; };
+		8D4BC267256577CB00B3AB05 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8D4BC279256577CC00B3AB05 /* zen_app_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app_config.h; sourceTree = "<group>"; };
+		8D4BC27A256577CC00B3AB05 /* zen_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_app.h; sourceTree = "<group>"; };
+		8D6AFE992563EF2F00258AFA /* zen_meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_meta.h; sourceTree = "<group>"; };
+		8D6AFE9A2563EF2F00258AFA /* zen_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_log.h; sourceTree = "<group>"; };
+		8D6AFE9B2563EF2F00258AFA /* zen_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_endian.h; sourceTree = "<group>"; };
+		8D6AFE9C2563EF2F00258AFA /* zen_object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_object.h; sourceTree = "<group>"; };
+		8D6AFE9D2563EF2F00258AFA /* zen_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_os.h; sourceTree = "<group>"; };
+		8D6AFE9E2563EF2F00258AFA /* zen_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_exception.h; sourceTree = "<group>"; };
+		8D6AFE9F2563EF2F00258AFA /* zen_int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_int.h; sourceTree = "<group>"; };
+		8D6AFEA02563EF2F00258AFA /* zen_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_types.h; sourceTree = "<group>"; };
+		8D6AFEA22563EF2F00258AFA /* zen_utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_utf8.h; sourceTree = "<group>"; };
+		8D6AFEA32563EF2F00258AFA /* zen_base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_base64.h; sourceTree = "<group>"; };
+		8D6AFEA42563EF2F00258AFA /* zen_urlcoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_urlcoding.h; sourceTree = "<group>"; };
+		8D6AFEA52563EF2F00258AFA /* zen_cast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_cast.h; sourceTree = "<group>"; };
+		8D6AFEA62563EF2F00258AFA /* zen_localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_localization.h; sourceTree = "<group>"; };
+		8D6AFEA72563EF2F00258AFA /* zen_csv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_csv.h; sourceTree = "<group>"; };
+		8D6AFEA82563EF2F00258AFA /* zen_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_buffer.h; sourceTree = "<group>"; };
+		8D6AFEA92563EF2F00258AFA /* zen_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_file.h; sourceTree = "<group>"; };
+		8D6AFEAA2563EF2F00258AFA /* zen_md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_md5.cpp; sourceTree = "<group>"; };
+		8D6AFEAB2563EF2F00258AFA /* zen_urlcoding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_urlcoding.cpp; sourceTree = "<group>"; };
+		8D6AFEAC2563EF2F00258AFA /* zen_md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_md5.h; sourceTree = "<group>"; };
+		8D6AFEAD2563EF2F00258AFA /* zen_csv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_csv.cpp; sourceTree = "<group>"; };
+		8D6AFEAE2563EF2F00258AFA /* zen_base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_base64.cpp; sourceTree = "<group>"; };
+		8D6AFEB02563EF2F00258AFA /* zen_fraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_fraction.h; sourceTree = "<group>"; };
+		8D6AFEB12563EF2F00258AFA /* zen_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_matrix.h; sourceTree = "<group>"; };
+		8D6AFEB22563EF2F00258AFA /* zen_rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_rect.h; sourceTree = "<group>"; };
+		8D6AFEB32563EF2F00258AFA /* zen_bezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_bezier.h; sourceTree = "<group>"; };
+		8D6AFEB42563EF2F00258AFA /* zen_numerical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_numerical.h; sourceTree = "<group>"; };
+		8D6AFEB52563EF2F00258AFA /* zen_quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_quaternion.h; sourceTree = "<group>"; };
+		8D6AFEB62563EF2F00258AFA /* zen_ticker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ticker.h; sourceTree = "<group>"; };
+		8D6AFEB72563EF2F00258AFA /* zen_random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_random.h; sourceTree = "<group>"; };
+		8D6AFEB82563EF2F00258AFA /* zen_vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vector.h; sourceTree = "<group>"; };
+		8D78258A23FFA93E00ACD50F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		8DD7CD5123977B5D00D9D5D0 /* metal API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "metal API.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8DD7CD6323977B6300D9D5D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8DD7CD6523977B6300D9D5D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DD7CDCE23978ABB00D9D5D0 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		8DD7CDD223978B0300D9D5D0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8DDEBCF223A38D1F0090C366 /* ModelIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ModelIO.framework; path = System/Library/Frameworks/ModelIO.framework; sourceTree = SDKROOT; };
+		8DFC500723A28EED00E4A50F /* app-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "app-ios.entitlements"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD7CD4E23977B5D00D9D5D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D349069254EAC170074912A /* OpenAL.framework in Frameworks */,
+				8D78258B23FFA93E00ACD50F /* libz.tbd in Frameworks */,
+				8D349065254EAA1C0074912A /* libjpeg-ios.a in Frameworks */,
+				8DDEBCF323A38D1F0090C366 /* ModelIO.framework in Frameworks */,
+				8D349064254EAA1C0074912A /* libfreetype-ios.a in Frameworks */,
+				8DD7CDD323978B0300D9D5D0 /* UIKit.framework in Frameworks */,
+				8D349066254EAA1C0074912A /* libpng-ios.a in Frameworks */,
+				8DD7CDD123978AFE00D9D5D0 /* OpenGLES.framework in Frameworks */,
+				8DD7CDCF23978ABC00D9D5D0 /* GLKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8D348F18254E91000074912A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				8D34906D254EAF410074912A /* res */,
+				8D348F1C254E91000074912A /* MySprite.h */,
+				8D348F1D254E91000074912A /* MyRootScene.h */,
+				8D348F1E254E91000074912A /* main.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		8D348F23254E91170074912A /* source */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC23D256577CB00B3AB05 /* system */,
+				8D6AFE972563EF2F00258AFA /* basic */,
+				8D348F46254E91170074912A /* third */,
+				8D348FC6254E91180074912A /* media */,
+			);
+			name = source;
+			path = ../../../source;
+			sourceTree = "<group>";
+		};
+		8D348F46254E91170074912A /* third */ = {
+			isa = PBXGroup;
+			children = (
+				8D348F47254E91170074912A /* zen-jpg */,
+				8D348F4B254E91170074912A /* zen-png */,
+				8D348F57254E91170074912A /* zen-freetype */,
+				8D348F6E254E91170074912A /* zen-al */,
+				8D348F76254E91170074912A /* zen-gles2 */,
+			);
+			path = third;
+			sourceTree = "<group>";
+		};
+		8D348F47254E91170074912A /* zen-jpg */ = {
+			isa = PBXGroup;
+			children = (
+				8D348F48254E91170074912A /* zen_image_jpg.h */,
+				8D348F49254E91170074912A /* zen_image_jpg.cpp */,
+			);
+			path = "zen-jpg";
+			sourceTree = "<group>";
+		};
+		8D348F4B254E91170074912A /* zen-png */ = {
+			isa = PBXGroup;
+			children = (
+				8D348F4C254E91170074912A /* zen_image_png.h */,
+				8D348F4D254E91170074912A /* zen_image_png.cpp */,
+			);
+			path = "zen-png";
+			sourceTree = "<group>";
+		};
+		8D348F57254E91170074912A /* zen-freetype */ = {
+			isa = PBXGroup;
+			children = (
+				8D348F58254E91170074912A /* zen_ft_library.cpp */,
+				8D348F59254E91170074912A /* zen_freetype.h */,
+				8D348F5A254E91170074912A /* zen_ft_render.h */,
+				8D348F5C254E91170074912A /* zen_ft_render.cpp */,
+				8D348F5D254E91170074912A /* zen_ft_library.h */,
+			);
+			path = "zen-freetype";
+			sourceTree = "<group>";
+		};
+		8D348F6E254E91170074912A /* zen-al */ = {
+			isa = PBXGroup;
+			children = (
+				8D348F6F254E91170074912A /* zen_al_player.h */,
+				8D348F70254E91170074912A /* zen_al_platform.h */,
+				8D348F71254E91170074912A /* zen_al_source.h */,
+				8D348F72254E91170074912A /* README.md */,
+				8D348F73254E91170074912A /* zen_al.h */,
+				8D348F74254E91170074912A /* zen_al_player.cpp */,
+				8D348F75254E91170074912A /* zen_al_buffer.h */,
+			);
+			path = "zen-al";
+			sourceTree = "<group>";
+		};
+		8D348F76254E91170074912A /* zen-gles2 */ = {
+			isa = PBXGroup;
+			children = (
+				8D348F77254E91170074912A /* zen_gles2_enum.h */,
+				8D348F78254E91170074912A /* zen_gles2_buffer.h */,
+				8D348F79254E91170074912A /* zen_gles2.h */,
+				8D348F7A254E91170074912A /* zen_gles2_frame.h */,
+				8D348F7B254E91170074912A /* zen_gles2_image2d.h */,
+				8D348F7C254E91170074912A /* zen_gles2_render.h */,
+				8D348F7D254E91170074912A /* zen_gles2_prepare.h */,
+				8D348F7E254E91170074912A /* zen_gles2_prepare.cpp */,
+				8D348F7F254E91170074912A /* zen_egl.h */,
+				8D348F80254E91170074912A /* zen_gles2_shader.h */,
+				8D348F81254E91170074912A /* zen_gles2_render.cpp */,
+			);
+			path = "zen-gles2";
+			sourceTree = "<group>";
+		};
+		8D348FC6254E91180074912A /* media */ = {
+			isa = PBXGroup;
+			children = (
+				8D348FDB254E91180074912A /* zen-audio */,
+				8D348FE2254E91180074912A /* zen-image */,
+				8D348FE9254E91180074912A /* zen-vap2d */,
+			);
+			path = media;
+			sourceTree = "<group>";
+		};
+		8D348FDB254E91180074912A /* zen-audio */ = {
+			isa = PBXGroup;
+			children = (
+				8D348FDC254E91180074912A /* zen_audio_raw.h */,
+				8D348FDD254E91180074912A /* zen_audio_wav.h */,
+				8D348FDE254E91180074912A /* zen_audio_raw.cpp */,
+				8D348FDF254E91180074912A /* zen_audio.h */,
+				8D348FE0254E91180074912A /* zen_audio.cpp */,
+				8D348FE1254E91180074912A /* zen_audio_wav.cpp */,
+			);
+			path = "zen-audio";
+			sourceTree = "<group>";
+		};
+		8D348FE2254E91180074912A /* zen-image */ = {
+			isa = PBXGroup;
+			children = (
+				8D348FE3254E91180074912A /* zen_image.h */,
+				8D348FE4254E91180074912A /* zen_image.cpp */,
+				8D348FE5254E91180074912A /* zen_color.h */,
+				8D348FE6254E91180074912A /* zen_image_raw.cpp */,
+				8D348FE8254E91180074912A /* zen_image_raw.h */,
+			);
+			path = "zen-image";
+			sourceTree = "<group>";
+		};
+		8D348FE9254E91180074912A /* zen-vap2d */ = {
+			isa = PBXGroup;
+			children = (
+				8D348FEB254E91180074912A /* zen_vap2d_config.h */,
+				8D348FFF254E91180074912A /* zen_vap2d_doodle.cpp */,
+				8D348FF4254E91180074912A /* zen_vap2d_doodle.h */,
+				8D348FF5254E91180074912A /* zen_vap2d_event.cpp */,
+				8D348FEC254E91180074912A /* zen_vap2d_event.h */,
+				8D348FFB254E91180074912A /* zen_vap2d_gles2.cpp */,
+				8D349000254E91180074912A /* zen_vap2d_gles2.h */,
+				8D348FEF254E91180074912A /* zen_vap2d_label.cpp */,
+				8D348FEA254E91180074912A /* zen_vap2d_label.h */,
+				8D349001254E91180074912A /* zen_vap2d_layer.cpp */,
+				8D348FF0254E91180074912A /* zen_vap2d_layer.h */,
+				8D348FFE254E91180074912A /* zen_vap2d_metal.h */,
+				8D348FF1254E91180074912A /* zen_vap2d_metal.mm */,
+				8D348FF7254E91180074912A /* zen_vap2d_node.cpp */,
+				8D348FFC254E91180074912A /* zen_vap2d_node.h */,
+				8D348FF2254E91180074912A /* zen_vap2d_particle.cpp */,
+				8D348FF9254E91180074912A /* zen_vap2d_particle.h */,
+				8D348FF3254E91180074912A /* zen_vap2d_root.cpp */,
+				8D348FED254E91180074912A /* zen_vap2d_root.h */,
+				8D348FF8254E91180074912A /* zen_vap2d_sprite.cpp */,
+				8D348FFD254E91180074912A /* zen_vap2d_sprite.h */,
+				8D348FFA254E91180074912A /* zen_vap2d_texture.cpp */,
+				8D348FF6254E91180074912A /* zen_vap2d_texture.h */,
+				8D348FEE254E91180074912A /* zen_vap2d.h */,
+			);
+			path = "zen-vap2d";
+			sourceTree = "<group>";
+		};
+		8D4BC23D256577CB00B3AB05 /* system */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC23E256577CB00B3AB05 /* zen-info */,
+				8D4BC255256577CB00B3AB05 /* zen-unix */,
+				8D4BC257256577CB00B3AB05 /* zen-app */,
+			);
+			path = system;
+			sourceTree = "<group>";
+		};
+		8D4BC23E256577CB00B3AB05 /* zen-info */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC23F256577CB00B3AB05 /* zen_info.h */,
+				8D4BC240256577CB00B3AB05 /* ios */,
+				8D4BC242256577CB00B3AB05 /* README.md */,
+			);
+			path = "zen-info";
+			sourceTree = "<group>";
+		};
+		8D4BC240256577CB00B3AB05 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC241256577CB00B3AB05 /* zen_info.mm */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		8D4BC255256577CB00B3AB05 /* zen-unix */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC256256577CB00B3AB05 /* README.md */,
+			);
+			path = "zen-unix";
+			sourceTree = "<group>";
+		};
+		8D4BC257256577CB00B3AB05 /* zen-app */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC258256577CB00B3AB05 /* zen_app_delegate.h */,
+				8D4BC259256577CB00B3AB05 /* ios */,
+				8D4BC267256577CB00B3AB05 /* README.md */,
+				8D4BC279256577CC00B3AB05 /* zen_app_config.h */,
+				8D4BC27A256577CC00B3AB05 /* zen_app.h */,
+			);
+			path = "zen-app";
+			sourceTree = "<group>";
+		};
+		8D4BC259256577CB00B3AB05 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC25A256577CB00B3AB05 /* gles2 */,
+				8D4BC25F256577CB00B3AB05 /* metal */,
+				8D4BC264256577CB00B3AB05 /* AppRuntimeIOS.h */,
+				8D4BC265256577CB00B3AB05 /* AppRuntimeIOSMain.mm */,
+				8D4BC266256577CB00B3AB05 /* AppRuntimeIOS.mm */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		8D4BC25A256577CB00B3AB05 /* gles2 */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC25B256577CB00B3AB05 /* GLESAppDelegate.mm */,
+				8D4BC25C256577CB00B3AB05 /* GLESViewController.mm */,
+				8D4BC25D256577CB00B3AB05 /* GLESViewController.h */,
+				8D4BC25E256577CB00B3AB05 /* GLESAppDelegate.h */,
+			);
+			path = gles2;
+			sourceTree = "<group>";
+		};
+		8D4BC25F256577CB00B3AB05 /* metal */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC260256577CB00B3AB05 /* MetalViewController.mm */,
+				8D4BC261256577CB00B3AB05 /* MetalAppDelegate.mm */,
+				8D4BC262256577CB00B3AB05 /* MetalViewController.h */,
+				8D4BC263256577CB00B3AB05 /* MetalAppDelegate.h */,
+			);
+			path = metal;
+			sourceTree = "<group>";
+		};
+		8D6AFE972563EF2F00258AFA /* basic */ = {
+			isa = PBXGroup;
+			children = (
+				8D6AFE982563EF2F00258AFA /* zen-config */,
+				8D6AFEA12563EF2F00258AFA /* zen-string */,
+				8D6AFEAF2563EF2F00258AFA /* zen-math */,
+			);
+			path = basic;
+			sourceTree = "<group>";
+		};
+		8D6AFE982563EF2F00258AFA /* zen-config */ = {
+			isa = PBXGroup;
+			children = (
+				8D6AFE992563EF2F00258AFA /* zen_meta.h */,
+				8D6AFE9A2563EF2F00258AFA /* zen_log.h */,
+				8D6AFE9B2563EF2F00258AFA /* zen_endian.h */,
+				8D6AFE9C2563EF2F00258AFA /* zen_object.h */,
+				8D6AFE9D2563EF2F00258AFA /* zen_os.h */,
+				8D6AFE9E2563EF2F00258AFA /* zen_exception.h */,
+				8D6AFE9F2563EF2F00258AFA /* zen_int.h */,
+				8D6AFEA02563EF2F00258AFA /* zen_types.h */,
+			);
+			path = "zen-config";
+			sourceTree = "<group>";
+		};
+		8D6AFEA12563EF2F00258AFA /* zen-string */ = {
+			isa = PBXGroup;
+			children = (
+				8D6AFEA22563EF2F00258AFA /* zen_utf8.h */,
+				8D6AFEA32563EF2F00258AFA /* zen_base64.h */,
+				8D6AFEA42563EF2F00258AFA /* zen_urlcoding.h */,
+				8D6AFEA52563EF2F00258AFA /* zen_cast.h */,
+				8D6AFEA62563EF2F00258AFA /* zen_localization.h */,
+				8D6AFEA72563EF2F00258AFA /* zen_csv.h */,
+				8D6AFEA82563EF2F00258AFA /* zen_buffer.h */,
+				8D6AFEA92563EF2F00258AFA /* zen_file.h */,
+				8D6AFEAA2563EF2F00258AFA /* zen_md5.cpp */,
+				8D6AFEAB2563EF2F00258AFA /* zen_urlcoding.cpp */,
+				8D6AFEAC2563EF2F00258AFA /* zen_md5.h */,
+				8D6AFEAD2563EF2F00258AFA /* zen_csv.cpp */,
+				8D6AFEAE2563EF2F00258AFA /* zen_base64.cpp */,
+			);
+			path = "zen-string";
+			sourceTree = "<group>";
+		};
+		8D6AFEAF2563EF2F00258AFA /* zen-math */ = {
+			isa = PBXGroup;
+			children = (
+				8D6AFEB02563EF2F00258AFA /* zen_fraction.h */,
+				8D6AFEB12563EF2F00258AFA /* zen_matrix.h */,
+				8D6AFEB22563EF2F00258AFA /* zen_rect.h */,
+				8D6AFEB32563EF2F00258AFA /* zen_bezier.h */,
+				8D6AFEB42563EF2F00258AFA /* zen_numerical.h */,
+				8D6AFEB52563EF2F00258AFA /* zen_quaternion.h */,
+				8D6AFEB62563EF2F00258AFA /* zen_ticker.h */,
+				8D6AFEB72563EF2F00258AFA /* zen_random.h */,
+				8D6AFEB82563EF2F00258AFA /* zen_vector.h */,
+			);
+			path = "zen-math";
+			sourceTree = "<group>";
+		};
+		8DD7CD4823977B5D00D9D5D0 = {
+			isa = PBXGroup;
+			children = (
+				8D348F23254E91170074912A /* source */,
+				8D348F18254E91000074912A /* src */,
+				8DFC500723A28EED00E4A50F /* app-ios.entitlements */,
+				8DD7CD5323977B5D00D9D5D0 /* gles_debug */,
+				8DD7CD5223977B5D00D9D5D0 /* Products */,
+				8DD7CDCD23978ABB00D9D5D0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8DD7CD5223977B5D00D9D5D0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD7CD5123977B5D00D9D5D0 /* metal API.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8DD7CD5323977B5D00D9D5D0 /* gles_debug */ = {
+			isa = PBXGroup;
+			children = (
+				8DD7CD6023977B6300D9D5D0 /* Assets.xcassets */,
+				8DD7CD6223977B6300D9D5D0 /* LaunchScreen.storyboard */,
+				8DD7CD6523977B6300D9D5D0 /* Info.plist */,
+			);
+			path = gles_debug;
+			sourceTree = "<group>";
+		};
+		8DD7CDCD23978ABB00D9D5D0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8D349068254EAC170074912A /* OpenAL.framework */,
+				8D349061254EAA1B0074912A /* libfreetype-ios.a */,
+				8D349062254EAA1B0074912A /* libjpeg-ios.a */,
+				8D349063254EAA1C0074912A /* libpng-ios.a */,
+				8D78258A23FFA93E00ACD50F /* libz.tbd */,
+				8DDEBCF223A38D1F0090C366 /* ModelIO.framework */,
+				8DD7CDD223978B0300D9D5D0 /* UIKit.framework */,
+				8DD7CDD023978AFE00D9D5D0 /* OpenGLES.framework */,
+				8DD7CDCE23978ABB00D9D5D0 /* GLKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD7CD5023977B5D00D9D5D0 /* app-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DD7CD6A23977B6300D9D5D0 /* Build configuration list for PBXNativeTarget "app-ios" */;
+			buildPhases = (
+				8DD7CD4D23977B5D00D9D5D0 /* Sources */,
+				8DD7CD4E23977B5D00D9D5D0 /* Frameworks */,
+				8DD7CD4F23977B5D00D9D5D0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "app-ios";
+			productName = gles_debug;
+			productReference = 8DD7CD5123977B5D00D9D5D0 /* metal API.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8DD7CD4923977B5D00D9D5D0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1120;
+				ORGANIZATIONNAME = lover;
+				TargetAttributes = {
+					8DD7CD5023977B5D00D9D5D0 = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "metal-vap2d" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8DD7CD4823977B5D00D9D5D0;
+			productRefGroup = 8DD7CD5223977B5D00D9D5D0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD7CD5023977B5D00D9D5D0 /* app-ios */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DD7CD4F23977B5D00D9D5D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD7CD6423977B6300D9D5D0 /* LaunchScreen.storyboard in Resources */,
+				8D34906E254EAF410074912A /* res in Resources */,
+				8DD7CD6123977B6300D9D5D0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD7CD4D23977B5D00D9D5D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D349051254E91180074912A /* zen_vap2d_layer.cpp in Sources */,
+				8D34904E254E91180074912A /* zen_vap2d_texture.cpp in Sources */,
+				8D349043254E91180074912A /* zen_audio_wav.cpp in Sources */,
+				8D6AFEBC2563EF2F00258AFA /* zen_base64.cpp in Sources */,
+				8D4BC28B256577CC00B3AB05 /* MetalViewController.mm in Sources */,
+				8D349045254E91180074912A /* zen_image_raw.cpp in Sources */,
+				8D34900F254E91180074912A /* zen_ft_render.cpp in Sources */,
+				8D349006254E91180074912A /* zen_image_jpg.cpp in Sources */,
+				8D349018254E91180074912A /* zen_gles2_prepare.cpp in Sources */,
+				8D4BC28D256577CC00B3AB05 /* AppRuntimeIOSMain.mm in Sources */,
+				8D349048254E91180074912A /* zen_vap2d_metal.mm in Sources */,
+				8D348F21254E91000074912A /* main.cpp in Sources */,
+				8D4BC289256577CC00B3AB05 /* GLESAppDelegate.mm in Sources */,
+				8D6AFEBB2563EF2F00258AFA /* zen_csv.cpp in Sources */,
+				8D349017254E91180074912A /* zen_al_player.cpp in Sources */,
+				8D34900D254E91180074912A /* zen_ft_library.cpp in Sources */,
+				8D349019254E91180074912A /* zen_gles2_render.cpp in Sources */,
+				8D349041254E91180074912A /* zen_audio_raw.cpp in Sources */,
+				8D34904A254E91180074912A /* zen_vap2d_root.cpp in Sources */,
+				8D4BC28C256577CC00B3AB05 /* MetalAppDelegate.mm in Sources */,
+				8D34904B254E91180074912A /* zen_vap2d_event.cpp in Sources */,
+				8D349050254E91180074912A /* zen_vap2d_doodle.cpp in Sources */,
+				8D6AFEBA2563EF2F00258AFA /* zen_urlcoding.cpp in Sources */,
+				8D349047254E91180074912A /* zen_vap2d_label.cpp in Sources */,
+				8D4BC27B256577CC00B3AB05 /* zen_info.mm in Sources */,
+				8D34904D254E91180074912A /* zen_vap2d_sprite.cpp in Sources */,
+				8D4BC28A256577CC00B3AB05 /* GLESViewController.mm in Sources */,
+				8D349044254E91180074912A /* zen_image.cpp in Sources */,
+				8D349008254E91180074912A /* zen_image_png.cpp in Sources */,
+				8D6AFEB92563EF2F00258AFA /* zen_md5.cpp in Sources */,
+				8D349042254E91180074912A /* zen_audio.cpp in Sources */,
+				8D34904C254E91180074912A /* zen_vap2d_node.cpp in Sources */,
+				8D34904F254E91180074912A /* zen_vap2d_gles2.cpp in Sources */,
+				8D4BC28E256577CC00B3AB05 /* AppRuntimeIOS.mm in Sources */,
+				8D349049254E91180074912A /* zen_vap2d_particle.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8DD7CD6223977B6300D9D5D0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8DD7CD6323977B6300D9D5D0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8DD7CD6823977B6300D9D5D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		8DD7CD6923977B6300D9D5D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8DD7CD6B23977B6300D9D5D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "app-ios.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 87629D3R4B;
+				ENABLE_BITCODE = NO;
+				ENABLE_ON_DEMAND_RESOURCES = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					ZEN_P_USE_GLES,
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../external/ios/include/freetype2\"",
+					"\"$(SRCROOT)/../../../external/ios/include/\"",
+				);
+				INFOPLIST_FILE = gles_debug/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../external/ios/prebuilt/\"";
+				PRODUCT_BUNDLE_IDENTIFIER = "lea.meher.mac.gles-debug1";
+				PRODUCT_NAME = "metal API";
+				STRIP_PNG_TEXT = NO;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8DD7CD6C23977B6300D9D5D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "app-ios.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 87629D3R4B;
+				ENABLE_BITCODE = NO;
+				ENABLE_ON_DEMAND_RESOURCES = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = ZEN_P_USE_GLES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../external/ios/include/freetype2\"",
+					"\"$(SRCROOT)/../../../external/ios/include/\"",
+				);
+				INFOPLIST_FILE = gles_debug/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../../external/ios/prebuilt/\"";
+				PRODUCT_BUNDLE_IDENTIFIER = "lea.meher.mac.gles-debug1";
+				PRODUCT_NAME = "metal API";
+				STRIP_PNG_TEXT = NO;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8DD7CD4C23977B5D00D9D5D0 /* Build configuration list for PBXProject "metal-vap2d" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DD7CD6823977B6300D9D5D0 /* Debug */,
+				8DD7CD6923977B6300D9D5D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DD7CD6A23977B6300D9D5D0 /* Build configuration list for PBXNativeTarget "app-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DD7CD6B23977B6300D9D5D0 /* Debug */,
+				8DD7CD6C23977B6300D9D5D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8DD7CD4923977B5D00D9D5D0 /* Project object */;
+}

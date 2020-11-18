@@ -27,7 +27,7 @@ namespace Zen {
 		w -= ax; // left out
 		h -= ay;
 		
-		auto dst = image->bytes() + iw * (y + ay) + (x + ax);
+		auto dst = image->data() + iw * (y + ay) + (x + ax);
 		auto src = a->bitmap.data() + ay * a->width + ax;
 		for(int i = 0; i < h; ++i)
 		{
@@ -50,7 +50,7 @@ namespace Zen {
 		if(x < 0) { w = w + x; x = 0; }
 		if(x + w > iw) w = iw - x;
 		
-		auto b = image->bytes() + (y * iw) + x;
+		auto b = image->data() + (y * iw) + x;
 		for(int i = 0; i < underline; ++i)
 		{
 			::memset(b, 0xff, w);
@@ -307,14 +307,14 @@ namespace Zen {
 	};
 	
 	std::shared_ptr<FontRender> FontRender::Create
-	(std::shared_ptr<FontBrush> font,
+	(std::shared_ptr<FontBrush> brush,
 	 std::u32string const & text,
 	 float alignment, /* 0.0 left(top), to 1.0 right(bottom) */
 	 int char_spacing, // px as font-size
 	 int line_spacing,
 	 int line_width)
 	{
-		auto me = new FontRenderInner(font, text, alignment, char_spacing, line_spacing, line_width);
+		auto me = new FontRenderInner(brush, text, alignment, char_spacing, line_spacing, line_width);
 		return std::shared_ptr<FontRender>(me);
 	}
 }

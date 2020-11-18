@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -21,60 +21,47 @@
 
 #pragma once
 
-#include <vector>
 #include "zen_object.h"
 
+#include <memory>
+#include <vector>
+
 namespace Zen {
-	enum class EAudioFormat
-	{
-		None,
-		Mono8,
-		Mono16,
-		Stereo8,
-		Stereo16,
-	};
-	inline int GetBytesOfAudioFormat(EAudioFormat format)
-	{
-		switch (format) {
-			case EAudioFormat::Mono8: return 1;
-			case EAudioFormat::Mono16: return 2;
-			case EAudioFormat::Stereo8: return 2;
-			case EAudioFormat::Stereo16: return 4;
-			default: return 0;
-		}
-	}
-	inline int GetChannelsOfAudioFormat(EAudioFormat format)
-	{
-		switch (format) {
-			case EAudioFormat::Mono8: return 1;
-			case EAudioFormat::Mono16: return 1;
-			case EAudioFormat::Stereo8: return 2;
-			case EAudioFormat::Stereo16: return 2;
-			default: return 0;
-		}
-	}
-	struct AudioData
-	{
-		std::vector<uint8_t> buffer;
-		EAudioFormat format = EAudioFormat::None;
-		uint32_t frequency = 0;
-		uint32_t count = 0;
+	class Audio {
+	public:
+		static std::shared_ptr<Audio> Create(size_t channel, size_t sample_size, size_t frequency, size_t sample_count);
+
+		static std::shared_ptr<Audio> CreateSine(size_t channel, size_t sample_size, size_t frequency, size_t sample_count, float tune);
+
+		size_t channel() const { return m_channel; }
+		size_t sampleSize() const { return m_sample_size; }
+		size_t sampleCount() const { return m_sample_count; }
+		size_t frequency() const { return m_frequency; }
+		size_t size() const { return m_buffer.size(); }
+		uint8_t * data() { return m_buffer.data(); }
+		uint8_t const * data() const { return m_buffer.data(); }
+	protected:
+		Audio() = default;
+		Audio(Audio&) = default;
+
+		std::vector<uint8_t> m_buffer;
+		uint16_t m_channel = 1;
+		uint16_t m_sample_size = 1;
+		uint32_t m_frequency = 0;
+		uint32_t m_sample_count = 0;
 	};
 
-	class AudioCoder : public virtual Zen::Object
+	class AudioDecoder
 	{
 	public:
-		virtual void load(AudioData & wave, std::string const & file) = 0;
-		virtual void save(AudioData const & wave, std::string const & file) = 0;
-		virtual void decode(AudioData & wave, std::vector<uint8_t> const & data) = 0;
-		virtual std::vector<uint8_t> encode(AudioData const & wave) = 0;
+		virtual std::shared_ptr<Audio> decode(std::vector<uint8_t> const & data) = 0;
+		virtual ~AudioDecoder() = default;
 	};
 
-	inline void AudioGenerate(AudioData & data, EAudioFormat format, uint32_t frequency, uint32_t count)
+	class AudioEncoder
 	{
-		data.format = format;
-		data.frequency = frequency;
-		data.count = count;
-		data.buffer.resize(count * GetBytesOfAudioFormat(format));
-	}
+	public:
+		virtual std::vector<uint8_t> encode(Audio const &) = 0;
+		virtual ~AudioEncoder() = default;
+	};
 }

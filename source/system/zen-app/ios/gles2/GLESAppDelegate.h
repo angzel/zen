@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -21,7 +21,9 @@
 
 #include "zen_app_config.h"
 
-#if ZEN_APP_DRAW_API_OPENGLES
+
+#if defined(ZEN_OS_IOS)
+#if ZEN_APP_DRAW_API_GLES
 
 #import <UIKit/UIKit.h>
 
@@ -33,4 +35,5 @@
 
 extern AppDelegate * G_app_delegate;
 
+#endif
 #endif

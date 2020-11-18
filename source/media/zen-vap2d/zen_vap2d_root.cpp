@@ -1,6 +1,6 @@
 #include "zen_vap2d_root.h"
 #include "zen_vap2d_event.h"
-#include "zen_app_runtime.h"
+#include "zen_app.h"
 #include "zen_ticker.h"
 #include "zen_log.h"
 #include <vector>
@@ -42,148 +42,45 @@ namespace Zen { namespace Vap2d {
 		std::shared_ptr<RootDelegate> m_delegate = nullptr;
 		Zen::Color4f m_color;
 
-		Zen::Microseconds m_now;
+		Zen::Microseconds m_start_time;
+		Zen::Microseconds m_duration; // running duration
 		Zen::Ticker m_ticker;
+		std::chrono::microseconds m_pause_cut_duration__;
 
 	public:
-		void setViewDirty()
-		{
-			m_is_view_dirty = true;
-			m_view_scale = (m_design_size.w+m_design_size.h) / (m_real_size.w+m_real_size.h);
-		}
-		void queueAction(ActionItem * item)
-		{
-			for(auto iter = m_running_actions.begin(); iter != m_running_actions.end(); ++iter)
-			{
-				if((*iter)->next_time >= item->next_time)
-				{
-					m_running_actions.insert(iter, item);
-					return;
-				}
-			}
-			m_running_actions.insert(m_running_actions.end(), item);
-		}
+		void setViewDirty();
 
-		void clearNode(Node * node)
-		{
-			if(m_touch_node == node) m_touch_node = nullptr;
-			this->stopAllActions(node);
-		}
-		void removeNode(Node * node)
-		{
-			m_removed_nodes.push_back(node);
-		}
+		void queueAction(ActionItem * item);
 
-		void runAction(Node * node, std::shared_ptr<Action> action)
-		{
-			auto i = new ActionItem;
-			i->node = node;
-			i->action = action;
-			m_adding_actions.push_back(i);
-		}
+		void clearNode(Node * node);
 
-		void stopAllActions(Node * node)
-		{
-			for(auto i : m_running_actions)
-			{
-				if(i->node == node) i->valid = false;
-			}
-			for(auto i : m_adding_actions)
-			{
-				if(i->node == node) i->valid = false;
-			}
-		}
+		void removeNode(Node * node);
 
-		void stopAction(Node * node, std::shared_ptr<Action> action)
-		{
-			for(auto i : m_running_actions)
-			{
-				if(i->node == node && i->action == action)
-				{
-					i->valid = false;
-					break;
-				}
-			}
-			for(auto & i : m_adding_actions)
-			{
-				if(i->node == node && i->action == action)
-				{
-					i->valid = false;
-					break;
-				}
-			}
-		}
+		void runAction(Node * node, std::shared_ptr<Action> action);
 
-		void updateActions(Zen::Microseconds)
-		{
-			while(m_running_actions.size())
-			{
-				auto i = m_running_actions.front();
-				if(i->next_time > m_now) break;
+		void stopAllActions(Node * node);
 
-				if(i->valid)
-				{
-					float interval = Zen::ToSeconds(m_now - i->time);
-					auto delay = i->action->run(interval);
+		void stopAction(Node * node, std::shared_ptr<Action> action);
 
-					/**
-					 here check valid again, in action->run() the stopAction() function maybe be called.
-					 */
-					if(delay >= 0 && i->valid) // running
-					{
-						auto forward = Zen::ToMicroseconds(delay);
-						i->time = m_now;
-						i->next_time = m_now + (forward.count()>0?forward:Zen::Microseconds(1));
+		void updateActions();
 
-						m_running_actions.pop_front();
-						queueAction(i);
-						continue;
-					}
-				}
-				m_running_actions.pop_front();
-				delete i;
-			}
-
-			for(auto i : m_adding_actions)
-			{
-				if(i->valid)
-				{
-					auto delay = i->action->begin();
-					if(delay >= 0 && i->valid)
-					{
-						auto forward = Zen::ToMicroseconds(delay);
-
-						i->time = m_now;
-						i->next_time = m_now + (forward.count()>0?forward:Zen::Microseconds(1));
-
-						queueAction(i);
-						continue;
-					}
-				}
-				delete i;
-			}
-			m_adding_actions.clear();
-		}
-
-		RootInner()
-		{
-		}
+		RootInner() = default;
 
 	public: // override
-		virtual void run() override;
-		virtual void setDelegate(std::shared_ptr<RootDelegate> delegate) override;
+		virtual void run(std::shared_ptr<RootDelegate> delegate) override;
 		virtual std::shared_ptr<RootDelegate> getDelegate() override;
 		virtual void setViewSize(Size2 size) override;
 		virtual Size2 getViewSize() override;
 		virtual Size2 getRealViewSize() override;
 		virtual void setBackgroundColor(Zen::Color4f color) override;
 		virtual Zen::Color4f getBackgroundColor() override;
-		virtual double getRunningTime() override;
+		virtual std::chrono::microseconds getRunningTime() override;
 		virtual void replaceRootNode(Node * node) override;
 		virtual Node * getRootNode() override;
 
 		virtual float getViewScale() override;
 
+		std::chrono::microseconds getTotalTime() override;
 	public:
 		virtual void onLaunch(Zen::Size2 view_size) override;
 
@@ -202,6 +99,8 @@ namespace Zen { namespace Vap2d {
 		virtual void onBack() override;
 		
 		virtual void onClose() override;
+
+		void _fixTouch(AppTouch & touch);
 
 		virtual void onTouchDown(AppTouch touch) override;
 
@@ -227,8 +126,9 @@ namespace Zen { namespace Vap2d {
 	{
 		Zen::LogV("%s", __FUNCTION__);
 
-		m_ticker.restart();
-		m_now = m_ticker.getTotalDuration();
+		m_duration = std::chrono::microseconds::zero();
+		m_start_time = Zen::Now();
+		m_ticker.tick();
 
 		m_real_size = view_size;
 
@@ -259,7 +159,7 @@ namespace Zen { namespace Vap2d {
 	{
 		Zen::LogV("%s", __FUNCTION__);
 		if(m_delegate) m_delegate->onPause();
-		m_ticker.pause();
+		m_pause_cut_duration__ = m_ticker.tick();
 	}
 
 	void RootInner::onResume()
@@ -267,16 +167,16 @@ namespace Zen { namespace Vap2d {
 		Zen::LogV("%s", __FUNCTION__);
 
 		if(m_delegate) m_delegate->onResume();
-		m_ticker.resume();
+		m_ticker.tick(m_pause_cut_duration__);
 	}
 
 	void RootInner::onUpdate()
 	{
-		auto now = m_ticker.getTotalDuration();
-		auto interval = now - m_now;
-		m_now = now;
+		auto interval = m_ticker.tick();
 
-		this->updateActions(interval);
+		m_duration += interval;
+
+		this->updateActions();
 
 		for(auto i : m_removed_nodes)
 		{
@@ -333,46 +233,53 @@ namespace Zen { namespace Vap2d {
 		if(m_delegate) m_delegate->onClose();
 	}
 
+	void RootInner::_fixTouch(AppTouch & touch)
+	{
+		touch.x *= m_design_size.w;
+		touch.y *= m_design_size.h;
+//		printf("~~ %.2f %.2f\n", touch.x, touch.y);
+	}
 	void RootInner::onTouchDown(AppTouch touch) {
 		if(!m_root_node) return;
-		touch.x *= m_design_size.w / m_real_size.w;
-		touch.y = m_design_size.h - touch.y * m_design_size.h / m_real_size.h;
+		_fixTouch(touch);
 		m_touch_node = m_root_node->onTouchDown(touch);
 	}
 
 	void RootInner::onTouchMove(AppTouch touch) {
 		if(!m_touch_node) return;
-		touch.x *= m_design_size.w / m_real_size.w;
-		touch.y = m_design_size.h - touch.y * m_design_size.h / m_real_size.h;
+		_fixTouch(touch);
 		m_touch_node = m_touch_node->onTouchMove(touch);
 	}
 
 	void RootInner::onTouchUp(AppTouch touch) {
 		if(!m_touch_node) return;
-		touch.x *= m_design_size.w / m_real_size.w;
-		touch.y = m_design_size.h - touch.y * m_design_size.h / m_real_size.h;
+		_fixTouch(touch);
 		m_touch_node = m_touch_node->onTouchUp(touch);
 	}
 
 	void RootInner::onTouchCancel(AppTouch touch) {
 		if(!m_touch_node) return;
-		touch.x *= m_design_size.w / m_real_size.w;
-		touch.y = m_design_size.h - touch.y * m_design_size.h / m_real_size.h;
+		_fixTouch(touch);
 		m_touch_node = m_touch_node->onTouchCancel(touch);
 	}
 
 	void RootInner::onMouseMove(AppTouch touch)
 	{
+		Zen::LogV("[%s]not supported on this version", __FUNCTION__);
 	}
 
 	void RootInner::onKeyDown(AppKey key)
 	{
+		Zen::LogV("[%s]not supported on this version", __FUNCTION__);
 	}
 
 	void RootInner::onKeyUp(AppKey key)
 	{
+		Zen::LogV("[%s]not supported on this version", __FUNCTION__);
 	}
+}}
 
+namespace Zen { namespace Vap2d {
 
 	static std::shared_ptr<RootInner> S_root(new RootInner);
 
@@ -380,9 +287,10 @@ namespace Zen { namespace Vap2d {
 	{
 		return S_root.get();
 	}
-	void RootInner::run()
+	void RootInner::run(std::shared_ptr<RootDelegate> delegate)
 	{
-		Zen::AppRuntime::S()->setRuntimeDelegate(S_root);
+		m_delegate = delegate;
+		Zen::App::S()->setRuntimeDelegate(S_root);
 	}
 
 	void RootInner::setBackgroundColor(Zen::Color4f color)
@@ -414,10 +322,6 @@ namespace Zen { namespace Vap2d {
 		return m_view_scale;
 	}
 	
-	void RootInner::setDelegate(std::shared_ptr<RootDelegate> delegate)
-	{
-		m_delegate = delegate;
-	}
 	void RootInner::replaceRootNode(Node *node)
 	{
 		if(m_root_node) m_root_node->remove();
@@ -427,14 +331,141 @@ namespace Zen { namespace Vap2d {
 	{
 		return m_root_node;
 	}
-	double RootInner::getRunningTime()
+	std::chrono::microseconds RootInner::getRunningTime()
 	{
-		return Zen::ToSeconds(m_ticker.getTotalDuration());
+		return m_duration;
 	}
+	std::chrono::microseconds RootInner::getTotalTime()
+	{
+		return Now() - m_start_time;
+	}
+
 	std::shared_ptr<RootDelegate> RootInner::getDelegate()
 	{
 		return m_delegate;
 	}
+
+	// node operation
+
+	void RootInner::setViewDirty()
+	{
+		m_is_view_dirty = true;
+		m_view_scale = m_design_size.w / m_real_size.w;
+	}
+	void RootInner::queueAction(ActionItem * item)
+	{
+		for(auto iter = m_running_actions.begin(); iter != m_running_actions.end(); ++iter)
+		{
+			if((*iter)->next_time >= item->next_time)
+			{
+				m_running_actions.insert(iter, item);
+				return;
+			}
+		}
+		m_running_actions.insert(m_running_actions.end(), item);
+	}
+
+	void RootInner::clearNode(Node * node)
+	{
+		if(m_touch_node == node) m_touch_node = nullptr;
+		this->stopAllActions(node);
+	}
+	void RootInner::removeNode(Node * node)
+	{
+		m_removed_nodes.push_back(node);
+	}
+
+	void RootInner::runAction(Node * node, std::shared_ptr<Action> action)
+	{
+		auto i = new ActionItem;
+		i->node = node;
+		i->action = action;
+		m_adding_actions.push_back(i);
+	}
+
+	void RootInner::stopAllActions(Node * node)
+	{
+		for(auto i : m_running_actions)
+		{
+			if(i->node == node) i->valid = false;
+		}
+		for(auto i : m_adding_actions)
+		{
+			if(i->node == node) i->valid = false;
+		}
+	}
+
+	void RootInner::stopAction(Node * node, std::shared_ptr<Action> action)
+	{
+		for(auto i : m_running_actions)
+		{
+			if(i->node == node && i->action == action)
+			{
+				i->valid = false;
+				break;
+			}
+		}
+		for(auto & i : m_adding_actions)
+		{
+			if(i->node == node && i->action == action)
+			{
+				i->valid = false;
+				break;
+			}
+		}
+	}
+
+	void RootInner::updateActions()
+	{
+		while(m_running_actions.size())
+		{
+			auto i = m_running_actions.front();
+			if(i->next_time > m_duration) break;
+
+			if(i->valid)
+			{
+				float interval = Zen::ToSeconds(m_duration - i->time);
+				auto delay = i->action->run(interval);
+
+				/**
+				 here check valid again, in action->run() the stopAction() function maybe be called.
+				 */
+				if(delay >= 0 && i->valid) // running
+				{
+					auto forward = Zen::ToMicroseconds(delay);
+					i->time = m_duration;
+					i->next_time = m_duration + (forward.count()>0?forward:Zen::Microseconds(1));
+
+					m_running_actions.pop_front();
+					queueAction(i);
+					continue;
+				}
+			}
+			m_running_actions.pop_front();
+			delete i;
+		}
+
+		for(auto i : m_adding_actions)
+		{
+			if(i->valid)
+			{
+				auto delay = i->action->begin();
+				if(delay >= 0 && i->valid)
+				{
+					auto forward = Zen::ToMicroseconds(delay);
+
+					i->time = m_duration;
+					i->next_time = m_duration + (forward.count()>0?forward:Zen::Microseconds(1));
+
+					queueAction(i);
+					continue;
+				}
+			}
+			delete i;
+		}
+		m_adding_actions.clear();
+	}
+
 }}
 
 /**

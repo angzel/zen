@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -63,15 +63,19 @@ namespace Zen { namespace GL {
 		Float  = GL_FLOAT,
 		Fixed  = GL_FIXED,
 	};
-//	enum class ePixel
-//	{
-//		Alpha     = GL_ALPHA,
-//		RGB       = GL_RGB,
-//		RGBA      = GL_RGBA,
-//		Depth     = GL_DEPTH_COMPONENT,
-//		Lumi      = GL_LUMINANCE,
-//		LumiAlpha = GL_LUMINANCE_ALPHA,
-//	};
+
+#if 0
+	enum class ePixel
+	{
+		Alpha     = GL_ALPHA,
+		RGB       = GL_RGB,
+		RGBA      = GL_RGBA,
+		Depth     = GL_DEPTH_COMPONENT,
+		Lumi      = GL_LUMINANCE,
+		LumiAlpha = GL_LUMINANCE_ALPHA,
+	};
+#endif
+
 	enum class eMode
 	{
 		Point         = GL_POINTS,

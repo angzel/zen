@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -20,14 +20,14 @@
  */
 
 #include "zen_audio_wav.h"
-#include "zen_buffer.h"
 #include "zen_file.h"
+#include "zen_buffer.h"
 #include "zen_exception.h"
 #include "zen_endian.h"
 #include <iostream>
 
 namespace Zen {
-	struct AudioCoderWavHead
+	struct AudioWavHead
 	{
 		Byte4 fiRiffID; // "RIFF"
 		uint32_t fiRiffSize;
@@ -41,7 +41,7 @@ namespace Zen {
 		uint16_t fiBlockAlign;
 		uint16_t fiBPSample;
 		
-		void set(uint32_t data_size, uint32_t len, uint32_t freq, int channel, int byteps)
+		void set(size_t channel, size_t sample_size, size_t frequency, size_t sample_count, size_t data_size)
 		{
 			this->fiRiffID.set('R','I','F','F');
 			this->fiRiffSize = (uint32_t)data_size + (44 - 8);
@@ -50,10 +50,10 @@ namespace Zen {
 			this->fiFmtSize = 16;
 			this->fiFormatTag = 1;
 			this->fiChannels = (uint16_t)channel;
-			this->fiBlockAlign = (uint16_t)byteps;
-			this->fiBPSample = (uint16_t)byteps * 8;
-			this->fiSPS = (uint32_t)freq;
-			this->fiBPS = (uint32_t)(freq * this->fiBlockAlign);
+			this->fiBlockAlign = (uint16_t)sample_size;
+			this->fiBPSample = (uint16_t)sample_size * 8;
+			this->fiSPS = (uint32_t)frequency;
+			this->fiBPS = (uint32_t)(frequency * sample_size);
 #if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
 			this->fiRiffSize = EndianSwap32(this->fiRiffSize);
 			this->fiFmtSize = EndianSwap32(this->fiFmtSize);
@@ -66,49 +66,15 @@ namespace Zen {
 #endif
 		}
 	};
-	
-	void AudioCoderWav::load(AudioData & wave, std::string const & file)
+
+	std::shared_ptr<Audio> AudioWavDecoder::decode(std::vector<uint8_t> const & data)
 	{
-		wave.format = EAudioFormat::None;
-		
-		auto data = Zen::ReadWholeFileToBuffer(file);
-		musts(data.size(), "read file error");
-		
-		this->decode(wave, data);
-	}
-	
-	void AudioCoderWav::save(AudioData const & wave, std::string const & file) 	{
-		std::fstream outs;
-		outs.open(file, std::ios::out | std::ios::binary);
-		musts(outs.good(), "open file error");
-		
-		uint32_t fiDataSize = (uint32_t)wave.buffer.size();
-		Byte4 fiDataID('d','a','t','a');
-		
-		AudioCoderWavHead head;
-
-		auto channel = GetChannelsOfAudioFormat(wave.format);
-		auto bytes = GetBytesOfAudioFormat(wave.format);
-		head.set(fiDataSize, wave.count, wave.frequency, channel, bytes);
-
-		outs.write((char const *)&head, sizeof(head));
-		outs.write((char const *)&fiDataID, sizeof(fiDataID));
-		outs.write((char const *)&fiDataSize, sizeof(fiDataSize));
-		outs.write((char const *)wave.buffer.data(), wave.buffer.size());
-		
-		musts(outs.good(), "write wav file error");
-	}
-	
-	void AudioCoderWav::decode(AudioData & wave, std::vector<uint8_t> const & data)
-	{
-		wave.format = EAudioFormat::None;
-
 		Zen::BufferReader reader(&data);
-		
-		AudioCoderWavHead head;
-		
-		musts(reader.read(head), "failed to read file data");
-		
+
+		AudioWavHead head;
+
+		musts(reader.read(head), "invalid wav data");
+
 #if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
 		head.fiRiffSize = EndianSwap32(head.fiRiffSize);
 		head.fiFmtSize = EndianSwap32(head.fiFmtSize);
@@ -127,7 +93,7 @@ namespace Zen {
 #if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
 			fiCbSize = EndianSwap16(fiCbSize);
 #endif
-			reader.jumpReadPointer(fiCbSize);
+			reader.forward(fiCbSize);
 		}
 		else
 		{
@@ -138,35 +104,22 @@ namespace Zen {
 		
 		musts(head.fiRiffID == Byte4('R','I','F','F') &&
 			  head.fiAudioType == Byte4('W','A','V','E') &&
-			  head.fiFmtID == Byte4('f','m','t','\x20'), "invalid wav file format");
-		
-		auto format = EAudioFormat::None;
-		if(head.fiChannels == 1)
-		{
-			if(head.fiBPSample == 8) format = EAudioFormat::Mono8;
-			else if(head.fiBPSample == 16) format = EAudioFormat::Mono16;
-		}
-		else if(head.fiChannels == 2)
-		{
-			if(head.fiBPSample == 8) format = EAudioFormat::Stereo8;
-			else if(head.fiBPSample == 16) format = EAudioFormat::Stereo16;
-		}
-		musts(format != EAudioFormat::None, "unsupported format");
-		musts(GetBytesOfAudioFormat(format) == (uint32_t)head.fiBlockAlign, "invalid channel and sample info");
-		
+			  head.fiFmtID == Byte4('f','m','t','\x20'), "invalid wav format");
+
 		Byte4 fiDataID;
 		uint32_t fiDataSize = 0;
 
-		musts((reader.read(fiDataID) && reader.read(fiDataSize)), "failed to read data info");
+		musts(reader.read(fiDataID) && reader.read(fiDataSize), "invalid wav data info");
 #if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
 		fiDataSize = EndianSwap32(fiDataSize);
 #endif
 		if(fiDataID != Byte4('d','a','t','a'))
 		{
-			musts(reader.getReadPointer() + fiDataSize <= data.size(), "invalid fact data");
-			reader.jumpReadPointer(fiDataSize);
+			musts(reader.position() + fiDataSize <= data.size(), "invalid fact data");
+			reader.forward(fiDataSize);
 			
-			musts((reader.read(fiDataID) && reader.read(fiDataSize)), "failed to read data info");
+			musts(reader.read(fiDataID) && reader.read(fiDataSize), "invalid wav data info");
+
 #if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
 			fiDataSize = EndianSwap32(fiDataSize);
 #endif
@@ -177,35 +130,32 @@ namespace Zen {
 		uint32_t length = (uint32_t)(fiDataSize / head.fiBlockAlign);
 		uint32_t size = length * (uint32_t)head.fiBlockAlign;
 		
-		musts(reader.getReadPointer() + size <= data.size(), "invalid data size");
-		
-		wave.buffer.resize(size);
+		musts(reader.position() + size <= data.size(), "invalid data size");
 
-		reader.read(wave.buffer.data(), wave.buffer.size());
-		
-		wave.count = length;
-		wave.format = format;
-		wave.frequency = (uint32_t)head.fiSPS;
+		auto audio = Audio::Create(head.fiChannels, head.fiBlockAlign, head.fiSPS, length);
+
+		must(audio->size() == size);
+
+		reader.read(audio->data(), audio->size());
+
+		return audio;
 	}
 	
-	std::vector<uint8_t> AudioCoderWav::encode(AudioData const & wave)
+	std::vector<uint8_t> AudioWavEncoder::encode(Audio const & audio)
 	{
-		std::vector<uint8_t> data;
-
-		Zen::BufferWriter writer(&data);
-
-		uint32_t fiDataSize = (uint32_t)wave.buffer.size();
 		Byte4 fiDataID('d','a','t','a');
+		Byte4 fiDataSize((uint32_t)audio.size());
 
-		AudioCoderWavHead head;
-		auto channel = GetChannelsOfAudioFormat(wave.format);
-		auto bytes = GetBytesOfAudioFormat(wave.format);
-		head.set(fiDataSize, wave.count, wave.frequency, channel, bytes);
+		AudioWavHead head;
+		head.set(audio.channel(), audio.sampleSize(), audio.frequency(), audio.sampleCount(), audio.size());
 
-		writer.append(head);
-		writer.append(fiDataID);
-		writer.append(fiDataSize);
-		writer.append(wave.buffer.data(), wave.buffer.size());
+		std::vector<uint8_t> data;
+		data.reserve(sizeof(head) + audio.size() + 8);
+		auto head_buf = reinterpret_cast<char const *>(&head);
+		data.assign(head_buf, head_buf + sizeof(head));
+		data.insert(data.end(), fiDataID.bytes, fiDataID.bytes + 4);
+		data.insert(data.end(), fiDataSize.bytes, fiDataSize.bytes + 4);
+		data.insert(data.end(), audio.data(), audio.data() + audio.size());
 
 		return data;
 	}

@@ -61,4 +61,9 @@ namespace Zen { namespace Vap2d {
 		Metal::Render::S()->end();
 	}
 
+	/**
+	 only for metal.
+	 */
+	std::pair<Metal::eBlendFactor, Metal::eBlendFactor>
+	_GetMetalBlend(eBlend blend);
 }}

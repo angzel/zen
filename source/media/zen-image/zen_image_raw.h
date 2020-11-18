@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -23,17 +23,28 @@
 
 #include "zen_image.h"
 
+/**
+	This(raw) is a simple bitmap image format.
+ 
+ definition: header(fixed 16Bytes) + data(pixel bytes in order).
+	header = sign(4B, 'jaii') + width(4B) + height(4B) + format(2B, {ePixel}) + kept(2B unused).
+ */
 namespace Zen
 {
-	class ImageDecoderRaw : public ImageDecoder
+	class ImageRawDecoder : public ImageDecoder
 	{
 	public:
 		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) override;
 	};
-	class ImageEncoderRaw : public ImageEncoder
+	
+	class ImageRawEncoder : public ImageEncoder
 	{
 	public:
 		virtual std::vector<uint8_t> encode(Image const &) override;
+	};
+
+	class ImageRawCoder : public ImageRawDecoder, public ImageRawEncoder
+	{
 	};
 }
 

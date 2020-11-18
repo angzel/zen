@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -21,7 +21,8 @@
 
 #include "zen_app_config.h"
 
-#if ZEN_APP_DRAW_API_OPENGLES
+#if defined(ZEN_OS_IOS)
+#if ZEN_APP_DRAW_API_GLES
 
 #import "GLESAppDelegate.h"
 #import "GLESViewController.h"
@@ -40,7 +41,8 @@ AppDelegate * G_app_delegate = nil;
 
 	G_app_delegate = self;
 
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	auto bounds = [[UIScreen mainScreen] bounds];
+	self.window = [[UIWindow alloc] initWithFrame:bounds];
 
 	ViewController * view = [[ViewController alloc] init];
 	self.window.rootViewController = view;
@@ -87,4 +89,5 @@ AppDelegate * G_app_delegate = nil;
 
 @end
 
+#endif
 #endif

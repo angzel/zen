@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -29,16 +29,23 @@ namespace Zen
 	@class ImageCoderJPG
 	when encode the alpha channel will be thrown away.
 	 */
-	class ImageJPGCoder : public ImageDecoder, public ImageEncoder
+	class ImageJPGEncoder : public ImageEncoder
 	{
 	public:
-		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) override;
 		virtual std::vector<uint8_t> encode(Image const &) override;
 
 		void setQuality(int); /* 0 - 100 */
 		int getQuality() const;
 	protected:
 		int m_quality = 100;
+	};
+	class ImageJPGDecoder : public ImageDecoder
+	{
+	public:
+		virtual std::shared_ptr<Image> decode(std::vector<uint8_t> const & data) override;
+	};
+	class ImageJPGCoder : public ImageJPGEncoder, public ImageJPGDecoder
+	{
 	};
 }
 

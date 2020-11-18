@@ -76,42 +76,46 @@ namespace Zen {
 	};
 
     /*
-     @ SocketLibrary
+     @ SocketGuardian
      - create an instance before using any socket funtions.
      and destroy it after all socket tasks finished.
      */
-	class SocketLibrary
+	class SocketGuardian
 	{
 	private:
-		SocketLibrary(SocketLibrary const &) = delete;
-		void operator = (SocketLibrary const &) = delete;
+		SocketGuardian(SocketGuardian const &) = delete;
+		void operator = (SocketGuardian const &) = delete;
 	public:
-		SocketLibrary(int16_t version = 0x0202)
+		SocketGuardian(int16_t version = 0x0202)
 		{
 #ifdef ZEN_OS_WIN
 			WSADATA wsadata;
 			WSAStartup(version, &wsadata);
 #endif
 		}
-#ifndef ZEN_OS_WIN
+
         void ignoreSignals()
         {
+#ifndef ZEN_OS_WIN
 			signal(SIGINT, SIG_IGN);
 			signal(SIGHUP, SIG_IGN);
 			signal(SIGPIPE, SIG_IGN);
+#endif
         }
+
         void setSignalHandler(int sig, void (*handle)(int))
         {
+#ifndef ZEN_OS_WIN
             struct sigaction action;
             action.sa_handler = handle;
             sigemptyset(&action.sa_mask);
             action.sa_flags = 0;
             sigaction(sig, &action, NULL);
             signal(sig, handle);
-        }
 #endif
+        }
 
-		~SocketLibrary()
+		~SocketGuardian()
 		{
 #ifdef ZEN_OS_WIN
 			WSACleanup();

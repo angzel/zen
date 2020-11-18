@@ -39,21 +39,15 @@ namespace Zen { namespace Vap2d {
 	public:
 		static Textures * S();
 
-		/**
-		 @createTexture
-		 -create SharedTexture.
-		 -not cached.
-		 */
-
 	public:
-		void setImageDecoder(std::string const & extension, ImageDecoder * decoder);
+		void setImageDecoder(std::string const & extension, std::shared_ptr<ImageDecoder> decoder);
 
-		ImageDecoder * getImageDecoder(std::string const & extension);
+		std::shared_ptr<ImageDecoder> getImageDecoder(std::string const & extension);
 
 		void clearImageDecoders();
 
 		/**
-		 the texture is not cached.
+		 warning: just load . the texture not cached.
 		 */
 		SharedTexture loadImage(const std::string & path);
 
@@ -94,8 +88,6 @@ namespace Zen { namespace Vap2d {
 		Textures(Textures&) = delete;
 
 		std::map<std::string, SharedTexture> m_texture_caches;
-		std::map<std::string, ImageDecoder*> m_image_decoders;
-		std::map<std::string, SharedTexture> m_default_textures;
-
+		std::map<std::string, std::shared_ptr<ImageDecoder> > m_image_decoders;
 	};
 }}

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -23,10 +23,12 @@
 
 #include "zen_app_config.h"
 
+#if defined(ZEN_OS_IOS)
+
 #if ZEN_APP_DRAW_API_METAL
 #import "MetalAppDelegate.h"
 #import "MetalViewController.h"
-#elif ZEN_APP_DRAW_API_OPENGLES
+#elif ZEN_APP_DRAW_API_GLES
 #import "GLESAppDelegate.h"
 #import "GLESViewController.h"
 #else
@@ -34,9 +36,9 @@
 #endif
 
 #include "zen_app_delegate.h"
-#include "zen_app_runtime.h"
+#include "zen_app.h"
 
-class AppRuntimeIOS : public Zen::AppRuntime
+class AppRuntimeIOS : public Zen::App
 {
 protected:
 	std::shared_ptr<Zen::AppRuntimeDelegate> mDelegate = nullptr;
@@ -142,3 +144,5 @@ protected:
 		mDelegate = nullptr;
 	}
 };
+
+#endif

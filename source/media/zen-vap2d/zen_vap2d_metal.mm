@@ -12,7 +12,7 @@ namespace Zen { namespace Vap2d {
 
 		//	static eBlend S_last_blend = eBlend::Inherit;
 
-	std::pair<Metal::eBlendFactor, Metal::eBlendFactor> sGetBlend(eBlend blend)
+	std::pair<Metal::eBlendFactor, Metal::eBlendFactor> _GetMetalBlend(eBlend blend)
 	{
 		switch (blend) {
 			case eBlend::Add:
@@ -136,7 +136,7 @@ namespace Zen { namespace Vap2d {
 		}
 		else
 		{
-			auto blends = sGetBlend(m_blend);
+			auto blends = _GetMetalBlend(m_blend);
 			pipe = Metal::Pipes::S()->getShaderSampler
 			(m_is_grey_mode, m_texture->format() == ePixel::Grey,
 			 blends.first, blends.second);
@@ -204,7 +204,7 @@ namespace Zen { namespace Vap2d {
 		}
 		else
 		{
-			auto blends = sGetBlend(m_blend);
+			auto blends = _GetMetalBlend(m_blend);
 			pipe = Metal::Pipes::S()->getShaderSampler
 			(m_is_grey_mode, m_texture->format() == ePixel::Grey,
 			 blends.first, blends.second);
@@ -266,7 +266,7 @@ namespace Zen { namespace Vap2d {
 		}
 		else
 		{
-			auto blends = sGetBlend(m_blend);
+			auto blends = _GetMetalBlend(m_blend);
 			pipe = Metal::Pipes::S()->getShaderParticle
 			(m_is_grey_mode, m_texture->format() == ePixel::Grey,
 			 blends.first, blends.second);
@@ -327,7 +327,7 @@ namespace Zen { namespace Vap2d {
 		}
 		else
 		{
-			auto blends = sGetBlend(m_blend);
+			auto blends = _GetMetalBlend(m_blend);
 			pipe = Metal::Pipes::S()->getShaderColor
 			(m_is_grey_mode, blends.first, blends.second);
 		}

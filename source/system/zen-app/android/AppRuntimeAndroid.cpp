@@ -27,7 +27,7 @@ namespace Zen {
 
 	AppRuntimeAndroid * AppRuntimeAndroid::_me = new AppRuntimeAndroid();
 
-	AppRuntime * AppRuntime::GetDefault()
+	App * App::GetDefault()
 	{
 		return AppRuntimeAndroid::GetDefault();
 	}

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -22,13 +22,21 @@
 #include "zen_audio.h"
 
 namespace Zen {
-	class AudioCoderWav : public AudioCoder
+	class AudioWavDecoder : public AudioDecoder
 	{
 	public:
-		virtual void load(AudioData & wave, std::string const & file) override;
-		virtual void save(AudioData const & wave, std::string const & file) override;
-		virtual void decode(AudioData & wave, std::vector<uint8_t> const & data) override;
-		virtual std::vector<uint8_t> encode(AudioData const & wave) override;
+		std::shared_ptr<Audio> decode(const std::vector<uint8_t> &data) override;
+
+	};
+
+	class AudioWavEncoder : public AudioEncoder
+	{
+	public:
+		std::vector<uint8_t> encode(const Zen::Audio &) override;
+	};
+
+	class AudioWavCoder : public AudioWavDecoder, public AudioWavEncoder
+	{
+
 	};
 }
-

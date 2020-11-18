@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -21,6 +21,7 @@
 
 #pragma once
 #include "zen_al_platform.h"
+#include "zen_types.h"
 
 namespace Zen { namespace AL {
 
@@ -29,9 +30,6 @@ namespace Zen { namespace AL {
 		Playing = AL_PLAYING,
 		Paused = AL_PAUSED,
 		Stoped = AL_STOPPED,
-	};
-	struct Position {
-		float x, y, z;
 	};
 
 	class Source
@@ -53,9 +51,9 @@ namespace Zen { namespace AL {
 		
 		void setGain(float value) const;
 		
-		void setPosition(Position) const;
+		void setPosition(Point3) const;
 		
-		void setVelocity(Position) const;
+		void setVelocity(Point3) const;
 		
 		void setLooping(bool loop) const;
 		
@@ -63,9 +61,9 @@ namespace Zen { namespace AL {
 		
 		float getGain() const;
 		
-		Position getPosition() const;
+		Point3 getPosition() const;
 		
-		Position getVelocity() const;
+		Point3 getVelocity() const;
 		
 		bool isLooping() const;
 		
@@ -74,12 +72,6 @@ namespace Zen { namespace AL {
 		ALuint getALSourceID() const;
 		
 		EPlayState getPlayState() const;
-
-		bool isFree() const
-		{
-			auto state = this->getPlayState();
-			return (state == EPlayState::Inital || state == EPlayState::Stoped);
-		}
 	};
 }}
 
@@ -115,11 +107,11 @@ namespace Zen { namespace AL {
 	{
 		alSourcef(mSource, AL_GAIN, value);
 	}
-	inline void Source::setPosition(Position pos) const
+	inline void Source::setPosition(Point3 pos) const
 	{
 		alSource3f(mSource, AL_POSITION, pos.x, pos.y, pos.z);
 	}
-	inline void Source::setVelocity(Position motion) const
+	inline void Source::setVelocity(Point3 motion) const
 	{
 		alSource3f(mSource, AL_VELOCITY, motion.x, motion.y, motion.z);
 	}
@@ -136,20 +128,20 @@ namespace Zen { namespace AL {
 	inline float Source::getGain() const
 	{
 		ALfloat value = 0.f;
-		alGetSourcef(mSource, AL_PITCH, &value);
+		alGetSourcef(mSource, AL_GAIN, &value);
 		return value;
 	}
-	inline Position Source::getPosition() const
+	inline Point3 Source::getPosition() const
 	{
 		ALfloat x = 0.f, y = 0.f, z = 0.f;
 		alGetSource3f(mSource, AL_POSITION, &x, &y, &z);
-		return Position{x, y, z};
+		return Point3{x, y, z};
 	}
-	inline Position Source::getVelocity() const
+	inline Point3 Source::getVelocity() const
 	{
 		ALfloat x = 0.f, y = 0.f, z = 0.f;
 		alGetSource3f(mSource, AL_VELOCITY, &x, &y, &z);
-		return Position{x, y, z};
+		return Point3{x, y, z};
 	}
 	inline bool Source::isLooping() const
 	{

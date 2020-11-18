@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -24,7 +24,7 @@
 #include "zen_exception.h"
 
 namespace Zen { namespace AL {
-	enum class EBufferFmt
+	enum class eTrackType
 	{
 		Mono8 = AL_FORMAT_MONO8,
 		Mono16 = AL_FORMAT_MONO16,
@@ -49,7 +49,7 @@ namespace Zen { namespace AL {
 		
 		inline void release();
 		
-		inline void bindData(EBufferFmt fmt, void *data, uint32_t size, uint32_t freq) const;
+		inline void bindData(eTrackType fmt, void *data,size_t size, size_t freq) const;
 		
 		inline ALuint getALBufferID() const;
 	};
@@ -79,7 +79,7 @@ namespace Zen { namespace AL {
 			mBuffer = 0;
 		}
 	}
-	inline void Buffer::bindData(EBufferFmt fmt, void *data, uint32_t size, uint32_t freq) const
+	inline void Buffer::bindData(eTrackType fmt, void *data, size_t size, size_t freq) const
 	{
 		alBufferData(mBuffer, (ALenum)fmt, data, (int)size, (int)freq);
 	}

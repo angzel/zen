@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -25,14 +25,14 @@
 #include "zen_exception.h"
 
 namespace Zen { namespace GL {
-	enum class EBufferUsage
+	enum class eBufferUsage
 	{
 		StreamDraw          = GL_STREAM_DRAW,
 		StaticDraw          = GL_STATIC_DRAW, 
 		DynamicDraw         = GL_DYNAMIC_DRAW,
 		
 	};
-	enum class EBufferType
+	enum class eBufferType
 	{
 		ArrayBuffer         = GL_ARRAY_BUFFER,
 		ElementArrayBuffer  = GL_ELEMENT_ARRAY_BUFFER,
@@ -51,11 +51,11 @@ namespace Zen { namespace GL {
 		inline ~Buffer(void);
 	public:
 
-		inline void create(size_t size, void const * data_null, EBufferUsage usage = EBufferUsage::StaticDraw);
+		inline void create(size_t size, void const * data_null, eBufferUsage usage = eBufferUsage::StaticDraw);
 
 		inline void update(size_t offset, size_t size, void const * data);
 		
-		inline EBufferUsage getUsage() const;
+		inline eBufferUsage getUsage() const;
 		
 		inline uint32_t size() const;
 		
@@ -100,7 +100,7 @@ namespace Zen { namespace GL {
 		if(mID != 0) glDeleteBuffers(1, &mID);
 	}
 
-	inline void Buffer::create(size_t size, void const * data_null, EBufferUsage usage)
+	inline void Buffer::create(size_t size, void const * data_null, eBufferUsage usage)
 	{
 		glBindBuffer((GLenum)mType, mID);
 		glBufferData((GLenum)mType, (GLsizeiptr)size, data_null, (GLenum)usage);
@@ -120,12 +120,12 @@ namespace Zen { namespace GL {
 #endif
 	}
 
-	inline EBufferUsage Buffer::getUsage() const
+	inline eBufferUsage Buffer::getUsage() const
 	{
 		GLint usage = GL_STATIC_DRAW;
 		glBindBuffer((GLenum)mType, mID);
 		glGetBufferParameteriv((GLenum)mType, GL_BUFFER_USAGE, &usage);
-		return (EBufferUsage)usage;
+		return (eBufferUsage)usage;
 	}
 
 	inline uint32_t Buffer::size() const

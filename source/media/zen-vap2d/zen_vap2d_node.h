@@ -2,7 +2,7 @@
 
 #include "zen_vap2d_config.h"
 #include "zen_matrix.h"
-#include "zen_app_runtime.h"
+#include "zen_app.h"
 #include <vector>
 #include <mutex>
 
@@ -123,11 +123,14 @@ namespace Zen { namespace Vap2d {
 	{
 		friend class FinalNode;
 		friend class Node;
+
 	protected:
+
 		std::vector<Node*> m_nodes;
 		bool m_nodes_dirty = false;
 
 	public:
+
 		BranchNode(std::string const & name = "branch node");
 
 		virtual ~BranchNode();
@@ -143,6 +146,7 @@ namespace Zen { namespace Vap2d {
 	public:
 
 		virtual void draw() override;
+
 		virtual Node * onTouchDown(AppTouch const & touch) override;
 
 		virtual Node * onTouchMove(AppTouch const & touch) override;
@@ -156,18 +160,26 @@ namespace Zen { namespace Vap2d {
 	{
 		friend class BranchNode;
 		friend class Node;
+
 	public:
+
 		FinalNode(std::string const & name = "leaf node");
+		
 		virtual ~FinalNode();
 	};
 
 	class Matrixing : public virtual VapObject {
+
 	public:
+
 		Matrixing() = default;
+
 		virtual ~Matrixing() = default;
 
 		bool updateMatrix();
+
 	protected:
+
 		virtual void _clearInnerMatrixDirty() = 0;
 
 		Matrix4 m_world_matrix;

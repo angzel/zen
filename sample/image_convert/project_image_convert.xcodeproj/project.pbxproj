@@ -1,0 +1,469 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D0AF933254BCE31009F8415 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AF932254BCE31009F8415 /* main.mm */; };
+		8D0AF95F254BCEF9009F8415 /* zen_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AF95A254BCEF9009F8415 /* zen_image.cpp */; };
+		8D0AF960254BCEF9009F8415 /* zen_image_raw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AF95C254BCEF9009F8415 /* zen_image_raw.cpp */; };
+		8D0AF969254BCF06009F8415 /* zen_image_jpg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AF963254BCF06009F8415 /* zen_image_jpg.cpp */; };
+		8D0AF96A254BCF06009F8415 /* zen_image_png.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D0AF967254BCF06009F8415 /* zen_image_png.cpp */; };
+		8D1987B52392379B00515178 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D1987B42392379B00515178 /* libz.tbd */; };
+		8D4BC22225654CD500B3AB05 /* zen_md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC21325654CD500B3AB05 /* zen_md5.cpp */; };
+		8D4BC22325654CD500B3AB05 /* zen_urlcoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC21425654CD500B3AB05 /* zen_urlcoding.cpp */; };
+		8D4BC22425654CD500B3AB05 /* zen_csv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC21625654CD500B3AB05 /* zen_csv.cpp */; };
+		8D4BC22525654CD500B3AB05 /* zen_base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8D4BC21725654CD500B3AB05 /* zen_base64.cpp */; };
+		8D4BC22825654D3600B3AB05 /* libpng-mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D4BC22625654D3600B3AB05 /* libpng-mac.a */; };
+		8D4BC22925654D3600B3AB05 /* libjpeg-mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D4BC22725654D3600B3AB05 /* libjpeg-mac.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8D8BC1352391497C00B1DCD6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		8DEBCBFA2394CEB100D4B395 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8D0AF932254BCE31009F8415 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		8D0AF959254BCEF9009F8415 /* zen_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image.h; sourceTree = "<group>"; };
+		8D0AF95A254BCEF9009F8415 /* zen_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image.cpp; sourceTree = "<group>"; };
+		8D0AF95B254BCEF9009F8415 /* zen_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_color.h; sourceTree = "<group>"; };
+		8D0AF95C254BCEF9009F8415 /* zen_image_raw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_raw.cpp; sourceTree = "<group>"; };
+		8D0AF95E254BCEF9009F8415 /* zen_image_raw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_raw.h; sourceTree = "<group>"; };
+		8D0AF962254BCF06009F8415 /* zen_image_jpg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_jpg.h; sourceTree = "<group>"; };
+		8D0AF963254BCF06009F8415 /* zen_image_jpg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_jpg.cpp; sourceTree = "<group>"; };
+		8D0AF966254BCF06009F8415 /* zen_image_png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_png.h; sourceTree = "<group>"; };
+		8D0AF967254BCF06009F8415 /* zen_image_png.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_png.cpp; sourceTree = "<group>"; };
+		8D1987B42392379B00515178 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		8D4BC20225654CD500B3AB05 /* zen_meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_meta.h; sourceTree = "<group>"; };
+		8D4BC20325654CD500B3AB05 /* zen_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_log.h; sourceTree = "<group>"; };
+		8D4BC20425654CD500B3AB05 /* zen_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_endian.h; sourceTree = "<group>"; };
+		8D4BC20525654CD500B3AB05 /* zen_object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_object.h; sourceTree = "<group>"; };
+		8D4BC20625654CD500B3AB05 /* zen_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_os.h; sourceTree = "<group>"; };
+		8D4BC20725654CD500B3AB05 /* zen_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_exception.h; sourceTree = "<group>"; };
+		8D4BC20825654CD500B3AB05 /* zen_int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_int.h; sourceTree = "<group>"; };
+		8D4BC20925654CD500B3AB05 /* zen_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_types.h; sourceTree = "<group>"; };
+		8D4BC20B25654CD500B3AB05 /* zen_utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_utf8.h; sourceTree = "<group>"; };
+		8D4BC20C25654CD500B3AB05 /* zen_base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_base64.h; sourceTree = "<group>"; };
+		8D4BC20D25654CD500B3AB05 /* zen_urlcoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_urlcoding.h; sourceTree = "<group>"; };
+		8D4BC20E25654CD500B3AB05 /* zen_cast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_cast.h; sourceTree = "<group>"; };
+		8D4BC20F25654CD500B3AB05 /* zen_localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_localization.h; sourceTree = "<group>"; };
+		8D4BC21025654CD500B3AB05 /* zen_csv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_csv.h; sourceTree = "<group>"; };
+		8D4BC21125654CD500B3AB05 /* zen_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_buffer.h; sourceTree = "<group>"; };
+		8D4BC21225654CD500B3AB05 /* zen_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_file.h; sourceTree = "<group>"; };
+		8D4BC21325654CD500B3AB05 /* zen_md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_md5.cpp; sourceTree = "<group>"; };
+		8D4BC21425654CD500B3AB05 /* zen_urlcoding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_urlcoding.cpp; sourceTree = "<group>"; };
+		8D4BC21525654CD500B3AB05 /* zen_md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_md5.h; sourceTree = "<group>"; };
+		8D4BC21625654CD500B3AB05 /* zen_csv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_csv.cpp; sourceTree = "<group>"; };
+		8D4BC21725654CD500B3AB05 /* zen_base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_base64.cpp; sourceTree = "<group>"; };
+		8D4BC21925654CD500B3AB05 /* zen_fraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_fraction.h; sourceTree = "<group>"; };
+		8D4BC21A25654CD500B3AB05 /* zen_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_matrix.h; sourceTree = "<group>"; };
+		8D4BC21B25654CD500B3AB05 /* zen_rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_rect.h; sourceTree = "<group>"; };
+		8D4BC21C25654CD500B3AB05 /* zen_bezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_bezier.h; sourceTree = "<group>"; };
+		8D4BC21D25654CD500B3AB05 /* zen_numerical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_numerical.h; sourceTree = "<group>"; };
+		8D4BC21E25654CD500B3AB05 /* zen_quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_quaternion.h; sourceTree = "<group>"; };
+		8D4BC21F25654CD500B3AB05 /* zen_ticker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_ticker.h; sourceTree = "<group>"; };
+		8D4BC22025654CD500B3AB05 /* zen_random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_random.h; sourceTree = "<group>"; };
+		8D4BC22125654CD500B3AB05 /* zen_vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_vector.h; sourceTree = "<group>"; };
+		8D4BC22625654D3600B3AB05 /* libpng-mac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-mac.a"; path = "../../../zen-external.git/external/mac/prebuilt/libpng-mac.a"; sourceTree = "<group>"; };
+		8D4BC22725654D3600B3AB05 /* libjpeg-mac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libjpeg-mac.a"; path = "../../../zen-external.git/external/mac/prebuilt/libjpeg-mac.a"; sourceTree = "<group>"; };
+		8D8BC1372391497C00B1DCD6 /* project_image_convert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = project_image_convert; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D8BC1342391497C00B1DCD6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D1987B52392379B00515178 /* libz.tbd in Frameworks */,
+				8D4BC22925654D3600B3AB05 /* libjpeg-mac.a in Frameworks */,
+				8D4BC22825654D3600B3AB05 /* libpng-mac.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8D0AF958254BCEF9009F8415 /* zen-image */ = {
+			isa = PBXGroup;
+			children = (
+				8D0AF959254BCEF9009F8415 /* zen_image.h */,
+				8D0AF95A254BCEF9009F8415 /* zen_image.cpp */,
+				8D0AF95B254BCEF9009F8415 /* zen_color.h */,
+				8D0AF95C254BCEF9009F8415 /* zen_image_raw.cpp */,
+				8D0AF95E254BCEF9009F8415 /* zen_image_raw.h */,
+			);
+			name = "zen-image";
+			path = "../../source/media/zen-image";
+			sourceTree = "<group>";
+		};
+		8D0AF961254BCF06009F8415 /* zen-jpg */ = {
+			isa = PBXGroup;
+			children = (
+				8D0AF962254BCF06009F8415 /* zen_image_jpg.h */,
+				8D0AF963254BCF06009F8415 /* zen_image_jpg.cpp */,
+			);
+			name = "zen-jpg";
+			path = "../../source/third/zen-jpg";
+			sourceTree = "<group>";
+		};
+		8D0AF965254BCF06009F8415 /* zen-png */ = {
+			isa = PBXGroup;
+			children = (
+				8D0AF966254BCF06009F8415 /* zen_image_png.h */,
+				8D0AF967254BCF06009F8415 /* zen_image_png.cpp */,
+			);
+			name = "zen-png";
+			path = "../../source/third/zen-png";
+			sourceTree = "<group>";
+		};
+		8D4BC20025654CD500B3AB05 /* basic */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC20125654CD500B3AB05 /* zen-config */,
+				8D4BC20A25654CD500B3AB05 /* zen-string */,
+				8D4BC21825654CD500B3AB05 /* zen-math */,
+			);
+			name = basic;
+			path = ../../source/basic;
+			sourceTree = "<group>";
+		};
+		8D4BC20125654CD500B3AB05 /* zen-config */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC20225654CD500B3AB05 /* zen_meta.h */,
+				8D4BC20325654CD500B3AB05 /* zen_log.h */,
+				8D4BC20425654CD500B3AB05 /* zen_endian.h */,
+				8D4BC20525654CD500B3AB05 /* zen_object.h */,
+				8D4BC20625654CD500B3AB05 /* zen_os.h */,
+				8D4BC20725654CD500B3AB05 /* zen_exception.h */,
+				8D4BC20825654CD500B3AB05 /* zen_int.h */,
+				8D4BC20925654CD500B3AB05 /* zen_types.h */,
+			);
+			path = "zen-config";
+			sourceTree = "<group>";
+		};
+		8D4BC20A25654CD500B3AB05 /* zen-string */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC20B25654CD500B3AB05 /* zen_utf8.h */,
+				8D4BC20C25654CD500B3AB05 /* zen_base64.h */,
+				8D4BC20D25654CD500B3AB05 /* zen_urlcoding.h */,
+				8D4BC20E25654CD500B3AB05 /* zen_cast.h */,
+				8D4BC20F25654CD500B3AB05 /* zen_localization.h */,
+				8D4BC21025654CD500B3AB05 /* zen_csv.h */,
+				8D4BC21125654CD500B3AB05 /* zen_buffer.h */,
+				8D4BC21225654CD500B3AB05 /* zen_file.h */,
+				8D4BC21325654CD500B3AB05 /* zen_md5.cpp */,
+				8D4BC21425654CD500B3AB05 /* zen_urlcoding.cpp */,
+				8D4BC21525654CD500B3AB05 /* zen_md5.h */,
+				8D4BC21625654CD500B3AB05 /* zen_csv.cpp */,
+				8D4BC21725654CD500B3AB05 /* zen_base64.cpp */,
+			);
+			path = "zen-string";
+			sourceTree = "<group>";
+		};
+		8D4BC21825654CD500B3AB05 /* zen-math */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC21925654CD500B3AB05 /* zen_fraction.h */,
+				8D4BC21A25654CD500B3AB05 /* zen_matrix.h */,
+				8D4BC21B25654CD500B3AB05 /* zen_rect.h */,
+				8D4BC21C25654CD500B3AB05 /* zen_bezier.h */,
+				8D4BC21D25654CD500B3AB05 /* zen_numerical.h */,
+				8D4BC21E25654CD500B3AB05 /* zen_quaternion.h */,
+				8D4BC21F25654CD500B3AB05 /* zen_ticker.h */,
+				8D4BC22025654CD500B3AB05 /* zen_random.h */,
+				8D4BC22125654CD500B3AB05 /* zen_vector.h */,
+			);
+			path = "zen-math";
+			sourceTree = "<group>";
+		};
+		8D8BC12E2391497C00B1DCD6 = {
+			isa = PBXGroup;
+			children = (
+				8D4BC20025654CD500B3AB05 /* basic */,
+				8D0AF961254BCF06009F8415 /* zen-jpg */,
+				8D0AF965254BCF06009F8415 /* zen-png */,
+				8D0AF958254BCEF9009F8415 /* zen-image */,
+				8D0AF932254BCE31009F8415 /* main.mm */,
+				8D8BC1382391497C00B1DCD6 /* Products */,
+				8D8BC15723916CA000B1DCD6 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8D8BC1382391497C00B1DCD6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D8BC1372391497C00B1DCD6 /* project_image_convert */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8D8BC15723916CA000B1DCD6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8D4BC22725654D3600B3AB05 /* libjpeg-mac.a */,
+				8D4BC22625654D3600B3AB05 /* libpng-mac.a */,
+				8D1987B42392379B00515178 /* libz.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D8BC1362391497C00B1DCD6 /* project_image_convert */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D8BC13E2391497C00B1DCD6 /* Build configuration list for PBXNativeTarget "project_image_convert" */;
+			buildPhases = (
+				8D8BC1332391497C00B1DCD6 /* Sources */,
+				8D8BC1342391497C00B1DCD6 /* Frameworks */,
+				8D8BC1352391497C00B1DCD6 /* CopyFiles */,
+				8DEBCBFA2394CEB100D4B395 /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = project_image_convert;
+			productName = zena_dev;
+			productReference = 8D8BC1372391497C00B1DCD6 /* project_image_convert */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8D8BC12F2391497C00B1DCD6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1200;
+				ORGANIZATIONNAME = lover;
+				TargetAttributes = {
+					8D8BC1362391497C00B1DCD6 = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 8D8BC1322391497C00B1DCD6 /* Build configuration list for PBXProject "project_image_convert" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8D8BC12E2391497C00B1DCD6;
+			productRefGroup = 8D8BC1382391497C00B1DCD6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D8BC1362391497C00B1DCD6 /* project_image_convert */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D8BC1332391497C00B1DCD6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D4BC22525654CD500B3AB05 /* zen_base64.cpp in Sources */,
+				8D4BC22225654CD500B3AB05 /* zen_md5.cpp in Sources */,
+				8D4BC22325654CD500B3AB05 /* zen_urlcoding.cpp in Sources */,
+				8D0AF96A254BCF06009F8415 /* zen_image_png.cpp in Sources */,
+				8D0AF969254BCF06009F8415 /* zen_image_jpg.cpp in Sources */,
+				8D4BC22425654CD500B3AB05 /* zen_csv.cpp in Sources */,
+				8D0AF960254BCEF9009F8415 /* zen_image_raw.cpp in Sources */,
+				8D0AF95F254BCEF9009F8415 /* zen_image.cpp in Sources */,
+				8D0AF933254BCE31009F8415 /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8D8BC13C2391497C00B1DCD6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8D8BC13D2391497C00B1DCD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		8D8BC13F2391497C00B1DCD6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../external/mac/include\"";
+				LD_RUNPATH_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../external/mac/prebuilt\"";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "";
+				WARNING_CFLAGS = "-Wno-deprecated-declarations";
+			};
+			name = Debug;
+		};
+		8D8BC1402391497C00B1DCD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../external/mac/include\"";
+				LD_RUNPATH_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../external/mac/prebuilt\"";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "";
+				WARNING_CFLAGS = "-Wno-deprecated-declarations";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8D8BC1322391497C00B1DCD6 /* Build configuration list for PBXProject "project_image_convert" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D8BC13C2391497C00B1DCD6 /* Debug */,
+				8D8BC13D2391497C00B1DCD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8D8BC13E2391497C00B1DCD6 /* Build configuration list for PBXNativeTarget "project_image_convert" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D8BC13F2391497C00B1DCD6 /* Debug */,
+				8D8BC1402391497C00B1DCD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8D8BC12F2391497C00B1DCD6 /* Project object */;
+}

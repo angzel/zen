@@ -1,34 +1,21 @@
 
 #include "zen_vap2d_config.h"
 
-#if ZEN_APP_DRAW_API_OPENGLES
+#if defined(ZEN_OS_IOS) || defined(ZEN_OS_ANDROID)
+#if ZEN_APP_DRAW_API_GLES
 
 #include "zen_vap2d.h"
 
 namespace Zen { namespace Vap2d {
 
-	static eBlend S_last_blend = eBlend::None;
-
-	UniRender * UniRender::S()
-	{
-		static auto single = new UniRender;
-		return single;;
-	}
-
-	void UniRender::startRender()
-	{
-	}
-
-	void UniRender::endRender()
-	{
-	}
-
 	static float S_coords[] = {
 		0, 1, 1, 1, 0, 0, 1, 0, // sampler
 		0, 0, 1, 0, 0, 1, 1, 1, // vertex
 	};
-	
-	void UniRender::performBlend(eBlend blend)
+
+	static eBlend S_last_blend = eBlend::None;
+
+	void _PerformBlend(eBlend blend)
 	{
 		if(blend == eBlend::Inherit)
 		{
@@ -94,7 +81,7 @@ namespace Zen { namespace Vap2d {
 		auto sha = GL::ShaderPrograms::S()
 		->getShaderSampler(m_is_grey_mode, m_texture->format() == ePixel::Grey);
 
-		UniRender::S()->performBlend(m_blend);
+		_PerformBlend(m_blend);
 
 		auto s = GL::Render::S();
 		
@@ -147,7 +134,7 @@ namespace Zen { namespace Vap2d {
 		auto sha = GL::ShaderPrograms::S()
 		->getShaderSampler(m_is_grey_mode, m_texture->format() == ePixel::Grey);
 
-		UniRender::S()->performBlend(m_blend);
+		_PerformBlend(m_blend);
 
 		auto s = GL::Render::S();
 
@@ -193,7 +180,7 @@ namespace Zen { namespace Vap2d {
 		auto sha = GL::ShaderPrograms::S()
 		->getShaderParticle(m_is_grey_mode, m_texture->format() == ePixel::Grey);
 
-		UniRender::S()->performBlend(m_blend);
+		_PerformBlend(m_blend);
 
 		auto s = GL::Render::S();
 
@@ -239,7 +226,7 @@ namespace Zen { namespace Vap2d {
 		auto sha = GL::ShaderPrograms::S()
 		->getShaderColor(m_is_grey_mode);
 
-		UniRender::S()->performBlend(m_blend);
+		_PerformBlend(m_blend);
 
 		auto s = GL::Render::S();
 
@@ -314,4 +301,5 @@ namespace Zen { namespace Vap2d {
 #endif
 }}
 
+#endif
 #endif

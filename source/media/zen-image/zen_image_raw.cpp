@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -22,12 +22,10 @@
 #include "zen_image_raw.h"
 #include "zen_file.h"
 #include "zen_endian.h"
-#include "zen_buffer.h"
 #include "zen_exception.h"
 
 namespace Zen
 {
-
 	struct ImageCoderRawHead
 	{
 #define Version Byte4('j','a','i','i').value
@@ -52,15 +50,13 @@ namespace Zen
 		}
 	};
 	
-	std::shared_ptr<Image> ImageDecoderRaw::decode(std::vector<uint8_t> const & data)
+	std::shared_ptr<Image> ImageRawDecoder::decode(std::vector<uint8_t> const & data)
 	{
-		Zen::BufferReader reader(&data);
-		
+//		Zen::BufferReader reader(&data);
 		ImageCoderRawHead head;
-		
-		bool res = reader.read(head);
-		
-		musts(res, "invalid image raw head");
+		musts(data.size() >= sizeof(head), "invalid image raw");
+
+		::memcpy(&head, data.data(), sizeof(head));
 
 		uint32_t width = HostNet32(head.width);
 		uint32_t height = HostNet32(head.height);
@@ -72,13 +68,15 @@ namespace Zen
 		
 		uint32_t sz = width * height * bpp;
 		
-		musts(reader.getReadPointer() + sz <= data.size(), "too few data length");
+		musts(data.size() >= sz + sizeof(head), "too few data length");
 
 		auto image = Image::Create(format, width, height);
-		reader.read(image->bytes(), image->size());
+		must(image->size() == sz);
+
+		::memcpy(image->data(), data.data() + sizeof(head), sz);
 		return image;
 	}
-	std::vector<uint8_t> ImageEncoderRaw::encode(Image const & image)
+	std::vector<uint8_t> ImageRawEncoder::encode(Image const & image)
 	{
 		ImageCoderRawHead head;
 
@@ -89,7 +87,7 @@ namespace Zen
 		std::vector<uint8_t> data;
 		data.reserve(sizeof(head) + image.size());
 		data.assign(head_buf, head_buf + sizeof(head));
-		data.insert(data.end(), image.bytes(), image.bytes() + image.size());
+		data.insert(data.end(), image.data(), image.data() + image.size());
 		
 		return data;
 	}

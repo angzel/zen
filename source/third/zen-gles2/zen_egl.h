@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -112,7 +112,7 @@ namespace Zen {
 		EGLContext eglContext = 0;
 		EGLSurface eglSurface = 0;
 
-		/*Note we use OpenGLES 2 versions in the attributes below just to foolcurrent version of EGL */
+		/*Note we use GLES 2 versions in the attributes below just to foolcurrent version of EGL */
 		EGLint attributes[]= {
 			EGL_RED_SIZE, 8,
 			EGL_GREEN_SIZE,8,

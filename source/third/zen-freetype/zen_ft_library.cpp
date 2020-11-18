@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -32,7 +32,7 @@ namespace Zen {
 		std::vector<uint8_t> m_data;
 		FT_Face mFT_Face = nullptr;
 
-		FontInner(FT_Library library, const std::vector<uint8_t> & data)
+		FontInner(FT_Library library, const std::vector<uint8_t> & data) throw(std::exception)
 		{
 			m_data = data;
 			FT_Face face = nullptr;

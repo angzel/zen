@@ -9,7 +9,6 @@ namespace Zen { namespace Vap2d {
 	public:
 		Layer(std::string const & name = "layer");
 
-		virtual void draw() override;	public:
-
+		virtual void draw() override;
 	};
 }}

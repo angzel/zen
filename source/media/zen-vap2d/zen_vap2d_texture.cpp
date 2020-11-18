@@ -1,7 +1,7 @@
 #include "zen_vap2d_texture.h"
 #include "zen_file.h"
 #include "zen_numerical.h"
-#include "zen_system.h"
+#include "zen_info.h"
 #include "zen_exception.h"
 
 namespace Zen { namespace Vap2d {
@@ -13,7 +13,7 @@ namespace Zen { namespace Vap2d {
 
 	void Texture::set(Image const * image)
 	{
-		this->set(image->width(), image->height(), image->format(), image->bytes());
+		this->set(image->width(), image->height(), image->format(), image->data());
 	}
 
 	SharedTexture Textures::loadImage(const std::string & path)
@@ -52,7 +52,7 @@ namespace Zen { namespace Vap2d {
 		return single;;
 	}
 
-	void Textures::setImageDecoder(const std::string &extension, ImageDecoder *decoder)
+	void Textures::setImageDecoder(const std::string &extension, std::shared_ptr<ImageDecoder> decoder)
 	{
 		if(!decoder)
 		{
@@ -63,7 +63,7 @@ namespace Zen { namespace Vap2d {
 			m_image_decoders[extension] = decoder;
 		}
 	}
-	ImageDecoder * Textures::getImageDecoder(std::string const & extension)
+	std::shared_ptr<ImageDecoder> Textures::getImageDecoder(std::string const & extension)
 	{
 		auto iter = m_image_decoders.find(extension);
 		if(iter == m_image_decoders.end()) return nullptr;
@@ -122,7 +122,7 @@ namespace Zen { namespace Vap2d {
 		float r = (float)size/2;
 
 		auto image = Image::Create(ePixel::Grey, size, size);
-		auto data = image->bytes();
+		auto data = image->data();
 		for(int i = 0; i < size; ++i)
 		{
 			float x2 = Square(r-i);
@@ -149,7 +149,7 @@ namespace Zen { namespace Vap2d {
 		int r = (size/2);
 
 		auto image = Image::Create(ePixel::Grey, size, size);
-		auto data = image->bytes();
+		auto data = image->data();
 		for(int i = 0; i < size; ++i)
 		{
 			int x = std::abs(r - i);
@@ -174,7 +174,7 @@ namespace Zen { namespace Vap2d {
 		float r = (float)size/2;
 
 		auto image = Image::Create(ePixel::Grey, size, size);
-		auto data = image->bytes();
+		auto data = image->data();
 
 		for(int i = 0; i < size; ++i)
 		{

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -28,7 +28,6 @@
 #include "zen_image_png.h"
 #include "zen_file.h"
 #include "zen_endian.h"
-#include "zen_buffer.h"
 #include "zen_exception.h"
 #include "zen_log.h"
 #include <iostream>
@@ -129,7 +128,7 @@ namespace Zen
 namespace Zen
 {
 //	void ImagePNGCoder::decode(ImageData & img, std::vector<uint8_t> const & data)
-	std::shared_ptr<Image> ImagePNGCoder::decode(std::vector<uint8_t> const & data)
+	std::shared_ptr<Image> ImagePNGDecoder::decode(std::vector<uint8_t> const & data)
 	{
 		static int const HeadLen = 8;
 		
@@ -207,7 +206,7 @@ namespace Zen
 
 		return Image::CreateWidthData(format, width, height, buffer.data());
 	}
-	std::vector<uint8_t> ImagePNGCoder::encode(Image const & image)
+	std::vector<uint8_t> ImagePNGEncoder::encode(Image const & image)
 	{
 		size_t channel = (size_t)image.format();
 		musts(channel > 0 && channel <= 4, "unsupported pixel format");
@@ -217,7 +216,7 @@ namespace Zen
 		std::vector<png_bytep> row_pointers(image.height());
 		for (size_t i = 0; i < image.height(); i++)
 		{
-			row_pointers[i] = (png_bytep)(image.bytes() + rowbytes * i);
+			row_pointers[i] = (png_bytep)(image.data() + rowbytes * i);
 		}
 		
 		int color_type = 0;

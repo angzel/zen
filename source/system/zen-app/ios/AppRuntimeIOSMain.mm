@@ -1,6 +1,7 @@
 #include "zen_app_config.h"
-#include "zen_app_runtime.h"
+#include "zen_app.h"
 
+#if defined(ZEN_OS_IOS)
 #include "AppRuntimeIOS.h"
 
 int main(int argc, char * argv[]) {
@@ -11,3 +12,4 @@ int main(int argc, char * argv[]) {
 	    return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
 	}
 }
+#endif

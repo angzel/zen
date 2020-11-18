@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -29,6 +29,7 @@ namespace Zen {
 		int type;
 		int value;
 	};
+
 	struct AppTouch
 	{
 		uint32_t no;

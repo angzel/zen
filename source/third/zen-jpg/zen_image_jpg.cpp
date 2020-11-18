@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2013 ClearSky G.
+ Copyright (c) 2013 MeherTJ G.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -22,7 +22,6 @@
 #include "zen_image_jpg.h"
 #include "zen_file.h"
 #include "zen_endian.h"
-#include "zen_buffer.h"
 #include "zen_exception.h"
 
 /**
@@ -84,7 +83,7 @@ namespace Zen { namespace MyJPG {
 
 namespace Zen
 {
-	std::shared_ptr<Image> ImageJPGCoder::decode(std::vector<uint8_t> const & data)
+	std::shared_ptr<Image> ImageJPGDecoder::decode(std::vector<uint8_t> const & data)
 	{
 		MyJPG::ReadInfo jpg;
 
@@ -118,7 +117,7 @@ namespace Zen
 
 		return Image::CreateWidthData(format, width, height, buffer.data());
 	}
-	std::vector<uint8_t> ImageJPGCoder::encode(Image const & image)
+	std::vector<uint8_t> ImageJPGEncoder::encode(Image const & image)
 	{
 		auto bpp = (int)image.format();
 
@@ -148,7 +147,7 @@ namespace Zen
 		auto & ri = jpg.cinfo.next_scanline;
 		while (ri < image.height())
 		{
-			JSAMPROW row_pointers = (JSAMPROW)(image.bytes() + ri * rowbytes);
+			JSAMPROW row_pointers = (JSAMPROW)(image.data() + ri * rowbytes);
 			::jpeg_write_scanlines(&jpg.cinfo, &row_pointers, 1);
 		}
 
@@ -162,12 +161,12 @@ namespace Zen
 		return data;
 	}
 
-	void ImageJPGCoder::setQuality(int q)
+	void ImageJPGEncoder::setQuality(int q)
 	{
 		m_quality = q;
 	}
 
-	int ImageJPGCoder::getQuality() const
+	int ImageJPGEncoder::getQuality() const
 	{
 		return m_quality;
 	}
