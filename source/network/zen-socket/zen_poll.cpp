@@ -1,16 +1,16 @@
 #include "zen_poll.h"
 
 #include "zen_log.h"
-#include "zen_os.h"
+#include "zen_macro.h"
 #include <unistd.h>
 #include <string>
 #include <functional>
 
-#if defined(ZEN_OS_MAC)
+#if ZEN_OS_APPLE
 #include <sys/event.h>
 #include <errno.h>
 
-namespace Zen {
+namespace Zen { namespace Socket {
 	
 #define KQ_EVENT_SIZE 32
 	class __Kqueue : public Poll
@@ -36,15 +36,15 @@ namespace Zen {
 			::close(mKQ);
 			mKQ = -1;
 		}
-		virtual int waitEvent(int ms_timeout, Callback callback) override
+		virtual int wait(Callback callback, int timeout) override
 		{
 			int res = 0;
-			if(ms_timeout >= 0)
+			if(timeout >= 0)
 			{
-				::timespec timeout;
-				timeout.tv_sec = ms_timeout / 1000;
-				timeout.tv_nsec = (ms_timeout % 1000) * 1E6;
-				res = kevent(mKQ, NULL, 0, mEvents, KQ_EVENT_SIZE, &timeout);
+				::timespec ts;
+				ts.tv_sec = timeout / 1000;
+				ts.tv_nsec = (timeout % 1000) * 1E6;
+				res = kevent(mKQ, NULL, 0, mEvents, KQ_EVENT_SIZE, &ts);
 			}
 			else
 			{
@@ -60,49 +60,32 @@ namespace Zen {
 				auto &event = mEvents[i];
 				
 				auto filter = event.filter;
-				auto data = event.data;
-				auto user_data = (void*)event.udata;
+				
+				auto data = (void*)event.udata;
 
 				if(filter == EVFILT_READ)
 				{
-					callback(Event::Read, user_data, (int)data);
-				}
-				else if(filter == EVFILT_WRITE)
-				{
-					callback(Event::Write, user_data, (int)data);
+					callback(data, 0);
 				}
 				else
 				{
-					callback(Event::None, user_data, (int)filter);
+					callback(data, 1);
 				}
 			}
 			
 			return res;
 		}
-		virtual bool watch(SocketHandle native, Event event, void * user_data) override
+		virtual bool add(Handle native, void * data) override
 		{
 			struct kevent changes[1];
-			if(event & Event::Read)
-			{
-				EV_SET(&changes[0], native, EVFILT_READ, EV_ADD, 0, 0, user_data);
-				if(kevent(mKQ, changes, 1, nullptr, 0, nullptr) != 0) return false;
-			}
-			else
-			{
-				EV_SET(&changes[0], native, EVFILT_READ, EV_DELETE, 0, 0, NULL);
-				kevent(mKQ, changes, 1, nullptr, 0, nullptr);
-			}
-			if(event & Event::Write)
-			{
-				EV_SET(&changes[0], native, EVFILT_WRITE, EV_ADD, 0, 0, user_data);
-				if(kevent(mKQ, changes, 1, nullptr, 0, nullptr) != 0) return false;
-			}
-			else
-			{
-				EV_SET(&changes[0], native, EVFILT_WRITE, EV_DELETE, 0, 0, NULL);
-				kevent(mKQ, changes, 1, nullptr, 0, nullptr);
-			}
-			return true;
+			EV_SET(&changes[0], native, EVFILT_READ, EV_ADD, 0, 0, data);
+			return (kevent(mKQ, changes, 1, nullptr, 0, nullptr) == 0);
+		}
+		virtual void remove(Handle native) override
+		{
+			struct kevent changes[1];
+			EV_SET(&changes[0], native, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+			kevent(mKQ, changes, 1, nullptr, 0, nullptr);
 		}
 	};
 	
@@ -113,13 +96,13 @@ namespace Zen {
 		delete kq;
 		return nullptr;
 	}
-}
+}}
 
-#elif defined(ZEN_OS_LINUX)
+#else
 
 #include <sys/epoll.h>
 
-namespace Zen {
+namespace Zen { namespace Socket {
 	
 #define EP_EVENT_SIZE 32
 
@@ -148,9 +131,9 @@ namespace Zen {
 			::close(mEP);
 			mEP = -1;
 		}
-		virtual int waitEvent(int ms_timeout, Callback callback) override
+		virtual int wait(Callback callback, int timeout /* ms */) override
 		{
-			int res = epoll_wait(mEP, mEvents, EP_EVENT_SIZE, ms_timeout);
+			int res = epoll_wait(mEP, mEvents, EP_EVENT_SIZE, timeout);
 
 			if (res == -1) return -1;
 			
@@ -158,58 +141,38 @@ namespace Zen {
 			
 			for(int i = 0; i < res; ++i)
 			{
+				printf("wait event...\n");
 				auto & event = mEvents[i];
 
-				auto user_data = event.data.ptr;
+				auto data = event.data.ptr;
 				auto filter = event.events;
-
-				if(filter & EPOLLERR || filter & EPOLLHUP)
-				{
-					callback(Event::None, user_data, (int)filter);
-					continue;
-				}
+				
 				if(filter & EPOLLIN)
 				{
-					callback(Event::Read, user_data, 0);
+					callback(data, 0);
 				}
-				if(filter & EPOLLOUT)
+				else
 				{
-					callback(Event::Write, user_data, 0);
-				}
-				if(filter & EPOLLPRI)
-				{
+					callback(data, 1);
 				}
 			}
 			
 			return res;
 		}
-		virtual bool watch(SocketHandle native, Event event, void * user_data) override
+		virtual void remove(Handle native)
 		{
-			if(event == Event::None)
-			{
-				epoll_ctl(mEP, EPOLL_CTL_DEL, native, nullptr);
-				return true;
-			}
+			epoll_ctl(mEP, EPOLL_CTL_DEL, native, nullptr);
+		}
+		virtual bool add(Handle native, void * data) override
+		{
+			struct epoll_event epe;
+			epe.data.ptr = data;
 			
-			struct epoll_event data;
-			data.data.ptr = user_data;
-			
-			if(event == Event::Read)
-			{
-				data.events = EPOLLIN; // | EPOLLONESHOT;
-			}
-			else if(event == Event::Write)
-			{
-				data.events = EPOLLOUT; // | EPOLLONESHOT;
-			}
-			else if(event == Event::Both)
-			{
-				data.events = EPOLLOUT | EPOLLIN;
-			}
+			epe.events = EPOLLIN; // | EPOLLONESHOT;
 
-			if(epoll_ctl(mEP, EPOLL_CTL_MOD, native, &data) == -1)
+			if(epoll_ctl(mEP, EPOLL_CTL_MOD, native, &epe) == -1)
 			{
-				if(epoll_ctl(mEP, EPOLL_CTL_ADD, native, &data) == -1) return false;
+				if(epoll_ctl(mEP, EPOLL_CTL_ADD, native, &epe) == -1) return false;
 			}
 			return true;
 		}
@@ -222,5 +185,5 @@ namespace Zen {
 		delete p;
 		return nullptr;
 	}
-}
+}}
 #endif

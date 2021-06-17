@@ -1,22 +1,6 @@
 /*
- Copyright (c) 2013 MeherTJ G.
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy of
- this software and associated documentation files (the "Software"), to deal in
- the Software without restriction, including without limitation the rights to
- use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- the Software, and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ Copyright (c) 2013 MeherTJ G. All rights reserved.
+ License: Everybody can use these code freely.
  */
 
 #include "zen_audio_wav.h"
@@ -54,7 +38,7 @@ namespace Zen {
 			this->fiBPSample = (uint16_t)sample_size * 8;
 			this->fiSPS = (uint32_t)frequency;
 			this->fiBPS = (uint32_t)(frequency * sample_size);
-#if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
+#if ZEN_ENDIAN == ZEN_BE_VALUE
 			this->fiRiffSize = EndianSwap32(this->fiRiffSize);
 			this->fiFmtSize = EndianSwap32(this->fiFmtSize);
 			this->fiFormatTag = EndianSwap16(this->fiFormatTag);
@@ -75,7 +59,7 @@ namespace Zen {
 
 		musts(reader.read(head), "invalid wav data");
 
-#if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
+#if ZEN_ENDIAN == ZEN_BE_VALUE
 		head.fiRiffSize = EndianSwap32(head.fiRiffSize);
 		head.fiFmtSize = EndianSwap32(head.fiFmtSize);
 		head.fiFormatTag = EndianSwap16(head.fiFormatTag);
@@ -90,7 +74,7 @@ namespace Zen {
 		if(head.fiFmtSize == 18)
 		{
 			musts(reader.read(fiCbSize), "error wav format");
-#if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
+#if ZEN_ENDIAN == ZEN_BE_VALUE
 			fiCbSize = EndianSwap16(fiCbSize);
 #endif
 			reader.forward(fiCbSize);
@@ -110,7 +94,7 @@ namespace Zen {
 		uint32_t fiDataSize = 0;
 
 		musts(reader.read(fiDataID) && reader.read(fiDataSize), "invalid wav data info");
-#if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
+#if ZEN_ENDIAN == ZEN_BE_VALUE
 		fiDataSize = EndianSwap32(fiDataSize);
 #endif
 		if(fiDataID != Byte4('d','a','t','a'))
@@ -120,7 +104,7 @@ namespace Zen {
 			
 			musts(reader.read(fiDataID) && reader.read(fiDataSize), "invalid wav data info");
 
-#if ZEN_BYTE_ORDER == ZEN_BIG_ENDIAN
+#if ZEN_ENDIAN == ZEN_BE_VALUE
 			fiDataSize = EndianSwap32(fiDataSize);
 #endif
 		}

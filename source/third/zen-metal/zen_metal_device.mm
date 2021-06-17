@@ -1,33 +1,31 @@
 
-#include "zen_metal_id.h"
-#include "zen_metal_type.h"
+#include "zen_metal_device_id.h"
 
 namespace Zen { namespace Metal {
 
-	Device * Device::S()
+	Device * Device::Get()
 	{
 		static auto single = new Device;
 		return single;;
 	}
 	
-	DeviceID * Device::getID() const
+	std::shared_ptr<DeviceID> Device::getID() const
 	{
 		return m_id;
 	}
 
 	Device::Device()
 	{
-		m_id = new DeviceID;
+		m_id = std::shared_ptr<DeviceID>(new DeviceID);
 	}
-	Device::~Device()
+	
+	void DeviceID::setMTKView(MTKView * view)
 	{
-		delete m_id;
-	}
-
-	DeviceID::DeviceID()
-	{
-		device = MTLCreateSystemDefaultDevice();
-		library = [device newDefaultLibrary];
-		command_queue = [device newCommandQueue];
+		this->device = view.device;
+		this->library = [device newDefaultLibrary];
+		this->command_queue = [device newCommandQueue];
+		this->view = view;
+//		this->view.colorPixelFormat;
+//		this->view.depthStencilPixelFormat;
 	}
 }}

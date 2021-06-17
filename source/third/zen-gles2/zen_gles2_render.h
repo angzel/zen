@@ -1,22 +1,6 @@
 /*
- Copyright (c) 2013 MeherTJ G.
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy of
- this software and associated documentation files (the "Software"), to deal in
- the Software without restriction, including without limitation the rights to
- use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- the Software, and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ Copyright (c) 2013 MeherTJ G. All rights reserved.
+ License: Everybody can use these code freely.
  */
 
 #pragma once
@@ -33,10 +17,8 @@
 namespace Zen { namespace GL { 
 
 	class Render {
-	protected:
-		Render();
 	public:
-		static Render * S();
+		Render() = default;
 			// ShaderProgram
 		inline void activeProgram(GLuint program_id);
 
@@ -87,13 +69,13 @@ namespace Zen { namespace GL {
 		 */
 
 			// draw
-		inline void drawArray(eMode mode, size_t first, size_t count);
+		inline void drawArray(eVertexMode mode, size_t first, size_t count);
 
-		inline void drawElements(eMode mode, GLint buffer, size_t count, uint8_t const * indices);
+		inline void drawElements(eVertexMode mode, GLint buffer, size_t count, uint8_t const * indices);
 
-		inline void drawElements(eMode mode, GLint buffer, size_t count, uint16_t const * indices);
+		inline void drawElements(eVertexMode mode, GLint buffer, size_t count, uint16_t const * indices);
 
-		inline void drawElements(eMode mode, GLint buffer, size_t count, uint32_t const * indices);
+		inline void drawElements(eVertexMode mode, GLint buffer, size_t count, uint32_t const * indices);
 
 			// clear
 			// ClearWithColor = SetClearColor + Clear
@@ -132,21 +114,10 @@ namespace Zen { namespace GL {
 
 		inline void setClockwiseAsFront(bool);
 
-			// line.
-		inline void setLineWidth(float width);
-
-		inline float getLineWidth();
-
-		inline float getMinLineWidth();
-
-		inline float getMaxLineWidth();
 	protected:
 		eSrcBlend m_src_blend = eSrcBlend::One;
 		eDstBlend m_dst_blend = eDstBlend::Zero;
 		bool m_blend_enabled = false;
-
-		float m_min_line_width = 0;
-		float m_max_line_width = 0;
 	};
 }}
 
@@ -227,7 +198,7 @@ namespace Zen { namespace GL {
 #endif
 	}
 
-	inline void Render::drawArray(eMode mode, size_t first, size_t count)
+	inline void Render::drawArray(eVertexMode mode, size_t first, size_t count)
 	{
 		glDrawArrays((GLenum)mode, (GLint)first, (GLsizei)count);
 #if ZEN_DEBUG
@@ -235,17 +206,17 @@ namespace Zen { namespace GL {
 		mustsn(eno == GL_NO_ERROR, "gl draw arry error", eno);
 #endif
 	}
-	inline void Render::drawElements(eMode mode, GLint buffer, size_t count, uint8_t const * indices)
+	inline void Render::drawElements(eVertexMode mode, GLint buffer, size_t count, uint8_t const * indices)
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glDrawElements((GLenum)mode, (GLint)count, (GLenum)eType::UByte, indices);
 	}
-	inline void Render::drawElements(eMode mode, GLint buffer, size_t count, uint16_t const * indices)
+	inline void Render::drawElements(eVertexMode mode, GLint buffer, size_t count, uint16_t const * indices)
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glDrawElements((GLenum)mode, (GLint)count, (GLenum)eType::UShort, indices);
 	}
-	inline void Render::drawElements(eMode mode, GLint buffer, size_t count, uint32_t const * indices)
+	inline void Render::drawElements(eVertexMode mode, GLint buffer, size_t count, uint32_t const * indices)
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
 		glDrawElements((GLenum)mode, (GLint)count, (GLenum)eType::UInt, indices);
@@ -348,6 +319,7 @@ namespace Zen { namespace GL {
 	{
 		this->enableBlend();
 		if(m_src_blend == sf && m_dst_blend == df) return;
+		
 		glBlendFunc((GLenum)sf, (GLenum)df);
 		m_src_blend = sf;
 		m_dst_blend = df;
@@ -373,15 +345,5 @@ namespace Zen { namespace GL {
 	{
 		glFrontFace(f?GL_CW:GL_CCW);
 	}
-	inline float Render::getLineWidth()
-	{
-		GLfloat width;
-		glGetFloatv(GL_LINE_WIDTH, &width);
-		return width;
-	}
-	inline void Render::setLineWidth(float width)
-	{
-		if(width <= 0.1f) width = 0.1f;
-		glLineWidth(width);
-	}
+	
 }}

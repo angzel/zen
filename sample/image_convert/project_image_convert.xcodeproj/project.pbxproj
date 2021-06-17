@@ -55,14 +55,6 @@
 		8D0AF966254BCF06009F8415 /* zen_image_png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_image_png.h; sourceTree = "<group>"; };
 		8D0AF967254BCF06009F8415 /* zen_image_png.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zen_image_png.cpp; sourceTree = "<group>"; };
 		8D1987B42392379B00515178 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		8D4BC20225654CD500B3AB05 /* zen_meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_meta.h; sourceTree = "<group>"; };
-		8D4BC20325654CD500B3AB05 /* zen_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_log.h; sourceTree = "<group>"; };
-		8D4BC20425654CD500B3AB05 /* zen_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_endian.h; sourceTree = "<group>"; };
-		8D4BC20525654CD500B3AB05 /* zen_object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_object.h; sourceTree = "<group>"; };
-		8D4BC20625654CD500B3AB05 /* zen_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_os.h; sourceTree = "<group>"; };
-		8D4BC20725654CD500B3AB05 /* zen_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_exception.h; sourceTree = "<group>"; };
-		8D4BC20825654CD500B3AB05 /* zen_int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_int.h; sourceTree = "<group>"; };
-		8D4BC20925654CD500B3AB05 /* zen_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_types.h; sourceTree = "<group>"; };
 		8D4BC20B25654CD500B3AB05 /* zen_utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_utf8.h; sourceTree = "<group>"; };
 		8D4BC20C25654CD500B3AB05 /* zen_base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_base64.h; sourceTree = "<group>"; };
 		8D4BC20D25654CD500B3AB05 /* zen_urlcoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zen_urlcoding.h; sourceTree = "<group>"; };
@@ -88,6 +80,14 @@
 		8D4BC22625654D3600B3AB05 /* libpng-mac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-mac.a"; path = "../../../zen-external.git/external/mac/prebuilt/libpng-mac.a"; sourceTree = "<group>"; };
 		8D4BC22725654D3600B3AB05 /* libjpeg-mac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libjpeg-mac.a"; path = "../../../zen-external.git/external/mac/prebuilt/libjpeg-mac.a"; sourceTree = "<group>"; };
 		8D8BC1372391497C00B1DCD6 /* project_image_convert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = project_image_convert; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DF15B5E258DE06C00B7D9BF /* zen_meta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_meta.h; sourceTree = "<group>"; };
+		8DF15B5F258DE06C00B7D9BF /* zen_log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_log.h; sourceTree = "<group>"; };
+		8DF15B60258DE06C00B7D9BF /* zen_endian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_endian.h; sourceTree = "<group>"; };
+		8DF15B61258DE06C00B7D9BF /* zen_object.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_object.h; sourceTree = "<group>"; };
+		8DF15B62258DE06C00B7D9BF /* zen_macro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_macro.h; sourceTree = "<group>"; };
+		8DF15B63258DE06C00B7D9BF /* zen_exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_exception.h; sourceTree = "<group>"; };
+		8DF15B64258DE06C00B7D9BF /* zen_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_int.h; sourceTree = "<group>"; };
+		8DF15B65258DE06C00B7D9BF /* zen_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zen_types.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,27 +140,12 @@
 		8D4BC20025654CD500B3AB05 /* basic */ = {
 			isa = PBXGroup;
 			children = (
-				8D4BC20125654CD500B3AB05 /* zen-config */,
+				8DF15B5D258DE06C00B7D9BF /* zen-base */,
 				8D4BC20A25654CD500B3AB05 /* zen-string */,
 				8D4BC21825654CD500B3AB05 /* zen-math */,
 			);
 			name = basic;
 			path = ../../source/basic;
-			sourceTree = "<group>";
-		};
-		8D4BC20125654CD500B3AB05 /* zen-config */ = {
-			isa = PBXGroup;
-			children = (
-				8D4BC20225654CD500B3AB05 /* zen_meta.h */,
-				8D4BC20325654CD500B3AB05 /* zen_log.h */,
-				8D4BC20425654CD500B3AB05 /* zen_endian.h */,
-				8D4BC20525654CD500B3AB05 /* zen_object.h */,
-				8D4BC20625654CD500B3AB05 /* zen_os.h */,
-				8D4BC20725654CD500B3AB05 /* zen_exception.h */,
-				8D4BC20825654CD500B3AB05 /* zen_int.h */,
-				8D4BC20925654CD500B3AB05 /* zen_types.h */,
-			);
-			path = "zen-config";
 			sourceTree = "<group>";
 		};
 		8D4BC20A25654CD500B3AB05 /* zen-string */ = {
@@ -228,6 +213,21 @@
 				8D1987B42392379B00515178 /* libz.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8DF15B5D258DE06C00B7D9BF /* zen-base */ = {
+			isa = PBXGroup;
+			children = (
+				8DF15B5E258DE06C00B7D9BF /* zen_meta.h */,
+				8DF15B5F258DE06C00B7D9BF /* zen_log.h */,
+				8DF15B60258DE06C00B7D9BF /* zen_endian.h */,
+				8DF15B61258DE06C00B7D9BF /* zen_object.h */,
+				8DF15B62258DE06C00B7D9BF /* zen_macro.h */,
+				8DF15B63258DE06C00B7D9BF /* zen_exception.h */,
+				8DF15B64258DE06C00B7D9BF /* zen_int.h */,
+				8DF15B65258DE06C00B7D9BF /* zen_types.h */,
+			);
+			path = "zen-base";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

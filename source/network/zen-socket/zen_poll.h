@@ -5,44 +5,36 @@
 #include <memory>
 #include <functional>
 
-#include "zen_ip.h"
+#include "zen_socket.h"
 
-namespace Zen {
+namespace Zen { namespace Socket {
 	class Poll
 	{
 	public:
-		enum Event
-		{
-			None = 0,
-			Read = 1<<0,
-			Write = 1<<1,
-			Both = (Read | Write),
-		};
-
 		static std::shared_ptr<Poll> Create();
 
 		/**
 		@event
 			case Read: Read event ok, if no data to read, the connect break.
-				extra
-			case None: <extra> is error
 		 */
-		typedef std::function<void (Event event, void * user_data, int extra)> Callback;
+		typedef std::function<void (void * data, int e)> Callback;
 
 		/**
-		 @param ms_timeout
-		 0:	return right now
-		 -1:	wait utill event raise
-		 >0: time ms
+		 @param timeout
+		 =0:	return right now
+		 <0:	wait utill event raise
+		 >0: time milliseconds
 		 @return
 		 0: 	timeout
 		 -1:	error
 		 >0: event count
 		 */
-		virtual int waitEvent(int ms_timeout, Callback) = 0;
+		virtual int wait(Callback, int timeout /* ms */) = 0;
 
-		virtual bool watch(SocketHandle socket, Event event, void * user_data) = 0;
+		virtual bool add(Handle socket, void * data) = 0;
+		
+		virtual void remove(Handle socket) = 0;
 
 		virtual ~Poll() {}
 	};
-}
+}}

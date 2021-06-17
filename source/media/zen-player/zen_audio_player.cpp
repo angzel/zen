@@ -96,10 +96,10 @@ ZEN_P_AUDIO_TRACK_LIMIT <= 1024
 			auto iter = mAudioCache.find(file);
 			if(iter != mAudioCache.end()) return iter->second;
 
-			auto data = Zen::LoadResourceContent(file);
+			auto data = Zen::Utils::Get()->loadResource(file);
 			if(data.size() == 0)
 			{
-				data = Zen::LoadDocumentContent(file);
+				data = Zen::Utils::Get()->loadDocument(file);
 				if(data.empty()) return nullptr;
 			}
 

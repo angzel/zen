@@ -6,6 +6,7 @@ namespace Zen { namespace Metal {
 
 	enum class eBlendFactor
 	{
+		// the same with MTLBlendFactor
 		Zero = 0,
 		One = 1,
 		SourceColor = 2,
@@ -17,9 +18,9 @@ namespace Zen { namespace Metal {
 		DestinationAlpha = 8,
 		OneMinusDestinationAlpha = 9,
 		SourceAlphaSaturated = 10,
-		_Count,
+		None = 0xffff,
 	};
-	enum class eMode
+	enum class eVertexMode
 	{
 		Point = 0,
 		Line = 1,
@@ -28,10 +29,3 @@ namespace Zen { namespace Metal {
 		TriangleStrip = 4,
 	};
 }}
-
-#define ZEN_METAL_CPP 1
-#include "zen_metal_device.h"
-#include "zen_metal_pipe.h"
-#include "zen_metal_texture.h"
-#include "zen_metal_render.h"
-#undef ZEN_METAL_CPP

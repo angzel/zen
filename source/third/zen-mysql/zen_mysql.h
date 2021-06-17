@@ -26,16 +26,6 @@
 #include "zen_db_statement.h"
 
 /**
- ALTER TABLE `test`.`logs`
- ADD COLUMN `name` text NOT NULL AFTER `ID`,
- DROP PRIMARY KEY,
- ADD PRIMARY KEY (`ID`, `name`) USING BTREE;
-
- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY ':password';
-
- */
-
-/**
 make sure dynamic libraries have been included.
  LD_RUNPATH_SEARCH_PATHS = <....>/mysql8/lib
  */

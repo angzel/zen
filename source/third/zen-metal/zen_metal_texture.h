@@ -1,8 +1,8 @@
-// objective-c support needed
+#pragma once
 
-#ifdef ZEN_METAL_CPP
 #include <string>
 #include "zen_color.h"
+#include "zen_metal_type.h"
 
 namespace Zen { namespace Metal {
 	struct TextureID;
@@ -24,19 +24,3 @@ namespace Zen { namespace Metal {
 	};
 
 }}
-#endif
-
-#ifdef ZEN_METAL_OC
-
-#import <Metal/Metal.h>
-#import <MetalKit/MetalKit.h>
-
-
-namespace Zen { namespace Metal {
-	struct TextureID
-	{
-		id <MTLTexture> color_map;
-	};
-}}
-
-#endif

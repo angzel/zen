@@ -2,109 +2,162 @@
 #include "zen_ip.h"
 #include <memory>
 
-namespace Zen {
-	class SocketConnector;
-
-	class SocketListener;
-
-	class Socket
+namespace Zen { namespace Socket {
+	
+	class Link
 	{
-		friend class SocketListener;
-
-		friend class SocketConnector;
-
-	protected:
-		SocketHandle mSocketID = InvalidSocket;
-
-		SocketConfig mConfig;
-
-        int mErrorNo = 0;
-
-        bool mIsConnected = false;
-
-		Socket(Socket const &);
-
-		void operator = (Socket const &);
-
-		Socket(SocketHandle sock, SocketConfig const & config);
-
 	public:
-		Socket();
+		struct Status {
+			typedef uint8_t Type;
+			
+			static const Type OK = 0;
+			static const Type SendClosed = 1;
+			static const Type RecvClosed = 2;
+			
+			Type value = OK;
+			
+			bool isSendClosed() const { return (value & SendClosed); }
+			bool isRecvClosed() const { return (value & RecvClosed); }
+			bool isGood() const { return value == OK; }
+			void addStatus(Type i) { value |= i; }
+			void removeStatus(Type i) { value &= ~i; }
+			void setStatus(Type i) { value = i; }
+			operator bool() const { return isGood(); }
+		};
+	protected:
+		Handle mHD = SockNone;
 
-		~Socket();
+		Config mConfig;
+
+		Status mStatus;
 		
-		void setConfig(SocketConfig const & config);
+	public:
+
+		Link(Link const &) = delete;
+
+		void operator = (Link const &) = delete;
+
+		Link(Handle hd, Config const & config);
+
+		Link(Config const & config);
+	public:
+		virtual ~Link();
 
 		bool open();
 
 		bool close();
 
-		bool shutdown(SocketWay how);
+		bool shutdown(Shut how);
 
-		bool setNonBlock(bool flag) ;
+		bool setNonBlock(bool flag);
 
 		bool setReuseable(bool flag);
         
-        bool setTimeout(float second, SocketWay how);
-		
-		bool send_out_band(char c) ;
-
-		bool recv_out_band(char & c);
+        bool setTimeout(float second, bool for_send, bool for_recv);
 
 //		return 0: no data; >0: data size
-		size_t recv(char * buf, size_t size, SocketMsgType way = SocketMsgType::Default);
+		size_t recv(void * buf, size_t size, MsgType way = MsgType::Default);
 
-		size_t send(char const *buf, size_t size, SocketMsgType way = SocketMsgType::Default);
+		size_t send(void const * buf, size_t size,  MsgType way = MsgType::Default);
 
-		size_t couldReadBytes() ;
+		size_t canRecvSize() ;
 
-		bool isConnected();
+		Status getStatus() const;
+
+		bool isValidHandle() const;
 		
-		SocketHandle native() const;
-
-		bool isValid() const;
-
-		SocketHandle handle() const;
-
-		SocketConfig const & getConfig() const;
+		void clear();
+		
+		Handle handle() const;
+		
+		Config const & config() const;
+		
+		Address makeLocalAddress();
+		
+		Address makePeerAddress();
 	};
 
-	class SocketConnector : public Socket
+	class TCPConnector
 	{
 	protected:
-		SocketConnector(SocketConnector const &);
+		Handle mTemp = SockNone;
+		int mENo = 0;
+	protected:
+		TCPConnector(TCPConnector &) = delete;
 
-		void operator = (SocketConnector const &);
+		void operator = (TCPConnector &) = delete;
 
-		SocketConnector();
-
+		TCPConnector();
+		
 	public:
-		static std::shared_ptr<SocketConnector> Create();
+		virtual ~TCPConnector();
+		
+		static std::shared_ptr<TCPConnector> Create();
 
-		bool connect(SocketAddress const & ip);
+		std::shared_ptr<Link> connect(Address const & server_address);
 	};
 
-	class SocketListener : public Socket
+	class TCPListener
 	{
 	protected:
-		SocketListener(SocketListener const &);
+		std::shared_ptr<Link> mLink;
+		
+	protected:
+		
+		TCPListener(TCPListener const &) = delete;
 
-		void operator =(SocketListener const &);
+		void operator = (TCPListener const &) = delete;
 
-		SocketListener();
+		TCPListener();
+		
 	public:
-		static std::shared_ptr<SocketListener> Create();
+		virtual ~TCPListener();
+		
+		static std::shared_ptr<TCPListener> Create();
+		
+		void reset();
+		
+        bool bind(Address const & listen_address);
+        
+		bool setNonBlock(bool flag);
 
-        using Socket::open;
-        
-        bool bind(SocketAddress const & ip);
-        
+		bool setReuseable(bool flag);
+		
 		bool listen(int backlog);
-
+		
+		std::shared_ptr<Link> getLink();
 		/**
          return nullptr if failed.
          */
-		std::shared_ptr<Socket> accept();
+		std::shared_ptr<Link> accept();
 
 	};
-}
+	
+	/*
+	 @ SocketStartup
+	 - for windows/unix differ
+	 */
+	class SocketStartup
+	{
+	private:
+		SocketStartup(SocketStartup const &) = delete;
+		void operator = (SocketStartup const &) = delete;
+	public:
+		SocketStartup(int version = 0x0202)
+		{
+#ifdef ZEN_OS_WIN
+			WSADATA wsadata;
+			WSAStartup(version, &wsadata);
+#else
+			signal(SIGPIPE, SIG_IGN);
+#endif
+		}
+		
+		~SocketStartup()
+		{
+#ifdef ZEN_OS_WIN
+			WSACleanup();
+#endif
+		}
+	};
+}}

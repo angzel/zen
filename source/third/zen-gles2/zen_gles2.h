@@ -8,5 +8,4 @@
 #include "zen_gles2_frame.h"
 #include "zen_gles2_shader.h"
 #include "zen_gles2_image2d.h"
-
 #include "zen_gles2_prepare.h"

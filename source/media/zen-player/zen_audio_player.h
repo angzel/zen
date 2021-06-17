@@ -2,7 +2,7 @@
 
 #include "zen_audio.h"
 #include "zen_types.h"
-#include "zen_info.h"
+#include "zen_utils.h"
 #include "zen_al.h"
 
 namespace Zen {

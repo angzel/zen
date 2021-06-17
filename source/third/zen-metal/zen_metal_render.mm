@@ -3,7 +3,7 @@
 #include "zen_metal_type.h"
 
 namespace Zen { namespace Metal {
-	Render * Render::S()
+	Render * Render::Get()
 	{
 		static auto single = new Render;
 		return single;;
@@ -31,9 +31,9 @@ namespace Zen { namespace Metal {
 	{
 		auto & c = m_clear_color;
 
-		m_id->command_buffer = Device::S()->getID()->command_queue.commandBuffer;
+		m_id->command_buffer = Device::Get()->getID()->command_queue.commandBuffer;
 
-		auto desc = Device::S()->getID()->view.currentRenderPassDescriptor;
+		auto desc = Device::Get()->getID()->view.currentRenderPassDescriptor;
 		desc.colorAttachments[0].clearColor =
 		MTLClearColorMake(c.red, c.green, c.blue, c.alpha);
 		desc.depthAttachment.clearDepth = 0;
@@ -49,9 +49,10 @@ namespace Zen { namespace Metal {
 	void Render::end()
 	{
 		[m_id->encoder endEncoding];
-		[m_id->command_buffer presentDrawable:Device::S()->getID()->view.currentDrawable];
+		[m_id->command_buffer presentDrawable:Device::Get()->getID()->view.currentDrawable];
 		[m_id->command_buffer commit];
 		[m_id->command_buffer waitUntilCompleted];
+		
 		m_id->command_buffer = nil;
 		m_id->encoder = nil;
 	}
@@ -75,13 +76,17 @@ namespace Zen { namespace Metal {
 								 atIndex:(NSUInteger)index];
 	}
 
+	void Render::setFragmentBytes(int index, const void *bytes, size_t len)
+	{
+		[m_id->encoder setFragmentBytes:bytes length:(NSInteger)len atIndex:(NSInteger)index];
+	}
 	void Render::bindTexture(int index, TextureID * texture)
 	{
 		[m_id->encoder setFragmentTexture:texture->color_map
 								  atIndex:(NSUInteger)index];
 	}
 
-	void Render::drawPrimitives(eMode mode, size_t start, size_t count)
+	void Render::drawPrimitives(eVertexMode mode, size_t start, size_t count)
 	{
 		[m_id->encoder drawPrimitives:(MTLPrimitiveType)mode
 						  vertexStart:(NSUInteger)start

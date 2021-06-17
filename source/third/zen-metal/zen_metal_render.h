@@ -1,7 +1,5 @@
-// objective-c support needed
+#pragma once
 
-
-#ifdef ZEN_METAL_CPP
 #include <string>
 #include "zen_color.h"
 
@@ -14,7 +12,7 @@ namespace Zen { namespace Metal {
 		Render();
 		virtual ~Render();
 	public:
-		static Render * S();
+		static Render * Get();
 
 		void setClearColor(Zen::Color4f);
 
@@ -27,12 +25,14 @@ namespace Zen { namespace Metal {
 		void setVertexBuffer(int index, BufferID * buffer, size_t off);
 
 		void setFragmentBuffer(int index, BufferID * buffer, size_t off);
+		
+		void setFragmentBytes(int index, void const * bytes, size_t len);
 
 		void bindTexture(int index, TextureID * texture);
 
-		void drawPrimitives(eMode mode, size_t start, size_t count);
+		void drawPrimitives(eVertexMode mode, size_t start, size_t count);
 
-//		void drawIndexedPrimitives(eMode mode, size_t indexCount, BufferID * buffer, size_t off_bytes, size_t instanceCount);
+//		void drawIndexedPrimitives(eVertexMode mode, size_t indexCount, BufferID * buffer, size_t off_bytes, size_t instanceCount);
 
 		RenderID * getID() const;
 	public:
@@ -40,22 +40,3 @@ namespace Zen { namespace Metal {
 		Zen::Color4f m_clear_color = Zen::eColor::Black;
 	};
 }}
-#endif
-
-#ifdef ZEN_METAL_OC
-
-#import <Metal/Metal.h>
-#import <MetalKit/MetalKit.h>
-
-
-namespace Zen { namespace Metal {
-	struct RenderID
-	{
-		id <MTLRenderCommandEncoder> encoder;
-		id <MTLCommandBuffer> command_buffer;
-		MTLCullMode cull_mode = MTLCullModeNone;
-		MTLWinding front_face = MTLWindingCounterClockwise;
-	};
-}}
-
-#endif

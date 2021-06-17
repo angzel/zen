@@ -1,22 +1,6 @@
 /*
  Copyright (c) 2013- MeherTJ G.
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy of
- this software and associated documentation files (the "Software"), to deal in
- the Software without restriction, including without limitation the rights to
- use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- the Software, and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+All rights reserved. Everybody can use these code freely.
  */
 
 #include "zen_base64.h"
@@ -68,7 +52,7 @@ namespace Zen {
 		if(ex == 0) res.resize(dest_size, 0);
 		else res.resize(dest_size + 4, 0);
 		
-		auto data = (unsigned char const *)buf;
+		auto data = (uint8_t const *)buf;
 		for (size_t i = 0; i < dest_size; )
 		{
 			unsigned b0 = data[0] >> 2;
@@ -102,12 +86,12 @@ namespace Zen {
 		return res;
 	}
 	
-	std::vector<unsigned char> Base64::decode(void const * buf, size_t size)
+	std::vector<uint8_t> Base64::decode(void const * buf, size_t size)
 	{
-		std::vector<unsigned char> res;
+		std::vector<uint8_t> res;
 		auto bsize = (size >> 2) * 3;
 		if(!bsize) return res;
-		auto data = (unsigned char const *)buf;
+		auto data = (uint8_t const *)buf;
 		
 		if(data[size-1] == '=')
 		{
@@ -117,13 +101,13 @@ namespace Zen {
 		res.resize(bsize);
 		for (size_t i = 0; i < bsize; )
 		{
-			auto v0 = (unsigned char)Demap[*data++];
-			auto v1 = (unsigned char)Demap[*data++];
-			auto v2 = (unsigned char)Demap[*data++];
-			auto v3 = (unsigned char)Demap[*data++];
-			res[i++] = (unsigned char)((v0 << 2) | (v1 >> 4));
-			res[i++] = (unsigned char)((v1 << 4) | (v2 >> 2));
-			res[i++] = (unsigned char)((v2 << 6) | v3);
+			auto v0 = (uint8_t)Demap[(int)*data++];
+			auto v1 = (uint8_t)Demap[(int)*data++];
+			auto v2 = (uint8_t)Demap[(int)*data++];
+			auto v3 = (uint8_t)Demap[(int)*data++];
+			res[i++] = (uint8_t)((v0 << 2) | (v1 >> 4));
+			res[i++] = (uint8_t)((v1 << 4) | (v2 >> 2));
+			res[i++] = (uint8_t)((v2 << 6) | v3);
 		}
 		return res;
 	}
@@ -133,7 +117,7 @@ namespace Zen {
 		return encode((void const *)data.data(), data.size());
 	}
 	
-	std::vector<unsigned char> Base64::decode(std::string const & str)
+	std::vector<uint8_t> Base64::decode(std::string const & str)
 	{
 		return decode((void const *)str.data(), str.size());
 	}
@@ -146,13 +130,13 @@ namespace Zen {
 		
 		for (size_t i = 0; i < size - 2; ++i)
 		{
-			if(Demap[coded[i]] == -1) return false;
+			if(Demap[(int)coded[i]] == -1) return false;
 		}
 		auto c1 = coded[size - 1];
 		auto c2 = coded[size - 2];
 		return (c1 == '=' && c2 == '=') ||
-		(c1 == '=' && Demap[c2]) ||
-		(Demap[c1] && Demap[c2]);
+		(c1 == '=' && Demap[(int)c2] != -1) ||
+		(Demap[(int)c1] != -1 && Demap[(int)c2] != -1);
 	}
 	int Base64::demap(uint8_t ch)
 	{

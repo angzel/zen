@@ -1,6 +1,6 @@
 
-#include "zen_metal_id.h"
-#include "zen_metal_type.h"
+#import "zen_metal_texture_id.h"
+#import "zen_metal_device_id.h"
 
 namespace Zen { namespace Metal {
 	Texture::Texture()
@@ -11,21 +11,22 @@ namespace Zen { namespace Metal {
 	{
 		delete m_id;
 	}
-	TextureID * Texture::getID() const
-	{
-		return m_id;
-	}
+	
 	void Texture::create(size_t width, size_t height, bool is_a8, void const * data, int level)
 	{
 		MTLPixelFormat format = is_a8?MTLPixelFormatA8Unorm : MTLPixelFormatRGBA8Unorm;
 		MTLTextureDescriptor *desc = [MTLTextureDescriptor new];
+		desc.textureType = MTLTextureType2D;
 		desc.pixelFormat = format;
 		desc.width = (NSUInteger)width;
 		desc.height = (NSUInteger)height;
-		desc.storageMode = MTLStorageModeShared;
+//		desc.storageMode = MTLStorageModeShared;
+		desc.cpuCacheMode = MTLCPUCacheModeWriteCombined;
 
-		m_id->color_map = [Device::S()->getID()->device newTextureWithDescriptor:desc];
-
+		m_id->color_map = [Device::Get()->getID()->device newTextureWithDescriptor:desc];
+//		id<MTLDevice> d;
+//		[d newTextureWithDescriptor:nil];
+		
 		if(data)
 		{
 			MTLRegion region = MTLRegionMake2D
@@ -36,5 +37,10 @@ namespace Zen { namespace Metal {
 								 withBytes:data
 							   bytesPerRow:(is_a8? width: width*4)];
 		}
+	}
+	
+	TextureID * Texture::getID() const
+	{
+		return m_id;
 	}
 }}
