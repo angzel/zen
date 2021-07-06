@@ -20,7 +20,7 @@
 
 ## Structure
 
-In the root repository, you can see two directories named "sample" (contains some example projects, see reference to [Example](#example)) and "source".
+In the root repository, the main two directories named "sample" (contains some example projects, see reference to [Example](#example)) and "source".
 
 The "source" is the core part of the codes. Here are the introductions for the modules of the library.
 
@@ -28,37 +28,37 @@ Source Tags
 
 Goto the pages to get more details.
 
-- [Basic](./source/basic/README.md)
+- [Basic](source/basic/README.md)
 
-- [Platform](./source/platform/README.md)
+- [Platform](source/platform/README.md)
 
-- [Network](./source/network/README.md)
+- [Network](source/network/README.md)
 
-- [Third](./source/third/README.md)
+- [Third](source/third/README.md)
 
-- [Visual](./source/visual/README.md)
+- [Visual](source/visual/README.md)
 
 ## Example
 
 In the `sample` directory, there are some example project and test cases.
 
-- [game](./sample/game)
+- [game](sample/game)
 
   a tutorial of Vap.
 
-- [image convert](./sample/image_convert)
+- [image convert](sample/image_convert)
 
   a command line program.
 
   convert jpg/png to png/jpg. (a test case for `zen-jpg`, `zen-png`, `zen-image`)
 
-- [truetype](./sample/truetype)
+- [truetype](sample/truetype)
 
   a command line program.
 
   render a string to image. (a test case for `zen-freetype`)
   
-- [audio player](./sample/audio_player)
+- [audio player](sample/audio_player)
 
   a command line program that test audio player (`zen-player`)
 
