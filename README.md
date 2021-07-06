@@ -65,3 +65,7 @@ In the `sample` directory, there are some example project and test cases.
 ## Lisence
 
 ## Author
+
+Author: Meher Tj. Guo
+
+E-mail: karmaleaving@qq.com
