@@ -44,7 +44,7 @@ In the `sample` directory, there are some example project and test cases.
 
 - [game](./sample/game)
 
-  a tu
+  a tutorial of Vap.
 
 - [image convert](./sample/image_convert)
 
@@ -63,6 +63,8 @@ In the `sample` directory, there are some example project and test cases.
   a command line program that test audio player (`zen-player`)
 
 ## Lisence
+
+LGPL v2.
 
 ## Author
 
