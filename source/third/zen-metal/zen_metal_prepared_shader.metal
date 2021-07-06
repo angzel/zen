@@ -14,83 +14,80 @@ using namespace metal;
 
 typedef struct {
 	float4 position [[ position ]];
-	float2 tex_pos;
+	float2 tt_coord;
 	float4 color_add;
-} SamplerInOut;
+} ShaderTInOut;
 
 typedef struct {
 	float4 position [[ position ]];
 	float4 color;
 	float4 color_add;
-} ColorInOut;
+} ShaderCInOut;
 
 typedef struct {
 	float4 position [[ position ]];
 	float4 color;
 	float4 color_add;
 	float point_size [[ point_size ]];
-} ParticleInOut;
+} ShaderPInOut;
 
-/**
- block: sampler
- */
-vertex SamplerInOut VertexShaderSampler
+
+vertex ShaderTInOut VShaderT
 (uint i [[ vertex_id ]],
- constant SamplerVertexIN * c [[ buffer(VERTEX_BUF) ]],
- constant VertexExtraIN & ex [[ buffer(EXTRA_BUF) ]]
+ constant VertexIN_ShaderT * v [[ buffer(VERTEX_BUF) ]],
+ constant UniformIN_Shader & u [[ buffer(EXTRA_BUF) ]]
  )
 {
-	SamplerInOut out;
-	out.position = ex.matrix * float4(c[i].pos, 0, 1.0);
-	out.tex_pos = c[i].tex_pos;
-	out.color_add = ex.color;
+	ShaderTInOut out;
+	out.position = u.matrix * float4(v[i].coord, 0, 1.0);
+	out.tt_coord = v[i].tt_coord;
+	out.color_add = u.color;
 	return out;
 }
 // rgba texture
-fragment float4 FragmentShaderSampler_RGBA
-(SamplerInOut in [[stage_in]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
+fragment float4 FShaderT_RGBA
+(ShaderTInOut in [[stage_in]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 {
 	constexpr sampler
 	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
 
-	return (float4)tex.sample(cs, in.tex_pos.xy) * in.color_add;
+	return (float4)t.sample(cs, in.tt_coord.xy) * in.color_add;
 }
 // convert rgb to grey
-fragment float4 FragmentShaderSampler_RGBA_GA
-(SamplerInOut in [[stage_in]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
+fragment float4 FShaderT_RGBA_GA
+(ShaderTInOut in [[stage_in]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 
 {
 	constexpr sampler
 	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
-	float4 c = (float4)tex.sample(cs, in.tex_pos.xy);
+	float4 c = (float4)t.sample(cs, in.tt_coord.xy);
 	float3 grey = float3(0.21, 0.71, 0.08);
 	float i = dot(grey, c.rgb);
 	return float4(i, i, i, c.w) * in.color_add;
 }
 // alpha texture
-fragment float4 FragmentShaderSampler_A
-(SamplerInOut in [[stage_in]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
-
+fragment float4 FShaderT_A
+(ShaderTInOut in [[stage_in]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 {
 	constexpr sampler
 	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
 
-	float i = (float)tex.sample(cs, in.tex_pos.xy).w;
+	float i = (float)t.sample(cs, in.tt_coord.xy).w;
 	return float4(in.color_add.rgb, in.color_add.w * i);
 }
 
-fragment float4 FragmentShaderSampler_A_G
-(SamplerInOut in [[stage_in]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
+fragment float4 FShaderT_A_G
+(ShaderTInOut in [[stage_in]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 
 {
 	constexpr sampler
 	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
 
-	float i = (float)tex.sample(cs, in.tex_pos.xy).w;
+	float i = (float)t.sample(cs, in.tt_coord.xy).w;
 	return float4(i, i, i, 1) * in.color_add;
 }
 
@@ -98,27 +95,27 @@ texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
  color
  */
 
-vertex ColorInOut VertexShaderColor
+vertex ShaderCInOut VShaderC
 (uint i [[ vertex_id ]],
- constant ColorVertexIN * c [[ buffer(VERTEX_BUF) ]],
- constant VertexExtraIN & ex [[ buffer(EXTRA_BUF) ]]
+ constant VertexIN_ShaderC * v [[ buffer(VERTEX_BUF) ]],
+ constant UniformIN_Shader & u [[ buffer(EXTRA_BUF) ]]
  )
 {
-	ColorInOut out;
-	out.position = ex.matrix * float4(c[i].pos, 0, 1.0);
-	out.color = c[i].color;
-	out.color_add = ex.color;
+	ShaderCInOut out;
+	out.position = u.matrix * float4(v[i].coord, 0, 1.0);
+	out.color = v[i].color;
+	out.color_add = u.color;
 	return out;
 }
 
-fragment float4 FragmentShaderColor
-(ColorInOut in [[stage_in]])
+fragment float4 FShaderC
+(ShaderCInOut in [[stage_in]])
 {
 	return in.color * in.color_add;
 }
 
-fragment float4 FragmentShaderColorGrey
-(ColorInOut in [[stage_in]])
+fragment float4 FShaderC_G
+(ShaderCInOut in [[stage_in]])
 {
 	float3 grey = float3(0.21, 0.71, 0.08);
 	float i = dot(grey, in.color.rgb);
@@ -129,65 +126,82 @@ fragment float4 FragmentShaderColorGrey
  particle
  */
 
-vertex ParticleInOut VertexShaderParticle
+vertex ShaderPInOut VShaderP
 (uint i [[ vertex_id ]],
- constant ParticleVertexIN * c [[ buffer(VERTEX_BUF) ]],
- constant VertexExtraIN & ex [[ buffer(EXTRA_BUF) ]]
+ constant VertexIN_ShaderP * v [[ buffer(VERTEX_BUF) ]],
+ constant UniformIN_ShaderP & u [[ buffer(EXTRA_BUF) ]]
  )
 {
-	ParticleInOut out;
-	out.position = ex.matrix * float4(c[i].pos, 0, 1.0);
-	out.color = c[i].color;
-	out.point_size = c[i].size;
-	out.color_add = ex.color;
+	ShaderPInOut out;
+	out.position = u.matrix * float4(v[i].coord, 0, 1.0);
+	out.color = v[i].color;
+	out.point_size = length(u.matrix * float4(v[i].psize, 0.0, 0.0, 0.0) * u.size_ratio);
+	out.color_add = u.color;
 	return out;
 }
 
-fragment float4 FragmentShaderParticle_RGBA
-(ParticleInOut in [[stage_in]],
-float2 co [[point_coord]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
+fragment float4 FShaderP
+(ShaderPInOut in [[stage_in]],
+float2 p [[point_coord]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 {
-	constexpr sampler
-	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
-
-	return (float4)tex.sample(cs, co.xy) * in.color * in.color_add;
+	return in.color * in.color_add;
 }
 
-fragment float4 FragmentShaderParticle_RGBA_GA
-(ParticleInOut in [[stage_in]],
-float2 co [[point_coord]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
+fragment float4 FShaderP_G
+(ShaderPInOut in [[stage_in]],
+ float2 p [[point_coord]])
+{
+	float3 grey = float3(0.21, 0.71, 0.08);
+	float i = dot(grey, in.color.rgb);
+	return float4(i, i, i, in.color.w) * in.color_add;
+}
+
+fragment float4 FShaderPT_RGBA
+(ShaderPInOut in [[stage_in]],
+float2 p [[point_coord]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 {
 	constexpr sampler
 	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
-	float4 c = (float4)tex.sample(cs, co.xy) * in.color;
+
+	return (float4)t.sample(cs, p.xy) * in.color * in.color_add;
+}
+
+fragment float4 FShaderPT_RGBA_GA
+(ShaderPInOut in [[stage_in]],
+float2 p [[point_coord]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
+{
+	constexpr sampler
+	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
+	float4 c = (float4)t.sample(cs, p.xy) * in.color;
 	float3 grey = float3(0.21, 0.71, 0.08);
 	float i = dot(grey, c.rgb);
 	return float4(i, i, i, c.w) * in.color_add;
 }
 
-fragment float4 FragmentShaderParticle_A
-(ParticleInOut in [[stage_in]],
- float2 co [[point_coord]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
+fragment float4 FShaderPT_A
+(ShaderPInOut in [[stage_in]],
+ float2 p [[point_coord]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 {
 	constexpr sampler
 	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
 
 	float4 c = in.color * in.color_add;
-	return float4(c.rgb, c.w * (float)tex.sample(cs, co.xy).w);
+	return float4(c.rgb, c.w * (float)t.sample(cs, p.xy).w);
 }
 
-fragment float4 FragmentShaderParticle_A_G
-(ParticleInOut in [[stage_in]],
- float2 co [[point_coord]],
-texture2d<half> tex [[ texture(F_TEXTURE_0) ]])
+fragment float4 FShaderPT_A_G
+(ShaderPInOut in [[stage_in]],
+ float2 p [[point_coord]],
+texture2d<half> t [[ texture(F_TEXTURE_0) ]])
 {
 	constexpr sampler
 	cs(mip_filter::linear, mag_filter::linear, min_filter::linear);
 	
 	float3 grey = float3(0.21, 0.71, 0.08);
-	float i = dot(grey, in.color.rgb) * (float)tex.sample(cs, co.xy).w;
+	float i = dot(grey, in.color.rgb) * (float)t.sample(cs, p.xy).w;
 	return float4(i, i, i, in.color.w) * in.color_add;
 }

@@ -25,11 +25,14 @@
 
 namespace Zen {
 
-	AppRuntimeAndroid * AppRuntimeAndroid::_me = new AppRuntimeAndroid();
-
-	App * App::GetDefault()
+//	AppRuntimeAndroid * AppRuntimeAndroid::_me = new AppRuntimeAndroid();
+	AppRuntimeAndroid * AppRuntimeAndroid::Get() {
+		static auto me = new AppRuntimeAndroid;
+		return me;
+	}
+	App * App::Get()
 	{
-		return AppRuntimeAndroid::GetDefault();
+		return AppRuntimeAndroid::Get();
 	}
 
 	void AppRuntimeAndroid::update()
@@ -44,14 +47,14 @@ namespace Zen {
 
 	void AppRuntimeAndroid::launch(Zen::Size2 const & view_size)
 	{
-		mDelegate->onLaunch(view_size);
 		mViewSize = view_size;
+		mDelegate->onLaunch(view_size);
 	}
 
 	void AppRuntimeAndroid::resize(Zen::Size2 const & view_size)
 	{
-		mDelegate->onResize(mViewSize, view_size);
 		mViewSize = view_size;
+		mDelegate->onResize(view_size);
 	}
 
 	void AppRuntimeAndroid::exit()
@@ -71,7 +74,7 @@ namespace Zen {
 
 	void AppRuntimeAndroid::back()
 	{
-		mDelegate->onBack();
+		mDelegate->onEvent("android:back");
 	}
 
 	void AppRuntimeAndroid::touchDown(Zen::AppTouch touch)

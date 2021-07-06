@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -11,579 +11,596 @@
 #include "zen_types.h"
 
 namespace Zen {
-	union Vector2 {
-		float v[2];
-		struct {
-			float x, y;
-		} s;
+	struct Vector2{
+		float x, y;
+		
+		float & operator[](size_t i)
+		{
+			return (&x)[i];
+		}
+		float const & operator[](size_t i) const
+		{
+			return (&x)[i];
+		}
 	};
-	union Vector3 {
-		float v[3];
-		struct {
-			float x, y, z;
-		} s;
+	struct Vector3 {
+		float x, y, z;
+		
+		float & operator[](size_t i)
+		{
+			return (&x)[i];
+		}
+		float const & operator[](size_t i) const
+		{
+			return (&x)[i];
+		}
 	};
-	union Vector4 {
-		float v[4];
-		struct {
-			float x, y, z, w;
-		} s;
+	struct Vector4 {
+		float x, y, z, w;
+		
+		float & operator[](size_t i)
+		{
+			return (&x)[i];
+		}
+		float const & operator[](size_t i) const
+		{
+			return (&x)[i];
+		}
 	};
 }
 
 namespace Zen {
 	inline Point2 Point2Make(Vector2 v)
 	{
-		return { v.s.x, v.s.y };
+		return { v.x, v.y };
 	}
 	inline Size2 Size2Make(Vector2 v)
 	{
-		return { v.s.x, v.s.y };
+		return { v.x, v.y };
 	}
 }
-inline Zen::Vector2 operator-(Zen::Vector2 vector);
-inline Zen::Vector2 operator+(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
-inline Zen::Vector2 operator-(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
-inline Zen::Vector2 operator*(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
-inline Zen::Vector2 operator/(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
-inline Zen::Vector2 operator+(Zen::Vector2 vector, float value);
-inline Zen::Vector2 operator-(Zen::Vector2 vector, float value);
-inline Zen::Vector2 operator*(Zen::Vector2 vector, float value);
-inline Zen::Vector2 operator/(Zen::Vector2 vector, float value);
-inline bool operator==(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight);
-inline bool operator==(Zen::Vector2 vector, float value);
+inline Zen::Vector2 operator-(Zen::Vector2 v);
+inline Zen::Vector2 operator+(Zen::Vector2 vL, Zen::Vector2 vR);
+inline Zen::Vector2 operator-(Zen::Vector2 vL, Zen::Vector2 vR);
+inline Zen::Vector2 operator*(Zen::Vector2 vL, Zen::Vector2 vR);
+inline Zen::Vector2 operator/(Zen::Vector2 vL, Zen::Vector2 vR);
+inline Zen::Vector2 operator+(Zen::Vector2 v, float value);
+inline Zen::Vector2 operator-(Zen::Vector2 v, float value);
+inline Zen::Vector2 operator*(Zen::Vector2 v, float value);
+inline Zen::Vector2 operator/(Zen::Vector2 v, float value);
+inline bool operator==(Zen::Vector2 vL, Zen::Vector2 vR);
+inline bool operator==(Zen::Vector2 v, float value);
 
-inline Zen::Vector3 operator-(Zen::Vector3 vector);
-inline Zen::Vector3 operator+(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
-inline Zen::Vector3 operator-(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
-inline Zen::Vector3 operator*(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
-inline Zen::Vector3 operator/(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
-inline Zen::Vector3 operator+(Zen::Vector3 vector, float value);
-inline Zen::Vector3 operator-(Zen::Vector3 vector, float value);
-inline Zen::Vector3 operator*(Zen::Vector3 vector, float value);
-inline Zen::Vector3 operator/(Zen::Vector3 vector, float value);
-inline bool operator==(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight);
-inline bool operator==(Zen::Vector3 vector, float value);
+inline Zen::Vector3 operator-(Zen::Vector3 v);
+inline Zen::Vector3 operator+(Zen::Vector3 vL, Zen::Vector3 vR);
+inline Zen::Vector3 operator-(Zen::Vector3 vL, Zen::Vector3 vR);
+inline Zen::Vector3 operator*(Zen::Vector3 vL, Zen::Vector3 vR);
+inline Zen::Vector3 operator/(Zen::Vector3 vL, Zen::Vector3 vR);
+inline Zen::Vector3 operator+(Zen::Vector3 v, float value);
+inline Zen::Vector3 operator-(Zen::Vector3 v, float value);
+inline Zen::Vector3 operator*(Zen::Vector3 v, float value);
+inline Zen::Vector3 operator/(Zen::Vector3 v, float value);
+inline bool operator==(Zen::Vector3 vL, Zen::Vector3 vR);
+inline bool operator==(Zen::Vector3 v, float value);
 
-inline Zen::Vector4 operator-(Zen::Vector4 vector);
-inline Zen::Vector4 operator+(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
-inline Zen::Vector4 operator-(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
-inline Zen::Vector4 operator*(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
-inline Zen::Vector4 operator/(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
-inline Zen::Vector4 operator+(Zen::Vector4 vector, float value);
-inline Zen::Vector4 operator-(Zen::Vector4 vector, float value);
-inline Zen::Vector4 operator*(Zen::Vector4 vector, float value);
-inline Zen::Vector4 operator/(Zen::Vector4 vector, float value);
-inline bool operator==(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight);
-inline bool operator==(Zen::Vector4 vector, float value);
+inline Zen::Vector4 operator-(Zen::Vector4 v);
+inline Zen::Vector4 operator+(Zen::Vector4 vL, Zen::Vector4 vR);
+inline Zen::Vector4 operator-(Zen::Vector4 vL, Zen::Vector4 vR);
+inline Zen::Vector4 operator*(Zen::Vector4 vL, Zen::Vector4 vR);
+inline Zen::Vector4 operator/(Zen::Vector4 vL, Zen::Vector4 vR);
+inline Zen::Vector4 operator+(Zen::Vector4 v, float value);
+inline Zen::Vector4 operator-(Zen::Vector4 v, float value);
+inline Zen::Vector4 operator*(Zen::Vector4 v, float value);
+inline Zen::Vector4 operator/(Zen::Vector4 v, float value);
+inline bool operator==(Zen::Vector4 vL, Zen::Vector4 vR);
+inline bool operator==(Zen::Vector4 v, float value);
 
 namespace Zen {
-
+	
 	inline Vector2 Vector2Make(float x, float y);
 	inline Vector2 Vector2Make(float * values /* [2] */);
 	inline Vector2 Vector2Make(Point2 p);
-	inline Vector2 Vector2Normalize(Vector2 vector);
-	inline float Vector2DotProduct(Vector2 vectorLeft, Vector2 vectorRight);
-	inline float Vector2Length(Vector2 vector);
-	inline float Vector2Distance(Vector2 vectorStart, Vector2 vectorEnd);
-	inline Vector2 Vector2Lerp(Vector2 vectorStart, Vector2 vectorEnd, float t);
-	inline Vector2 Vector2Project(Vector2 vectorToProject, Vector2 projectionVector);
-
+	inline Vector2 Vector2Normalize(Vector2 v);
+	inline float Vector2DotProduct(Vector2 vL, Vector2 vR);
+	inline float Vector2Length(Vector2 v);
+	inline float Vector2Distance(Vector2 vStart, Vector2 vEnd);
+	inline float Vector2Length2(Vector2 v);
+	inline float Vector2Distance2(Vector2 vStart, Vector2 vEnd);
+	inline Vector2 Vector2Lerp(Vector2 vStart, Vector2 vEnd, float t);
+	inline Vector2 Vector2Project(Vector2 v, Vector2 p);
+	
 	inline Vector3 Vector3Make(float x, float y, float z);
 	inline Vector3 Vector3Make(float *values /*[3]*/);
-	inline Vector3 Vector3Normalize(Vector3 vector);
-	inline float Vector3DotProduct(Vector3 vectorLeft, Vector3 vectorRight);
-	inline float Vector3Length(Vector3 vector);
-	inline float Vector3Distance(Vector3 vectorStart, Vector3 vectorEnd);
-	inline Vector3 Vector3Lerp(Vector3 vectorStart, Vector3 vectorEnd, float t);
-	inline Vector3 Vector3CrossProduct(Vector3 vectorLeft, Vector3 vectorRight);
-	inline Vector3 Vector3Project(Vector3 vectorToProject, Vector3 projectionVector);
-
+	inline Vector3 Vector3Normalize(Vector3 v);
+	inline float Vector3DotProduct(Vector3 vL, Vector3 vR);
+	inline float Vector3Length(Vector3 v);
+	inline float Vector3Distance(Vector3 vStart, Vector3 vEnd);
+	inline float Vector3Length2(Vector3 v);
+	inline float Vector3Distance2(Vector3 vStart, Vector3 vEnd);
+	inline Vector3 Vector3Lerp(Vector3 vStart, Vector3 vEnd, float t);
+	inline Vector3 Vector3CrossProduct(Vector3 vL, Vector3 vR);
+	inline Vector3 Vector3Project(Vector3 v, Vector3 p);
+	
 	inline Vector4 Vector4Make(float x, float y, float z, float w);
 	inline Vector4 Vector4Make(float * values /*[4]*/);
-	inline Vector4 Vector4Make(Vector3 vector, float w);
-	inline Vector4 Vector4Normalize(Vector4 vector);
-	inline float Vector4DotProduct(Vector4 vectorLeft, Vector4 vectorRight);
-	inline float Vector4Length(Vector4 vector);
-	inline float Vector4Distance(Vector4 vectorStart, Vector4 vectorEnd);
-	inline Vector4 Vector4Lerp(Vector4 vectorStart, Vector4 vectorEnd, float t);
+	inline Vector4 Vector4Make(Vector3 v, float w);
+	inline Vector4 Vector4Normalize(Vector4 v);
+	inline float Vector4DotProduct(Vector4 vL, Vector4 vR);
+	inline float Vector4Length(Vector4 v);
+	inline float Vector4Distance(Vector4 vStart, Vector4 vEnd);
+	inline float Vector4Length2(Vector4 v);
+	inline float Vector4Distance2(Vector4 vStart, Vector4 vEnd);
+	inline Vector4 Vector4Lerp(Vector4 vStart, Vector4 vEnd, float t);
 	/*
 	 Performs a 3D cross product. The last component of the resulting cross product will be zeroed out.
 	 */
-	inline Vector4 Vector4CrossProduct(Vector4 vectorLeft, Vector4 vectorRight);
-	inline Vector4 Vector4Project(Vector4 vectorToProject, Vector4 projectionVector);
-	#pragma mark Implementations
-
+	inline Vector4 Vector4CrossProduct(Vector4 vL, Vector4 vR);
+	inline Vector4 Vector4Project(Vector4 v, Vector4 p);
+#pragma mark Implementations
+	
 	inline Vector2 Vector2Make(float x, float y)
 	{
-		Vector2 v = { x, y };
-		return v;
+		return { x, y };
 	}
-
+	
 	inline Vector2 Vector2Make(float * values /* [2] */)
 	{
-		Vector2 v = { values[0], values[1] };
-		return v;
+		return { values[0], values[1] };
 	}
 	inline Vector2 Vector2Make(Point2 p) {
 		return { p.x, p.y };
 	}
-
-
-	inline Vector2 Vector2Normalize(Vector2 vector)
+	
+	
+	inline Vector2 Vector2Normalize(Vector2 v)
 	{
-		float scale = 1.0f / Vector2Length(vector);
-		Vector2 v = vector * scale;
+		float scale = 1.0f / Vector2Length(v);
+		return v * scale;
+	}
+	
+	inline float Vector2DotProduct(Vector2 vL, Vector2 vR)
+	{
+		return vL[0] * vR[0] + vL[1] * vR[1];
+	}
+	
+	inline float Vector2Length(Vector2 v)
+	{
+		return sqrt(v[0] * v[0] + v[1] * v[1]);
+	}
+	
+	inline float Vector2Distance(Vector2 vStart, Vector2 vEnd)
+	{
+		return Vector2Length(vEnd - vStart);
+	}
+	inline float Vector2Length2(Vector2 v)
+	{
+		return v[0] * v[0] + v[1] * v[1];
+	}
+	
+	inline float Vector2Distance2(Vector2 vStart, Vector2 vEnd)
+	{
+		return Vector2Length2(vEnd - vStart);
+	}
+	
+	inline Vector2 Vector2Lerp(Vector2 vStart, Vector2 vEnd, float t)
+	{
+		Vector2 v = { vStart[0] + ((vEnd[0] - vStart[0]) * t),
+			vStart[1] + ((vEnd[1] - vStart[1]) * t) };
 		return v;
 	}
-
-	inline float Vector2DotProduct(Vector2 vectorLeft, Vector2 vectorRight)
+	
+	inline Vector2 Vector2Project(Vector2 v, Vector2 p)
 	{
-		return vectorLeft.v[0] * vectorRight.v[0] + vectorLeft.v[1] * vectorRight.v[1];
+		float scale = Vector2DotProduct(p, v) / Vector2DotProduct(p, p);
+		return p * scale;
 	}
-
-	inline float Vector2Length(Vector2 vector)
-	{
-		return sqrt(vector.v[0] * vector.v[0] + vector.v[1] * vector.v[1]);
-	}
-
-	inline float Vector2Distance(Vector2 vectorStart, Vector2 vectorEnd)
-	{
-		return Vector2Length(vectorEnd - vectorStart);
-	}
-
-	inline Vector2 Vector2Lerp(Vector2 vectorStart, Vector2 vectorEnd, float t)
-	{
-		Vector2 v = { vectorStart.v[0] + ((vectorEnd.v[0] - vectorStart.v[0]) * t),
-						 vectorStart.v[1] + ((vectorEnd.v[1] - vectorStart.v[1]) * t) };
-		return v;
-	}
-
-	inline Vector2 Vector2Project(Vector2 vectorToProject, Vector2 projectionVector)
-	{
-		float scale = Vector2DotProduct(projectionVector, vectorToProject) / Vector2DotProduct(projectionVector, projectionVector);
-		Vector2 v = projectionVector * scale;
-		return v;
-	}
-
-	#pragma mark Implementations
-
+	
+#pragma mark Implementations
+	
 	inline Vector3 Vector3Make(float x, float y, float z)
 	{
 		Vector3 v = { x, y, z };
 		return v;
 	}
-
+	
 	inline Vector3 Vector3Make(float *values /*[3]*/)
 	{
 		Zen::Vector3 v = { values[0], values[1], values[2] };
 		return v;
 	}
-	inline Vector3 Vector3Normalize(Vector3 vector)
+	inline Vector3 Vector3Normalize(Vector3 v)
 	{
-		float scale = 1.0f / Vector3Length(vector);
-		Vector3 v = { vector.v[0] * scale, vector.v[1] * scale, vector.v[2] * scale };
+		float scale = 1.0f / Vector3Length(v);
+		return { v[0] * scale, v[1] * scale, v[2] * scale };
+	}
+	
+	inline float Vector3DotProduct(Vector3 vL, Vector3 vR)
+	{
+		return vL[0] * vR[0] + vL[1] * vR[1] + vL[2] * vR[2];
+	}
+	
+	inline float Vector3Length(Vector3 v)
+	{
+		return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	}
+	
+	inline float Vector3Distance(Vector3 vStart, Vector3 vEnd)
+	{
+		return Vector3Length(vEnd - vStart);
+	}
+	inline float Vector3Length2(Vector3 v)
+	{
+		return (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	}
+	
+	inline float Vector3Distance2(Vector3 vStart, Vector3 vEnd)
+	{
+		return Vector3Length2(vEnd - vStart);
+	}
+	
+	inline Vector3 Vector3Lerp(Vector3 vStart, Vector3 vEnd, float t)
+	{
+		Vector3 v = { vStart[0] + ((vEnd[0] - vStart[0]) * t),
+			vStart[1] + ((vEnd[1] - vStart[1]) * t),
+			vStart[2] + ((vEnd[2] - vStart[2]) * t) };
 		return v;
 	}
-
-	inline float Vector3DotProduct(Vector3 vectorLeft, Vector3 vectorRight)
+	
+	inline Vector3 Vector3CrossProduct(Vector3 vL, Vector3 vR)
 	{
-		return vectorLeft.v[0] * vectorRight.v[0] + vectorLeft.v[1] * vectorRight.v[1] + vectorLeft.v[2] * vectorRight.v[2];
-	}
-
-	inline float Vector3Length(Vector3 vector)
-	{
-		return sqrt(vector.v[0] * vector.v[0] + vector.v[1] * vector.v[1] + vector.v[2] * vector.v[2]);
-	}
-
-	inline float Vector3Distance(Vector3 vectorStart, Vector3 vectorEnd)
-	{
-		return Vector3Length(vectorEnd - vectorStart);
-	}
-
-	inline Vector3 Vector3Lerp(Vector3 vectorStart, Vector3 vectorEnd, float t)
-	{
-		Vector3 v = { vectorStart.v[0] + ((vectorEnd.v[0] - vectorStart.v[0]) * t),
-						 vectorStart.v[1] + ((vectorEnd.v[1] - vectorStart.v[1]) * t),
-						 vectorStart.v[2] + ((vectorEnd.v[2] - vectorStart.v[2]) * t) };
+		Vector3 v = { vL[1] * vR[2] - vL[2] * vR[1],
+			vL[2] * vR[0] - vL[0] * vR[2],
+			vL[0] * vR[1] - vL[1] * vR[0] };
 		return v;
 	}
-
-	inline Vector3 Vector3CrossProduct(Vector3 vectorLeft, Vector3 vectorRight)
+	
+	inline Vector3 Vector3Project(Vector3 v, Vector3 p)
 	{
-		Vector3 v = { vectorLeft.v[1] * vectorRight.v[2] - vectorLeft.v[2] * vectorRight.v[1],
-						 vectorLeft.v[2] * vectorRight.v[0] - vectorLeft.v[0] * vectorRight.v[2],
-						 vectorLeft.v[0] * vectorRight.v[1] - vectorLeft.v[1] * vectorRight.v[0] };
-		return v;
+		float scale = Vector3DotProduct(p, v) / Vector3DotProduct(p, p);
+		return p * scale;
 	}
-
-	inline Vector3 Vector3Project(Vector3 vectorToProject, Vector3 projectionVector)
-	{
-		float scale = Vector3DotProduct(projectionVector, vectorToProject) / Vector3DotProduct(projectionVector, projectionVector);
-		Vector3 v = projectionVector * scale;
-		return v;
-	}
-
-	#pragma mark Implementations
-
+	
+#pragma mark Implementations
+	
 	inline Vector4 Vector4Make(float x, float y, float z, float w)
 	{
 		Vector4 v = { x, y, z, w };
 		return v;
 	}
-
+	
 	inline Vector4 Vector4Make(float * values /*[4]*/)
 	{
 		Vector4 v = { values[0], values[1], values[2], values[3] };
 		return v;
 	}
-
-	inline Vector4 Vector4Make(Vector3 vector, float w)
+	
+	inline Vector4 Vector4Make(Vector3 v, float w)
 	{
-		Vector4 v = { vector.v[0], vector.v[1], vector.v[2], w };
+		return { v[0], v[1], v[2], w };
+	}
+	
+	inline Vector4 Vector4Normalize(Vector4 v)
+	{
+		float scale = 1.0f / Vector4Length(v);
+		return v * scale;
+	}
+	
+	inline float Vector4DotProduct(Vector4 vL, Vector4 vR)
+	{
+		return vL[0] * vR[0] +
+		vL[1] * vR[1] +
+		vL[2] * vR[2] +
+		vL[3] * vR[3];
+	}
+	
+	inline float Vector4Length(Vector4 v)
+	{
+		return sqrt(v[0] * v[0] +
+					v[1] * v[1] +
+					v[2] * v[2] +
+					v[3] * v[3]);
+	}
+	
+	inline float Vector4Distance(Vector4 vStart, Vector4 vEnd)
+	{
+		return Vector4Length(operator-(vEnd, vStart));
+	}
+	inline float Vector4Length2(Vector4 v)
+	{
+		return (v[0] * v[0] +
+				v[1] * v[1] +
+				v[2] * v[2] +
+				v[3] * v[3]);
+	}
+	
+	inline float Vector4Distance2(Vector4 vStart, Vector4 vEnd)
+	{
+		return Vector4Length2(vEnd - vStart);
+	}
+	
+	inline Vector4 Vector4Lerp(Vector4 vStart, Vector4 vEnd, float t)
+	{
+		Vector4 v = { vStart[0] + ((vEnd[0] - vStart[0]) * t),
+			vStart[1] + ((vEnd[1] - vStart[1]) * t),
+			vStart[2] + ((vEnd[2] - vStart[2]) * t),
+			vStart[3] + ((vEnd[3] - vStart[3]) * t) };
 		return v;
 	}
-
-	inline Vector4 Vector4Normalize(Vector4 vector)
+	
+	inline Vector4 Vector4CrossProduct(Vector4 vL, Vector4 vR)
 	{
-		float scale = 1.0f / Vector4Length(vector);
-		Vector4 v = vector * scale;
+		Vector4 v = { vL[1] * vR[2] - vL[2] * vR[1],
+			vL[2] * vR[0] - vL[0] * vR[2],
+			vL[0] * vR[1] - vL[1] * vR[0],
+			0.0f };
 		return v;
 	}
-
-	inline float Vector4DotProduct(Vector4 vectorLeft, Vector4 vectorRight)
+	
+	inline Vector4 Vector4Project(Vector4 v, Vector4 p)
 	{
-		return vectorLeft.v[0] * vectorRight.v[0] +
-			   vectorLeft.v[1] * vectorRight.v[1] +
-			   vectorLeft.v[2] * vectorRight.v[2] +
-			   vectorLeft.v[3] * vectorRight.v[3];
-	}
-
-	inline float Vector4Length(Vector4 vector)
-	{
-		return sqrt(vector.v[0] * vector.v[0] +
-					vector.v[1] * vector.v[1] +
-					vector.v[2] * vector.v[2] +
-					vector.v[3] * vector.v[3]);
-	}
-
-	inline float Vector4Distance(Vector4 vectorStart, Vector4 vectorEnd)
-	{
-		return Vector4Length(operator-(vectorEnd, vectorStart));
-	}
-
-	inline Vector4 Vector4Lerp(Vector4 vectorStart, Vector4 vectorEnd, float t)
-	{
-		Vector4 v = { vectorStart.v[0] + ((vectorEnd.v[0] - vectorStart.v[0]) * t),
-						 vectorStart.v[1] + ((vectorEnd.v[1] - vectorStart.v[1]) * t),
-						 vectorStart.v[2] + ((vectorEnd.v[2] - vectorStart.v[2]) * t),
-						 vectorStart.v[3] + ((vectorEnd.v[3] - vectorStart.v[3]) * t) };
-		return v;
-	}
-
-	inline Vector4 Vector4CrossProduct(Vector4 vectorLeft, Vector4 vectorRight)
-	{
-		Vector4 v = { vectorLeft.v[1] * vectorRight.v[2] - vectorLeft.v[2] * vectorRight.v[1],
-						 vectorLeft.v[2] * vectorRight.v[0] - vectorLeft.v[0] * vectorRight.v[2],
-						 vectorLeft.v[0] * vectorRight.v[1] - vectorLeft.v[1] * vectorRight.v[0],
-						 0.0f };
-		return v;
-	}
-
-	inline Vector4 Vector4Project(Vector4 vectorToProject, Vector4 projectionVector)
-	{
-		float scale = Vector4DotProduct(projectionVector, vectorToProject) / Vector4DotProduct(projectionVector, projectionVector);
-		Vector4 v = operator*(projectionVector, scale);
-		return v;
+		float scale = Vector4DotProduct(p, v) / Vector4DotProduct(p, p);
+		return operator*(p, scale);
 	}
 }
 
 /* Zen::Vector2 operator **/
 
-inline Zen::Vector2 operator-(Zen::Vector2 vector)
+inline Zen::Vector2 operator-(Zen::Vector2 v)
 {
-    Zen::Vector2 v = { -vector.v[0] , -vector.v[1] };
-    return v;
+	return { -v[0] , -v[1] };
 }
 
-inline Zen::Vector2 operator+(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
+inline Zen::Vector2 operator+(Zen::Vector2 vL, Zen::Vector2 vR)
 {
-    Zen::Vector2 v = { vectorLeft.v[0] + vectorRight.v[0],
-                     vectorLeft.v[1] + vectorRight.v[1] };
-    return v;
+	return { vL[0] + vR[0], vL[1] + vR[1] };
 }
 
-inline Zen::Vector2 operator-(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
+inline Zen::Vector2 operator-(Zen::Vector2 vL, Zen::Vector2 vR)
 {
-    Zen::Vector2 v = { vectorLeft.v[0] - vectorRight.v[0],
-                     vectorLeft.v[1] - vectorRight.v[1] };
-    return v;
+	return { vL[0] - vR[0],
+		vL[1] - vR[1] };
 }
 
-inline Zen::Vector2 operator*(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
+inline Zen::Vector2 operator*(Zen::Vector2 vL, Zen::Vector2 vR)
 {
-    Zen::Vector2 v = { vectorLeft.v[0] * vectorRight.v[0],
-                     vectorLeft.v[1] * vectorRight.v[1] };
-    return v;
+	return { vL[0] * vR[0],
+		vL[1] * vR[1] };
 }
 
-inline Zen::Vector2 operator/(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
+inline Zen::Vector2 operator/(Zen::Vector2 vL, Zen::Vector2 vR)
 {
-    Zen::Vector2 v = { vectorLeft.v[0] / vectorRight.v[0],
-                     vectorLeft.v[1] / vectorRight.v[1] };
-    return v;
+	return { vL[0] / vR[0],
+		vL[1] / vR[1] };
 }
 
-inline Zen::Vector2 operator+(Zen::Vector2 vector, float value)
+inline Zen::Vector2 operator+(Zen::Vector2 v, float value)
 {
-    Zen::Vector2 v = { vector.v[0] + value,
-                     vector.v[1] + value };
-    return v;
+	return { v[0] + value,
+		v[1] + value };
 }
 
-inline Zen::Vector2 operator-(Zen::Vector2 vector, float value)
+inline Zen::Vector2 operator-(Zen::Vector2 v, float value)
 {
-    Zen::Vector2 v = { vector.v[0] - value,
-                     vector.v[1] - value };
-    return v;
+	return { v[0] - value,
+		v[1] - value };
 }
 
-inline Zen::Vector2 operator*(Zen::Vector2 vector, float value)
+inline Zen::Vector2 operator*(Zen::Vector2 v, float value)
 {
-    Zen::Vector2 v = { vector.v[0] * value,
-                     vector.v[1] * value };
-    return v;
+	return { v[0] * value,
+		v[1] * value };
 }
 
-inline Zen::Vector2 operator/(Zen::Vector2 vector, float value)
+inline Zen::Vector2 operator/(Zen::Vector2 v, float value)
 {
-    Zen::Vector2 v = { vector.v[0] / value,
-                     vector.v[1] / value };
-    return v;
+	return { v[0] / value,
+		v[1] / value };
 }
 
-inline bool operator==(Zen::Vector2 vectorLeft, Zen::Vector2 vectorRight)
+inline bool operator==(Zen::Vector2 vL, Zen::Vector2 vR)
 {
-    bool compare = false;
-    if (vectorLeft.v[0] == vectorRight.v[0] &&
-        vectorLeft.v[1] == vectorRight.v[1])
-        compare = true;
-    return compare;
+	bool compare = false;
+	if (vL[0] == vR[0] &&
+		vL[1] == vR[1])
+		compare = true;
+	return compare;
 }
 
-inline bool operator==(Zen::Vector2 vector, float value)
+inline bool operator==(Zen::Vector2 v, float value)
 {
-    bool compare = false;
-    if (vector.v[0] == value &&
-        vector.v[1] == value)
-        compare = true;
-    return compare;
+	bool compare = false;
+	if (v[0] == value &&
+		v[1] == value)
+		compare = true;
+	return compare;
 }
 
 /* Zen::Vector3 operator **/
-inline Zen::Vector3 operator-(Zen::Vector3 vector)
+inline Zen::Vector3 operator-(Zen::Vector3 v)
 {
-	Zen::Vector3 v = { -vector.v[0], -vector.v[1], -vector.v[2] };
-	return v;
+	return { -v[0], -v[1], -v[2] };
 }
 
-inline Zen::Vector3 operator+(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight)
+inline Zen::Vector3 operator+(Zen::Vector3 vL, Zen::Vector3 vR)
 {
-	Zen::Vector3 v = { vectorLeft.v[0] + vectorRight.v[0],
-					 vectorLeft.v[1] + vectorRight.v[1],
-					 vectorLeft.v[2] + vectorRight.v[2] };
-	return v;
+	return { vL[0] + vR[0],
+		vL[1] + vR[1],
+		vL[2] + vR[2] };
 }
 
-inline Zen::Vector3 operator-(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight)
+inline Zen::Vector3 operator-(Zen::Vector3 vL, Zen::Vector3 vR)
 {
-	Zen::Vector3 v = { vectorLeft.v[0] - vectorRight.v[0],
-					 vectorLeft.v[1] - vectorRight.v[1],
-					 vectorLeft.v[2] - vectorRight.v[2] };
-	return v;
+	return { vL[0] - vR[0],
+		vL[1] - vR[1],
+		vL[2] - vR[2] };
 }
 
-inline Zen::Vector3 operator*(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight)
+inline Zen::Vector3 operator*(Zen::Vector3 vL, Zen::Vector3 vR)
 {
-	Zen::Vector3 v = { vectorLeft.v[0] * vectorRight.v[0],
-					 vectorLeft.v[1] * vectorRight.v[1],
-					 vectorLeft.v[2] * vectorRight.v[2] };
-	return v;
+	return { vL[0] * vR[0],
+		vL[1] * vR[1],
+		vL[2] * vR[2] };
 }
 
-inline Zen::Vector3 operator/(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight)
+inline Zen::Vector3 operator/(Zen::Vector3 vL, Zen::Vector3 vR)
 {
-	Zen::Vector3 v = { vectorLeft.v[0] / vectorRight.v[0],
-					 vectorLeft.v[1] / vectorRight.v[1],
-					 vectorLeft.v[2] / vectorRight.v[2] };
-	return v;
+	return { vL[0] / vR[0],
+		vL[1] / vR[1],
+		vL[2] / vR[2] };
 }
 
-inline Zen::Vector3 operator+(Zen::Vector3 vector, float value)
+inline Zen::Vector3 operator+(Zen::Vector3 v, float value)
 {
-	Zen::Vector3 v = { vector.v[0] + value,
-					 vector.v[1] + value,
-					 vector.v[2] + value };
-	return v;
+	return { v[0] + value,
+		v[1] + value,
+		v[2] + value };
 }
 
-inline Zen::Vector3 operator-(Zen::Vector3 vector, float value)
+inline Zen::Vector3 operator-(Zen::Vector3 v, float value)
 {
-	Zen::Vector3 v = { vector.v[0] - value,
-					 vector.v[1] - value,
-					 vector.v[2] - value };
-	return v;
+	return { v[0] - value,
+		v[1] - value,
+		v[2] - value };
 }
 
-inline Zen::Vector3 operator*(Zen::Vector3 vector, float value)
+inline Zen::Vector3 operator*(Zen::Vector3 v, float value)
 {
-	Zen::Vector3 v = { vector.v[0] * value,
-					 vector.v[1] * value,
-					 vector.v[2] * value };
-	return v;
+	return { v[0] * value,
+		v[1] * value,
+		v[2] * value };
 }
 
-inline Zen::Vector3 operator/(Zen::Vector3 vector, float value)
+inline Zen::Vector3 operator/(Zen::Vector3 v, float value)
 {
-	Zen::Vector3 v = { vector.v[0] / value,
-					 vector.v[1] / value,
-					 vector.v[2] / value };
-	return v;
+	return { v[0] / value,
+		v[1] / value,
+		v[2] / value };
 }
 
 
-inline bool operator==(Zen::Vector3 vectorLeft, Zen::Vector3 vectorRight)
+inline bool operator==(Zen::Vector3 vL, Zen::Vector3 vR)
 {
 	bool compare = false;
-	if (vectorLeft.v[0] == vectorRight.v[0] &&
-		vectorLeft.v[1] == vectorRight.v[1] &&
-		vectorLeft.v[2] == vectorRight.v[2])
+	if (vL[0] == vR[0] &&
+		vL[1] == vR[1] &&
+		vL[2] == vR[2])
 		compare = true;
 	return compare;
 }
 
-inline bool operator==(Zen::Vector3 vector, float value)
+inline bool operator==(Zen::Vector3 v, float value)
 {
 	bool compare = false;
-	if (vector.v[0] == value &&
-		vector.v[1] == value &&
-		vector.v[2] == value)
+	if (v[0] == value &&
+		v[1] == value &&
+		v[2] == value)
 		compare = true;
 	return compare;
 }
 
-inline Zen::Vector4 operator-(Zen::Vector4 vector)
+inline Zen::Vector4 operator-(Zen::Vector4 v)
 {
-    Zen::Vector4 v = { -vector.v[0], -vector.v[1], -vector.v[2], -vector.v[3] };
-    return v;
+	return { -v[0], -v[1], -v[2], -v[3] };
 }
 
-inline Zen::Vector4 operator+(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
+inline Zen::Vector4 operator+(Zen::Vector4 vL, Zen::Vector4 vR)
 {
-    Zen::Vector4 v = { vectorLeft.v[0] + vectorRight.v[0],
-                     vectorLeft.v[1] + vectorRight.v[1],
-                     vectorLeft.v[2] + vectorRight.v[2],
-                     vectorLeft.v[3] + vectorRight.v[3] };
-    return v;
+	return { vL[0] + vR[0],
+		vL[1] + vR[1],
+		vL[2] + vR[2],
+		vL[3] + vR[3] };
 }
 
-inline Zen::Vector4 operator-(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
+inline Zen::Vector4 operator-(Zen::Vector4 vL, Zen::Vector4 vR)
 {
-    Zen::Vector4 v = { vectorLeft.v[0] - vectorRight.v[0],
-                     vectorLeft.v[1] - vectorRight.v[1],
-                     vectorLeft.v[2] - vectorRight.v[2],
-                     vectorLeft.v[3] - vectorRight.v[3] };
-    return v;
+	return { vL[0] - vR[0],
+		vL[1] - vR[1],
+		vL[2] - vR[2],
+		vL[3] - vR[3] };
 }
 
-inline Zen::Vector4 operator*(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
+inline Zen::Vector4 operator*(Zen::Vector4 vL, Zen::Vector4 vR)
 {
-    Zen::Vector4 v = { vectorLeft.v[0] * vectorRight.v[0],
-                     vectorLeft.v[1] * vectorRight.v[1],
-                     vectorLeft.v[2] * vectorRight.v[2],
-                     vectorLeft.v[3] * vectorRight.v[3] };
-    return v;
+	return { vL[0] * vR[0],
+		vL[1] * vR[1],
+		vL[2] * vR[2],
+		vL[3] * vR[3] };
 }
 
-inline Zen::Vector4 operator/(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
+inline Zen::Vector4 operator/(Zen::Vector4 vL, Zen::Vector4 vR)
 {
-    Zen::Vector4 v = { vectorLeft.v[0] / vectorRight.v[0],
-                     vectorLeft.v[1] / vectorRight.v[1],
-                     vectorLeft.v[2] / vectorRight.v[2],
-                     vectorLeft.v[3] / vectorRight.v[3] };
-    return v;
+	return { vL[0] / vR[0],
+		vL[1] / vR[1],
+		vL[2] / vR[2],
+		vL[3] / vR[3] };
 }
 
-inline Zen::Vector4 operator+(Zen::Vector4 vector, float value)
+inline Zen::Vector4 operator+(Zen::Vector4 v, float value)
 {
-    Zen::Vector4 v = { vector.v[0] + value,
-                     vector.v[1] + value,
-                     vector.v[2] + value,
-                     vector.v[3] + value };
-    return v;
+	return { v[0] + value,
+		v[1] + value,
+		v[2] + value,
+		v[3] + value };
 }
 
-inline Zen::Vector4 operator-(Zen::Vector4 vector, float value)
+inline Zen::Vector4 operator-(Zen::Vector4 v, float value)
 {
-    Zen::Vector4 v = { vector.v[0] - value,
-                     vector.v[1] - value,
-                     vector.v[2] - value,
-                     vector.v[3] - value };
-    return v;
+	return { v[0] - value,
+		v[1] - value,
+		v[2] - value,
+		v[3] - value };
 }
 
-inline Zen::Vector4 operator*(Zen::Vector4 vector, float value)
+inline Zen::Vector4 operator*(Zen::Vector4 v, float value)
 {
-    Zen::Vector4 v = { vector.v[0] * value,
-                     vector.v[1] * value,
-                     vector.v[2] * value,
-                     vector.v[3] * value };
-    return v;
+	return { v[0] * value,
+		v[1] * value,
+		v[2] * value,
+		v[3] * value };
 }
 
-inline Zen::Vector4 operator/(Zen::Vector4 vector, float value)
+inline Zen::Vector4 operator/(Zen::Vector4 v, float value)
 {
-    Zen::Vector4 v = { vector.v[0] / value,
-                     vector.v[1] / value,
-                     vector.v[2] / value,
-                     vector.v[3] / value };
-    return v;
+	return { v[0] / value,
+		v[1] / value,
+		v[2] / value,
+		v[3] / value };
 }
 
-inline bool operator==(Zen::Vector4 vectorLeft, Zen::Vector4 vectorRight)
+inline bool operator==(Zen::Vector4 vL, Zen::Vector4 vR)
 {
-    bool compare = false;
-    if (vectorLeft.v[0] == vectorRight.v[0] &&
-        vectorLeft.v[1] == vectorRight.v[1] &&
-        vectorLeft.v[2] == vectorRight.v[2] &&
-        vectorLeft.v[3] == vectorRight.v[3])
-        compare = true;
-    return compare;
+	bool compare = false;
+	if (vL[0] == vR[0] &&
+		vL[1] == vR[1] &&
+		vL[2] == vR[2] &&
+		vL[3] == vR[3])
+		compare = true;
+	return compare;
 }
 
-inline bool operator==(Zen::Vector4 vector, float value)
+inline bool operator==(Zen::Vector4 v, float value)
 {
-    bool compare = false;
-    if (vector.v[0] == value &&
-        vector.v[1] == value &&
-        vector.v[2] == value &&
-        vector.v[3] == value)
-        compare = true;
-    return compare;
+	bool compare = false;
+	if (v[0] == value &&
+		v[1] == value &&
+		v[2] == value &&
+		v[3] == value)
+		compare = true;
+	return compare;
 }
 
-inline std::ostream & operator << (std::ostream & o, Zen::Vector4 const & m)
+inline std::ostream & operator << (std::ostream & o, Zen::Vector4 const & v)
 {
-	o << m.v[0] << ',' << m.v[1] << ',' << m.v[2] << ',' << m.v[3];
+	o << v[0] << ',' << v[1] << ',' << v[2] << ',' << v[3];
 	return o;
 }
-inline std::ostream & operator << (std::ostream & o, Zen::Vector3 const & m)
+inline std::ostream & operator << (std::ostream & o, Zen::Vector3 const & v)
 {
-	o << m.v[0] << ',' << m.v[1] << ',' << m.v[2];
+	o << v[0] << ',' << v[1] << ',' << v[2];
 	return o;
 }
-inline std::ostream & operator << (std::ostream & o, Zen::Vector2 const & m)
+inline std::ostream & operator << (std::ostream & o, Zen::Vector2 const & v)
 {
-	o << m.v[0] << ',' << m.v[1];
+	o << v[0] << ',' << v[1];
 	return o;
 }

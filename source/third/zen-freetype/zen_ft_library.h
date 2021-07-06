@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -38,9 +38,9 @@ namespace Zen {
 	{
 		int   width  = 16;
 		int   height = 16;
-		float italic = 0;
-		float bold_x = 0;
-		float bold_y = 0;
+		float italic = 0; // [0., 1.]
+		float bold_x = 0; // px
+		float bold_y = 0; // px
 	};
 	
 	class Font
@@ -52,9 +52,9 @@ namespace Zen {
 		struct Info {
 			int width = 0;
 			int height = 0;
-			int base_line_height = 0;
-			int line_height = 0;
-			int forward = 0;
+			int text_height = 0;
+			int ascender = 0;
+			int max_advance = 0;
 		};
 
 		virtual std::shared_ptr<FontChar>
@@ -78,7 +78,7 @@ namespace Zen {
 	class FontBrush
 	{
 	public:
-		static std::shared_ptr<FontBrush> Create(std::shared_ptr<Font> font, FontConfig const & config);
+		static std::shared_ptr<FontBrush> Create(std::shared_ptr<Font> font, FontConfig config);
 
 		std::shared_ptr<FontChar> getCharBitmap(uint32_t unicode);
 
@@ -98,8 +98,8 @@ namespace Zen {
 		std::shared_ptr<Font> m_font;
 		std::map<uint32_t, std::shared_ptr<FontChar> > m_chars;
 		Font::Info m_font_info;
-		int m_line_base = 0;
-		int m_line_height = 0;
+//		int m_line_base = 0;
+//		int m_text_height = 0;
 	};
 
 	class Fonts

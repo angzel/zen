@@ -1,14 +1,24 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
 
 #include "zen_gles2_shader.h"
+#include "zen_color.h"
 
 namespace Zen { namespace GL {
-	class ShaderColor
+	/**
+	 @arg
+	 attributes:
+	 - a_coord: vertex coords
+	 - a_color: vertex colors
+	 uniforms:
+	 - u_transfrom: matrix transform
+	 - u_color: global color
+	 */
+	class ShaderC
 	{
 	public:
 		GLint a_coord;
@@ -17,20 +27,30 @@ namespace Zen { namespace GL {
 		GLint u_color;
 		Zen::GL::ShaderProgram program;
 	public:
-		typedef std::shared_ptr<ShaderColor const> Shared;
+		typedef std::shared_ptr<ShaderC const> Shared;
 
-		static Shared Create(VertexShader const & vertex, FragmentShader const & fragment);
+		static Shared Create(VShader const & vertex, FShader const & fragment);
 
 	protected:
-		ShaderColor() = default;
-		ShaderColor(ShaderColor&) = delete;
+		ShaderC() = default;
+		ShaderC(ShaderC &) = delete;
 		void operator = (int) = delete;
 
 	};
 }}
 
 namespace Zen { namespace GL {
-	class ShaderSampler
+	/**
+	 @arg
+	 attributes:
+	 - a_coord: vertex coords
+	 - a_sampler_coord: coord in texture.
+	 uniforms:
+	 - u_transfrom: matrix transform
+	 - u_color: global color
+	 - u_sampler: texture
+	 */
+	class ShaderT
 	{
 	public:
 		GLint a_coord;
@@ -40,38 +60,51 @@ namespace Zen { namespace GL {
 		GLint u_color;
 		Zen::GL::ShaderProgram program;
 	public:
-		typedef std::shared_ptr<ShaderSampler const> Shared;
+		typedef std::shared_ptr<ShaderT const> Shared;
 
-		static Shared Create(VertexShader const & vertex, FragmentShader const & fragment);
+		static Shared Create(VShader const & vertex, FShader const & fragment);
 
 	protected:
-		ShaderSampler() = default;
-		ShaderSampler(ShaderSampler&) = delete;
+		ShaderT() = default;
+		ShaderT(ShaderT&) = delete;
 		void operator = (int) = delete;
 	};
 
 }}
 
 namespace Zen { namespace GL {
-	class ShaderParticle
+	/**
+	 @arg
+	 attributes:
+	 - a_coord: vertex coord
+	 - a_color: vertex color.
+	 - a_size: vertex point size.
+	 uniforms:
+	 - u_transform: transfrom matrix.
+	 - u_size_ratio: scaling for size.
+	 - u_color: global color.
+	 - u_sampler: texture for point.
+	 */
+	class ShaderP
 	{
 	public:
 		GLint a_coord;
 		GLint a_color;
 		GLint a_size;
 		GLint u_transform;
+		GLint u_size_ratio;
 		GLint u_color;
 		GLint u_sampler;
 		Zen::GL::ShaderProgram program;
 
 	public:
-		typedef std::shared_ptr<ShaderParticle const> Shared;
+		typedef std::shared_ptr<ShaderP const> Shared;
 
-		static Shared Create(VertexShader const & vertex, FragmentShader const & fragment);
+		static Shared Create(VShader const & vertex, FShader const & fragment);
 
 	protected:
-		ShaderParticle() = default;
-		ShaderParticle(ShaderParticle&) = delete;
+		ShaderP() = default;
+		ShaderP(ShaderP&) = delete;
 		void operator = (int) = delete;
 	};
 }}
@@ -84,11 +117,11 @@ namespace Zen { namespace GL {
 	public:
 		static ShaderPrograms * Get();
 
-		ShaderColor::Shared getShaderColor(bool to_grey);
+		ShaderC::Shared getShaderC(bool gray);
 
-		ShaderSampler::Shared getShaderSampler(bool to_grey, bool only_alpha);
+		ShaderT::Shared getShaderT(bool gray, ePixel texture_fmt);
 
-		ShaderParticle::Shared getShaderParticle(bool to_grey, bool only_alpha);
+		ShaderP::Shared getShaderP(bool gray, ePixel texture_fmt);
 
 	protected:
 		ShaderPrograms();

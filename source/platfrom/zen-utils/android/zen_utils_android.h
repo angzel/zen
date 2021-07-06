@@ -6,13 +6,13 @@
 
 #include <thread>
 #include <string>
-#include "zen_log.h"
-
 #include <cstdint>
 #include <vector>
 #include <unistd.h>
 #include <jni.h>
 
+#include "zen_log.h"
+#include "zen_utils.h"
 // you should set javavm when your app start.
 // use JNI_OnLoad is a simple way.
 #if 0
@@ -25,42 +25,48 @@ JNI_OnLoad(JavaVM *vm, void *reserved) {
 #endif
 
 namespace Zen {
-	class AndroidJNI
-	{
-	public:
-		static AndroidJNI * Get();
+    class UtilsAndroid : public Utils {
+    public:
+        static UtilsAndroid *Get();
 
-		JNIEnv * getJNIEnv()
-        {
-		    JNIEnv * env = nullptr;
-            if(mJavaVM->GetEnv((void**)&env, mJNIVersion) == JNI_OK)
-            {
-                Zen::LogD("java vm env:%x", env);
-                return env;
-            }
-            return nullptr;
-        }
+        virtual JNIEnv *getJNIEnv() = 0;
 
-		JavaVM * getJavaVM()
-        {
-		    return mJavaVM;
-        }
+        virtual JavaVM *getJavaVM() = 0;
 
-        jint getJNIVersion()
-        {
-            return mJNIVersion;
-        }
+        virtual int getJNIVersion() = 0;
 
-		void setJavaVM(JavaVM *  vm, jint version)
-        {
-		    mJavaVM = vm;
-		    mJNIVersion = version;
-        }
+    public:
+        typedef std::string const cstring;
 
-	protected:
-        JavaVM * mJavaVM = nullptr;
-		jint mJNIVersion;
-	};
+        virtual std::tuple<JNIEnv *, jclass, jmethodID> findJavaMethod
+                (cstring &cls, cstring &method, cstring &type) = 0;
+
+        virtual void callJavaVoidMethod(cstring &cls, cstring &fun) = 0;
+
+        virtual void callJavaVoidMethod(cstring &cls, cstring &fun, cstring &arg0) = 0;
+
+        virtual bool callJavaBoolMethod(cstring &cls, cstring &fun) = 0;
+
+        virtual bool callJavaBoolMethod(cstring &cls, cstring &fun, cstring &arg0) = 0;
+
+        virtual std::string callJavaStringMethod(cstring &cls, cstring &fun) = 0;
+
+        virtual std::string callJavaStringMethod(cstring &cls, cstring &fun, cstring &arg0) = 0;
+
+        virtual std::vector<uint8_t> callJavaBytesMethod(cstring &cls, cstring &fun) = 0;
+
+        virtual std::vector<uint8_t> callJavaBytesMethod(cstring &cls, cstring &fun, cstring &arg0) = 0;
+
+    public:
+        virtual std::string getFilesDir() = 0;
+
+        virtual std::string getCacheDir() = 0;
+
+        virtual std::string getExternalCacheDir() = 0;
+
+    protected:
+        UtilsAndroid() = default;
+    };
 }
 
 #endif

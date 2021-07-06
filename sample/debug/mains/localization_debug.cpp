@@ -13,7 +13,8 @@
 #include "zen_localization.h"
 
 int main(int argc, const char * argv[]) {
-		// insert code here...
+
+	/// src是文本化表格格式文件（.csv）内容
 	std::string src = "key,en,cn\n"
 	"hello,Hello! I love You.,你好啊！朋友！\n"
 	"move '1',This is your first step. Move any chess on light.,移动任何棋子。";

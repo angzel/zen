@@ -5,19 +5,30 @@
 
 namespace Zen {
 
-	NSString* UtilsIOS::_DocumentPath(std::string const & path)
-	{
-		NSString *home= [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-		return [home stringByAppendingPathComponent:[NSString stringWithUTF8String:path.data()]];
-	}
-
-	NSString * UtilsIOS::_ResourcePath(std::string const & path)
-	{
-		return [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithUTF8String:path.data()]];
-	}
 	class UtilsIOS_i : public UtilsIOS
 	{
 	public:
+		NSString* DocumentPath(NSString* path) override
+		{
+			NSString *home= [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+			return [home stringByAppendingPathComponent:path];
+		}
+		
+		NSString * ResourcePath(NSString* path) override
+		{
+			return [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:path];
+		}
+		
+		NSString * toString(std::string const & s) override
+		{
+			return [NSString stringWithUTF8String:s.data()];
+		}
+		
+		std::string toString(NSString * s) override
+		{
+			return [s UTF8String];
+		}
+		
 		std::string getAppID() override
 		{
 			return [[[NSBundle mainBundle] bundleIdentifier] UTF8String];
@@ -26,23 +37,26 @@ namespace Zen {
 		{
 			return [[[UIDevice currentDevice] identifierForVendor] UUIDString].UTF8String;
 		}
-
+		
+		std::string getDocumentPath(std::string const & path) override {
+			return toString(DocumentPath(toString(path)));
+		}
+		
 		bool isResourceExist(std::string const & path) override
 		{
 			NSFileManager * manager = [NSFileManager defaultManager];
-			return [manager fileExistsAtPath:_ResourcePath(path)];
-
+			return [manager fileExistsAtPath:ResourcePath(toString(path))];
 		}
 
 		bool isDocumentExist(std::string const & path) override
 		{
 			NSFileManager * manager = [NSFileManager defaultManager];
-			return [manager fileExistsAtPath:_DocumentPath(path)];
+			return [manager fileExistsAtPath:DocumentPath(toString(path))];
 		}
 
 		std::vector<uint8_t> loadResource(std::string const & path) override
 		{
-			auto data = [NSData dataWithContentsOfFile:_ResourcePath(path)];
+			auto data = [NSData dataWithContentsOfFile:ResourcePath(toString(path))];
 			if(data == nil) return {};
 
 			auto bytes = (uint8_t const*)data.bytes;
@@ -52,7 +66,7 @@ namespace Zen {
 
 		std::vector<uint8_t> loadDocument(std::string const & path) override
 		{
-			auto data = [NSData dataWithContentsOfFile:_DocumentPath(path)];
+			auto data = [NSData dataWithContentsOfFile:DocumentPath(toString(path))];
 			if(data == nil) return {};
 
 			auto bytes = (uint8_t const*)data.bytes;
@@ -63,7 +77,7 @@ namespace Zen {
 		bool saveDocument(std::string const & path, void const * data, size_t size) override
 		{
 			NSData * ocd = [NSData dataWithBytes:data length:size];
-			return [ocd writeToFile:_DocumentPath(path) atomically:YES];
+			return [ocd writeToFile:DocumentPath(toString(path)) atomically:YES];
 		}
 
 		std::vector<uint8_t> loadURL(std::string const & url) override

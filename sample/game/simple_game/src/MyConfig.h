@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "zen_vap2d.h"
+#include "zen_vap.h"
 #include "zen_cast.h"
 #include "zen_image_jpg.h"
 #include "zen_image_png.h"
@@ -11,7 +11,7 @@
 #include "zen_log.h"
 
 using namespace Zen;
-using namespace Zen::Vap2d;
+using namespace Zen::Vap;
 
 struct MyConfig
 {

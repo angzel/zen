@@ -36,9 +36,7 @@ namespace Zen {
 	class AppRuntimeAndroid : public App
 	{
 	protected:
-		Zen::AppRuntimeDelegate* mDelegate = nullptr;
-
-		static AppRuntimeAndroid * _me;
+		std::shared_ptr<Zen::AppRuntimeDelegate> mDelegate = nullptr;
 
 		Zen::Size2 mViewSize;
 	public:
@@ -46,17 +44,14 @@ namespace Zen {
 		bool m_rotatable = false;
 		float mFramePerSecond = 60;
 
-		static AppRuntimeAndroid * GetDefault()
-		{
-			return _me;
-		}
+		static AppRuntimeAndroid * Get();
 
-		virtual void setRuntimeDelegate(Zen::AppRuntimeDelegate* delegate) override
+		virtual void setRuntimeDelegate(std::shared_ptr<Zen::AppRuntimeDelegate> delegate) override
 		{
 			mDelegate = delegate;
 		}
 
-		virtual Zen::AppRuntimeDelegate*
+		virtual std::shared_ptr<Zen::AppRuntimeDelegate>
 		getRuntimeDelegate() override
 		{
 			return mDelegate;
@@ -123,7 +118,7 @@ namespace Zen {
 
 		void resume();
 
-		void back();
+		void back(); // android only
 
 		void touchDown(Zen::AppTouch);
 

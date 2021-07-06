@@ -1,14 +1,14 @@
 
 #pragma once
 
-#include "zen_vap2d.h"
+#include "zen_vap.h"
 #include "MyConfig.h"
 #include "MyRootScene.h"
 
 using namespace Zen;
-using namespace Zen::Vap2d;
+using namespace Zen::Vap;
 
-class MainDelegate : public Zen::Vap2d::RootDelegate {
+class MainDelegate : public Zen::Vap::RootDelegate {
 	float fps = 0;
 	float m_time = 0;
 	int nth = 0;
@@ -20,25 +20,23 @@ public:
 		Zen::App::Get()->setFramesPerSecond(60);
 		Zen::App::Get()->setRotatable(true);
 
-		auto size = Zen::Vap2d::Root::Get()->getRealViewSize();
+		auto size = Zen::Vap::Root::Get()->getRealViewSize();
 		LogV("ScreenSize: %.2f %.2f", size.w, size.h);
 
-		auto root = Zen::Vap2d::Root::Get();
+		auto root = Zen::Vap::Root::Get();
 		
-		auto h = size.h * (1080 / size.w);
-		Root::Get()->setViewSize({ 1080, h});
-		gConfig.size = Root::Get()->getViewSize();
+//		auto h = size.h * (1080 / size.w);
+//		Root::Get()->setScale2_({ 1080, h});
+		gConfig.size = size; //Root::Get()->getViewSize();
 
 		this->loadSource();
-
-		auto scene = new MyRootScene;
+		
+		auto scene = new Scene2d(size.w, size.h);
 		root->replaceRootNode(scene);
-		rootScene = scene;
-#if ZEN_DRAW_GLES
-		using namespace Zen::GL;
-		GetGLRender()->setDepthFunc(eDepthFunc::Greater);
-		GetGLRender()->enableDepthTest(false);
-#endif
+
+		rootScene = new MyRootScene;
+		scene->addNode(rootScene);
+
 	}
 	void loadSource()
 	{

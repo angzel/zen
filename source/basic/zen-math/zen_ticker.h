@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -47,13 +47,11 @@ namespace Zen
 			mStartTime = now;
 			return interval;
 		}
-		std::chrono::microseconds tick(std::chrono::microseconds move)
+		void delay(std::chrono::microseconds move)
 		{
-			auto now = Now();
-			auto interval = now - mStartTime;
-			mStartTime = now - move;
-			return interval;
+			mStartTime -= move;
 		}
+
 	protected:
 		std::chrono::microseconds mStartTime;
 	};

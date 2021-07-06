@@ -20,19 +20,19 @@ namespace Zen { namespace Metal {
 
 		void end();
 
-		void activePipe(PipeID * pipe_id);
+		void activePipe(std::shared_ptr<PipeID> pipe_id);
 
-		void setVertexBuffer(int index, BufferID * buffer, size_t off);
+		void setVertexBuffer(int index, std::shared_ptr<BufferID> buffer, size_t off);
 
-		void setFragmentBuffer(int index, BufferID * buffer, size_t off);
+		void setFragmentBuffer(int index, std::shared_ptr<BufferID> buffer, size_t off);
 		
 		void setFragmentBytes(int index, void const * bytes, size_t len);
 
-		void bindTexture(int index, TextureID * texture);
+		void bindTexture(int index, std::shared_ptr<TextureID> texture);
 
 		void drawPrimitives(eVertexMode mode, size_t start, size_t count);
 
-//		void drawIndexedPrimitives(eVertexMode mode, size_t indexCount, BufferID * buffer, size_t off_bytes, size_t instanceCount);
+//		void drawIndexedPrimitives(eVertexMode mode, size_t indexCount, std::shared_ptr<BufferID> buffer, size_t off_bytes, size_t instanceCount);
 
 		RenderID * getID() const;
 	public:

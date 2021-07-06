@@ -1,80 +1,84 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #include "zen_gles2_prepare.h"
+#include "zen_color.h"
 
 namespace Zen { namespace GL {
-	ShaderColor::Shared ShaderColor::Create(VertexShader const & vertex, FragmentShader const & fragment)
+	ShaderC::Shared ShaderC::Create(VShader const & vertex, FShader const & fragment)
 	{
-		auto s = new ShaderColor();
+		auto s = new ShaderC();
 		s->program.makeAttachAndLink(vertex, fragment);
 		s->a_coord = s->program.getAttributeLocation("a_coord");
 		s->a_color = s->program.getAttributeLocation("a_color");
 		s->u_transform = s->program.getUniformLocation("u_transform");
 		s->u_color = s->program.getUniformLocation("u_color");
 		//		s->u_point_size = s->program.getUniformLocation("u_point_size");
-		return std::shared_ptr<ShaderColor const>(s);
+		return std::shared_ptr<ShaderC const>(s);
 	}
-	ShaderParticle::Shared ShaderParticle::Create(VertexShader const & vertex, FragmentShader const & fragment)
+	ShaderP::Shared ShaderP::Create(VShader const & vertex, FShader const & fragment)
 	{
-		auto s = new ShaderParticle();
+		auto s = new ShaderP();
 		s->program.makeAttachAndLink(vertex, fragment);
 		s->a_coord = s->program.getAttributeLocation("a_coord");
 		s->a_size = s->program.getAttributeLocation("a_size");
 		s->a_color = s->program.getAttributeLocation("a_color");
 		s->u_transform = s->program.getUniformLocation("u_transform");
+		s->u_size_ratio = s->program.getUniformLocation("u_size_ratio");
 		s->u_color = s->program.getUniformLocation("u_color");
 		s->u_sampler = s->program.getUniformLocation("u_sampler");
-		return std::shared_ptr<ShaderParticle const>(s);
+		return std::shared_ptr<ShaderP const>(s);
 	}
 	
-	ShaderSampler::Shared ShaderSampler::Create(VertexShader const & vertex, FragmentShader const & fragment)
+	ShaderT::Shared ShaderT::Create(VShader const & vertex, FShader const & fragment)
 	{
-		auto s = new ShaderSampler();
+		auto s = new ShaderT();
 		s->program.makeAttachAndLink(vertex, fragment);
 		s->a_coord = s->program.getAttributeLocation("a_coord");
 		s->a_sampler_coord = s->program.getAttributeLocation("a_sampler_coord");
 		s->u_transform = s->program.getUniformLocation("u_transform");
 		s->u_color = s->program.getUniformLocation("u_color");
 		s->u_sampler = s->program.getUniformLocation("u_sampler");
-		return std::shared_ptr<ShaderSampler const>(s);
+		return std::shared_ptr<ShaderT const>(s);
 	}
 }}
 
 namespace Zen { namespace GL {
-
+	
 	/**
 	 particle
 	 */
-	static const char * sVertexSParticle = R""(
+	static const char * sVertexShaderP = R""(
 	precision mediump float;
 	attribute vec4 a_coord;
 	attribute float a_size;
 	attribute vec4 a_color;
 	uniform mat4 u_transform;
+	uniform vec4 u_size_ratio;
 	varying vec4 v_color;
 	void main()
 	{
-		v_color = a_color;
-		gl_PointSize = a_size;
-		gl_Position = u_transform * a_coord;
+	v_color = a_color;
+	gl_PointSize = length(u_transform * vec4(a_size, 0.0, 0.0, 0.0) * u_size_ratio);
+	gl_Position = u_transform * a_coord;
 	}
 	)"";
-
-	static const char * sFragPar = R""(
+	//	vec2 s = (u_transform * vec4(a_size, 0, 0, 0)).xy;
+	
+	static const char * sFragShaderP = R""(
 	precision mediump float;
 	varying vec4 v_color;
 	uniform vec4 u_color;
 	uniform sampler2D u_sampler;
 	void main()
 	{
-		gl_FragColor = texture2D(u_sampler, gl_PointCoord) * v_color * u_color;
+	gl_FragColor = texture2D(u_sampler, gl_PointCoord) * v_color * u_color;
 	}
 	)"";
-
-	static const char * sFragPar_G = R""(
+	
+	static const char * sFragShaderP_G = R""(
 	precision mediump float;
 	varying vec4 v_color;
 	uniform vec4 u_color;
@@ -82,42 +86,42 @@ namespace Zen { namespace GL {
 	const mediump vec3 grey = vec3(0.21, 0.71, 0.08);
 	void main()
 	{
-		vec4 c = texture2D(u_sampler, gl_PointCoord) * v_color;
-		float i = dot(c.rgb, grey);
-		gl_FragColor = vec4(i, i, i, c.w) * u_color;
+	vec4 c = texture2D(u_sampler, gl_PointCoord) * v_color;
+	float i = dot(c.rgb, grey);
+	gl_FragColor = vec4(i, i, i, c.w) * u_color;
 	}
 	)"";
-
-	static const char * sFragPar_A = R""(
+	
+	static const char * sFragShaderP_A = R""(
 	precision mediump float;
 	varying vec4 v_color;
 	uniform vec4 u_color;
 	uniform sampler2D u_sampler;
 	void main()
 	{
-		vec4 c = v_color * u_color;
-		float a = texture2D(u_sampler, gl_PointCoord).w;
-		gl_FragColor = vec4(c.rgb, c.w * a);
+	vec4 c = v_color * u_color;
+	float a = texture2D(u_sampler, gl_PointCoord).w;
+	gl_FragColor = vec4(c.rgb, c.w * a);
 	}
 	)"";
-
-	static const char * sFragPar_A_G = R""(
+	
+	static const char * sFragShaderP_A_G = R""(
 	precision mediump float;
 	varying vec4 v_color;
 	uniform vec4 u_color;
 	uniform sampler2D u_sampler;
 	void main()
 	{
-		float i = texture2D(u_sampler, gl_PointCoord).w;
-		gl_FragColor = vec4(i, i, i, 1) * v_color * u_color;
+	float i = texture2D(u_sampler, gl_PointCoord).w;
+	gl_FragColor = vec4(i, i, i, 1) * v_color * u_color;
 	}
 	)"";
-
-
+	
+	
 	/**
 	 color
 	 */
-	static const char * sVertexSColor = R""(
+	static const char * sVertexShaderC = R""(
 	precision mediump float;
 	attribute vec4 a_coord;
 	attribute vec4 a_color;
@@ -125,37 +129,37 @@ namespace Zen { namespace GL {
 	varying vec4 v_color;
 	void main()
 	{
-		v_color = a_color;
-		gl_Position = u_transform * a_coord;
+	v_color = a_color;
+	gl_Position = u_transform * a_coord;
 	}
 	)"";
-
-	static const char * sFragSColor = R""(
+	
+	static const char * sFragShaderC = R""(
 	precision mediump float;
 	varying vec4 v_color;
 	uniform vec4 u_color;
 	void main()
 	{
-		gl_FragColor = v_color * u_color;
+	gl_FragColor = v_color * u_color;
 	}
 	)"";
-
-	static const char * sFragSColor_G = R""(
+	
+	static const char * sFragShaderC_G = R""(
 	precision mediump float;
 	varying vec4 v_color;
 	uniform vec4 u_color;
 	const mediump vec3 grey = vec3(0.21, 0.71, 0.08);
 	void main()
 	{
-		float i = dot(v_color.rgb, grey);
-		gl_FragColor = vec4(i, i, i, v_color.w) * u_color;
+	float i = dot(v_color.rgb, grey);
+	gl_FragColor = vec4(i, i, i, v_color.w) * u_color;
 	}
 	)"";
-
+	
 	/**
 	 sampler
 	 */
-	static const char * sVertexSSampler = R""(
+	static const char * sVertexShaderT = R""(
 	precision mediump float;
 	attribute vec4 a_coord;
 	attribute vec2 a_sampler_coord;
@@ -163,23 +167,23 @@ namespace Zen { namespace GL {
 	varying vec2 v_sample_coord;
 	void main()
 	{
-		v_sample_coord = a_sampler_coord;
-		gl_Position = u_transform * a_coord;
+	v_sample_coord = a_sampler_coord;
+	gl_Position = u_transform * a_coord;
 	}
 	)"";
-
-	static const char * sFragSamp = R""(
+	
+	static const char * sFragShaderT = R""(
 	precision mediump float;
 	uniform sampler2D u_sampler;
 	uniform vec4 u_color;
 	varying vec2 v_sample_coord;
 	void main()
 	{
-		gl_FragColor = texture2D(u_sampler, v_sample_coord) * u_color;
+	gl_FragColor = texture2D(u_sampler, v_sample_coord) * u_color;
 	}
 	)"";
-
-	static const char * sFragSamp_G = R""(
+	
+	static const char * sFragShaderT_G = R""(
 	precision mediump float;
 	uniform sampler2D u_sampler;
 	uniform vec4 u_color;
@@ -187,49 +191,50 @@ namespace Zen { namespace GL {
 	const mediump vec3 grey = vec3(0.21, 0.71, 0.08);
 	void main()
 	{
-		vec4 c = texture2D(u_sampler, v_sample_coord);
-		float i = dot(c.rgb, grey);
-		gl_FragColor = vec4(i, i, i, c.w) * u_color;
+	vec4 c = texture2D(u_sampler, v_sample_coord);
+	float i = dot(c.rgb, grey);
+	gl_FragColor = vec4(i, i, i, c.w) * u_color;
 	}
 	)"";
-
-	static const char * sFragSamp_A = R""(
+	
+	static const char * sFragShaderT_A = R""(
 	precision mediump float;
 	uniform sampler2D u_sampler;
 	uniform vec4 u_color;
 	varying vec2 v_sample_coord;
 	void main()
 	{
-		float a = texture2D(u_sampler, v_sample_coord).w;
-		gl_FragColor = vec4(u_color.rgb, u_color.w * a);
+	float a = texture2D(u_sampler, v_sample_coord).w;
+	gl_FragColor = vec4(u_color.rgb, u_color.w * a);
 	}
 	)"";
-
-	static const char * sFragSamp_A_G = R""(
+	
+	static const char * sFragShaderT_A_G = R""(
 	precision mediump float;
 	uniform sampler2D u_sampler;
 	uniform vec4 u_color;
 	varying vec2 v_sample_coord;
 	void main()
 	{
-		float i = texture2D(u_sampler, v_sample_coord).w;
-		gl_FragColor = vec4(i, i, i, 1) * u_color;
+	float i = texture2D(u_sampler, v_sample_coord).w;
+	gl_FragColor = vec4(i, i, i, 1) * u_color;
 	}
 	)"";
-
-	inline static int sGetIndex(bool to_grey)
+	
+	inline static int sGetIndex(bool gray)
 	{
-		return (to_grey?1:0);
+		return (gray?1:0);
 	}
-	inline static int sGetIndex(bool to_grey, bool only_alpha)
+	
+	inline static int sGetIndex(bool gray, ePixel texture_fmt)
 	{
-		return (only_alpha?2:0) | (to_grey?1:0);
+		return (texture_fmt==ePixel::Grey?2:0) | (gray?1:0);
 	}
-
-	static ShaderColor::Shared sShaColorList[2];
-	static ShaderSampler::Shared sShaSamplerList[4];
-	static ShaderParticle::Shared sShaParticleList[4];
-
+	
+	static ShaderC::Shared s_shaders_color[2];
+	static ShaderT::Shared s_shaders_texture[4];
+	static ShaderP::Shared s_shaders_particle[4];
+	
 	ShaderPrograms * ShaderPrograms::Get()
 	{
 		static auto single = new ShaderPrograms;
@@ -238,54 +243,53 @@ namespace Zen { namespace GL {
 	
 	ShaderPrograms::ShaderPrograms()
 	{
-		VertexShader vs_color, vs_sampler, vs_particle;
-		vs_color.compile(sVertexSColor);
-		vs_sampler.compile(sVertexSSampler);
-		vs_particle.compile(sVertexSParticle);
-
-		FragmentShader fs_color[2];
-		fs_color[0].compile(sFragSColor);
-		fs_color[1].compile(sFragSColor_G);
-
-		FragmentShader fs_sampler[4];
-		fs_sampler[0].compile(sFragSamp);
-		fs_sampler[1].compile(sFragSamp_G);
-		fs_sampler[2].compile(sFragSamp_A);
-		fs_sampler[3].compile(sFragSamp_A_G);
-
-		FragmentShader fs_particle[4];
-		fs_particle[0].compile(sFragPar);
-		fs_particle[1].compile(sFragPar_G);
-		fs_particle[2].compile(sFragPar_A);
-		fs_particle[3].compile(sFragPar_A_G);
-
+		VShader vs_color, vs_sampler, vs_particle;
+		vs_color.compile(sVertexShaderC);
+		vs_sampler.compile(sVertexShaderT);
+		vs_particle.compile(sVertexShaderP);
+		
+		FShader fs_color[2];
+		fs_color[0].compile(sFragShaderC);
+		fs_color[1].compile(sFragShaderC_G);
+		
+		FShader fs_sampler[4];
+		fs_sampler[0].compile(sFragShaderT);
+		fs_sampler[1].compile(sFragShaderT_G);
+		fs_sampler[2].compile(sFragShaderT_A);
+		fs_sampler[3].compile(sFragShaderT_A_G);
+		
+		FShader fs_particle[4];
+		fs_particle[0].compile(sFragShaderP);
+		fs_particle[1].compile(sFragShaderP_G);
+		fs_particle[2].compile(sFragShaderP_A);
+		fs_particle[3].compile(sFragShaderP_A_G);
+		
 		for(int i = 0; i < 2; ++i)
 		{
-			sShaColorList[i] = ShaderColor::Create(vs_color, fs_color[i]);
+			s_shaders_color[i] = ShaderC::Create(vs_color, fs_color[i]);
 		}
 		for(int i = 0; i < 4; ++i)
 		{
-			sShaSamplerList[i] = ShaderSampler::Create(vs_sampler, fs_sampler[i]);
-			sShaParticleList[i] = ShaderParticle::Create(vs_particle, fs_particle[i]);
+			s_shaders_texture[i] = ShaderT::Create(vs_sampler, fs_sampler[i]);
+			s_shaders_particle[i] = ShaderP::Create(vs_particle, fs_particle[i]);
 		}
 	}
-
-	ShaderColor::Shared
-	ShaderPrograms::getShaderColor(bool to_grey)
+	
+	ShaderC::Shared
+	ShaderPrograms::getShaderC(bool gray)
 	{
-		return sShaColorList[sGetIndex(to_grey)];
-	}
-
-	ShaderSampler::Shared
-	ShaderPrograms::getShaderSampler(bool to_grey, bool only_alpha)
-	{
-		return sShaSamplerList[sGetIndex(to_grey, only_alpha)];
-	}
-
-	ShaderParticle::Shared
-	ShaderPrograms::getShaderParticle(bool to_grey, bool only_alpha)
-	{
-		return sShaParticleList[sGetIndex(to_grey, only_alpha)];
+		return s_shaders_color[sGetIndex(gray)];
 	}
 	
+	ShaderT::Shared
+	ShaderPrograms::getShaderT(bool gray, ePixel texture_fmt)
+	{
+		return s_shaders_texture[sGetIndex(gray, texture_fmt)];
+	}
+	
+	ShaderP::Shared
+	ShaderPrograms::getShaderP(bool gray, ePixel texture_fmt)
+	{
+		return s_shaders_particle[sGetIndex(gray, texture_fmt)];
+	}
 }}

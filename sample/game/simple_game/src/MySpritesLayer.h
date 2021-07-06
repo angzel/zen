@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "zen_vap2d.h"
+#include "zen_vap.h"
 #include "MySprite.h"
 
 using namespace Zen;
-using namespace Zen::Vap2d;
+using namespace Zen::Vap;
 
 class SpritesLayer : public Layer
 {
@@ -22,16 +22,16 @@ public:
 		}
 		float y = 0;
 		y += step;
-		add(xs[0], y, {0, 0}, {1, 1}, 0);
-		add(xs[1], y, {0, 1}, {1, 1}, 0);
-		add(xs[2], y, {1, 0}, {1, 1}, 0);
-		add(xs[3], y, {1, 1}, {1, 1}, 0);
+		add(xs[0], y, { 0, 0 }, { 1, 1 }, 0);
+		add(xs[1], y, { 0, 1 }, { 1, 1 }, 0);
+		add(xs[2], y, { 1, 0 }, { 1, 1 }, 0);
+		add(xs[3], y, { 1, 1 }, { 1, 1 }, 0);
 
 		y += step;
-		add(xs[0], y, {0.5, 0.5}, {1, 1}, 0);
-		add(xs[1], y, {0.5, 0.5}, {0.5, 1}, 0);
-		add(xs[2], y, {0.5, 0.5}, {1, 0.5}, 0);
-		add(xs[3], y, {0.5, 0.5}, {0.5, 0.5}, 0);
+		add(xs[0], y, { 0.5, 0.5}, { 1, 1 }, 0);
+		add(xs[1], y, { 0.5, 0.5}, { 0.5, 1 }, 0);
+		add(xs[2], y, { 0.5, 0.5}, { 1, 0.5}, 0);
+		add(xs[3], y, { 0.5, 0.5}, { 0.5, 0.5}, 0);
 
 
 		y += step;
@@ -42,9 +42,9 @@ public:
 
 		y += step;
 		// rect is {orign, size}
-		add_r(xs[0], y, { 0, 0, 1, 1});
-		add_r(xs[1], y, { 0, 1, 1, -1});
-		add_r(xs[2], y, { 1, 1, -1, -1});
+		add_r(xs[0], y, { 0, 0, 1, 1 });
+		add_r(xs[1], y, { 0, 1, 1, -1 });
+		add_r(xs[2], y, { 1, 1, -1, -1 });
 		add_r(xs[3], y, { 0, 0, 0.5, 0.5});
 	}
 	Sprite* add(float x, float y, Point2 a, Point2 s, float r)

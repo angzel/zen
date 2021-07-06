@@ -23,8 +23,13 @@ public class AppNative {
 	public static native void OnMotionCancel(int tid, float x, float y);
 	public static native void OnBack();
 
-	public static void SetFramesPerSecond(float fps)
+	public static void SetFramesPerSecond(final float fps)
 	{
-		Helper.resetFramesPerSecond((int)fps);
+		AppHelper.RunInUI(new Runnable() {
+			@Override
+			public void run() {
+				AppHelper.SetFPS(fps);
+			}
+		});
 	}
 }

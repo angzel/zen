@@ -12,12 +12,17 @@ namespace Zen {
 	{
 	public:
 
-		NSString* _DocumentPath(std::string const & path);
+		virtual NSString* DocumentPath(NSString*) = 0;
 
-		NSString * _ResourcePath(std::string const & path);
+		virtual NSString * ResourcePath(NSString*) = 0;
 
+		virtual NSString * toString(std::string const & s) = 0;
+		
+		virtual std::string toString(NSString * s) = 0;
 	public:
 		static UtilsIOS * Get();
+	protected:
+		UtilsIOS() = default;
 	};
 }
 

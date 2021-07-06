@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -26,7 +26,7 @@ inline bool operator == (Zen::Quaternion const & left, Zen::Quaternion const & r
 
 namespace Zen {
 
-#define QuaternionIdentity Quaternion{0, 0, 0, 1}
+#define QuaternionIdentity Quaternion{ 0, 0, 0, 1 }
 
 	/*
 	 x, y, and z represent the imaginary values.
@@ -90,7 +90,7 @@ namespace Zen {
 
 	inline Quaternion QuaternionMake(Vector3 vector, float scalar)
 	{
-		Quaternion q = { vector.v[0], vector.v[1], vector.v[2], scalar };
+		Quaternion q = { vector[0], vector[1], vector[2], scalar };
 		return q;
 	}
 
@@ -104,7 +104,7 @@ namespace Zen {
 
 	inline Quaternion QuaternionMakeWithAngleAndVector3Axis(float radians, Vector3 axisVector)
 	{
-		return QuaternionMakeWithAngleAndAxis(radians, axisVector.v[0], axisVector.v[1], axisVector.v[2]);
+		return QuaternionMakeWithAngleAndAxis(radians, axisVector[0], axisVector[1], axisVector[2]);
 	}
 
 	inline Quaternion QuaternionAdd(Quaternion quaternionLeft, Quaternion quaternionRight)
@@ -183,7 +183,7 @@ namespace Zen {
 
 	inline Vector3 QuaternionRotateVector3(Quaternion quaternion, Vector3 vector)
 	{
-		Quaternion rotatedQuaternion = QuaternionMake(vector.v[0], vector.v[1], vector.v[2], 0.0f);
+		Quaternion rotatedQuaternion = QuaternionMake(vector[0], vector[1], vector[2], 0.0f);
 		rotatedQuaternion = QuaternionMultiply(QuaternionMultiply(quaternion, rotatedQuaternion), QuaternionInvert(quaternion));
 
 		return Vector3Make(rotatedQuaternion.q[0], rotatedQuaternion.q[1], rotatedQuaternion.q[2]);
@@ -191,10 +191,10 @@ namespace Zen {
 
 	inline Vector4 QuaternionRotateVector4(Quaternion quaternion, Vector4 vector)
 	{
-		Quaternion rotatedQuaternion = QuaternionMake(vector.v[0], vector.v[1], vector.v[2], 0.0f);
+		Quaternion rotatedQuaternion = QuaternionMake(vector[0], vector[1], vector[2], 0.0f);
 		rotatedQuaternion = QuaternionMultiply(QuaternionMultiply(quaternion, rotatedQuaternion), QuaternionInvert(quaternion));
 
-		return Vector4Make(rotatedQuaternion.q[0], rotatedQuaternion.q[1], rotatedQuaternion.q[2], vector.v[3]);
+		return Vector4Make(rotatedQuaternion.q[0], rotatedQuaternion.q[1], rotatedQuaternion.q[2], vector[3]);
 	}
 }
 

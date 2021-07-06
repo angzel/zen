@@ -74,8 +74,7 @@ namespace Zen { namespace Metal {
 	void PipeID::create
 	(NSString * vertex_func_name,
 	 NSString * fragment_func_name,
-	 MTLBlendFactor src_factor,
-	 MTLBlendFactor dst_factor)
+	 MTLBlendFactor src, MTLBlendFactor dst)
 	{
 		auto device_id = Device::Get()->getID();
 
@@ -91,10 +90,37 @@ namespace Zen { namespace Metal {
 		auto ca = desc.colorAttachments[0];
 		ca.blendingEnabled = YES;
 		ca.pixelFormat = device_id->view.colorPixelFormat;
-		ca.sourceRGBBlendFactor = src_factor;
-		ca.destinationRGBBlendFactor = dst_factor;
-		ca.sourceAlphaBlendFactor = src_factor;
-		ca.destinationAlphaBlendFactor = dst_factor;
+		ca.sourceRGBBlendFactor = src;
+		ca.destinationRGBBlendFactor = dst;
+		ca.sourceAlphaBlendFactor = src;
+		ca.destinationAlphaBlendFactor = dst;
+
+		state = [device_id->device newRenderPipelineStateWithDescriptor:desc error:nil];
+	}
+	void PipeID::create
+	(NSString * vertex_func_name,
+	 NSString * fragment_func_name,
+	 MTLBlendFactor srcC, MTLBlendFactor dstC,
+	 MTLBlendFactor srcA, MTLBlendFactor dstA)
+	{
+		auto device_id = Device::Get()->getID();
+
+		id <MTLFunction> vertexFunction = [device_id->library newFunctionWithName:vertex_func_name];
+
+		id <MTLFunction> fragmentFunction = [device_id->library newFunctionWithName:fragment_func_name];
+
+		MTLRenderPipelineDescriptor *desc = [[MTLRenderPipelineDescriptor alloc] init];
+		desc.vertexFunction = vertexFunction;
+		desc.fragmentFunction = fragmentFunction;
+		desc.depthAttachmentPixelFormat = device_id->view.depthStencilPixelFormat;
+		desc.stencilAttachmentPixelFormat = device_id->view.depthStencilPixelFormat;
+		auto ca = desc.colorAttachments[0];
+		ca.blendingEnabled = YES;
+		ca.pixelFormat = device_id->view.colorPixelFormat;
+		ca.sourceRGBBlendFactor = srcC;
+		ca.destinationRGBBlendFactor = dstC;
+		ca.sourceAlphaBlendFactor = srcA;
+		ca.destinationAlphaBlendFactor = dstA;
 
 		state = [device_id->device newRenderPipelineStateWithDescriptor:desc error:nil];
 	}
@@ -105,22 +131,38 @@ namespace Zen { namespace Metal {
 
 	void PipeID::create(std::string const & vertex_func,
 						std::string const & fragment_func,
-						eBlendFactor src_factor,
-						eBlendFactor dst_factor )
+						eBF srcC, eBF dstC, eBF srcA, eBF dstA)
 	{
-		if(src_factor == eBlendFactor::None || dst_factor == eBlendFactor::None)
+		if(srcC == eBF::None || dstC == eBF::None)
 		{
-			return
-			this->create
-			([NSString stringWithUTF8String:vertex_func.data()],
-			 [NSString stringWithUTF8String:fragment_func.data()]);
+			return this->create(vertex_func, fragment_func);
 		}
 		else
 		{
 			this->create
 			([NSString stringWithUTF8String:vertex_func.data()],
 			 [NSString stringWithUTF8String:fragment_func.data()],
-			 (MTLBlendFactor)src_factor, (MTLBlendFactor)dst_factor
+			 (MTLBlendFactor)srcC, (MTLBlendFactor)dstC,
+			 (MTLBlendFactor)(srcA==eBF::None ? srcC : srcA),
+			 (MTLBlendFactor)(dstA==eBF::None ? dstC : dstA)
+			 );
+		}
+	}
+	
+	void PipeID::create(std::string const & vertex_func,
+						std::string const & fragment_func,
+						eBF src, eBF dst)
+	{
+		if(src == eBF::None || dst == eBF::None)
+		{
+			return this->create(vertex_func, fragment_func);
+		}
+		else
+		{
+			this->create
+			([NSString stringWithUTF8String:vertex_func.data()],
+			 [NSString stringWithUTF8String:fragment_func.data()],
+			 (MTLBlendFactor)src, (MTLBlendFactor)dst
 			 );
 		}
 	}

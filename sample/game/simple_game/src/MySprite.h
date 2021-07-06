@@ -2,14 +2,14 @@
 
 #include <iostream>
 #include <vector>
-#include "zen_vap2d_config.h"
-#include "zen_vap2d.h"
+#include "zen_vap_render.h"
+#include "zen_vap.h"
 #include "zen_image_raw.h"
 #include "zen_utils.h"
 #include "zen_log.h"
 #include "zen_ticker.h"
 
-class MySprite : public Zen::Vap2d::Sprite {
+class MySprite : public Zen::Vap::Sprite {
 public:
 	virtual Node * onTouchDown(Zen::AppTouch const & touch) override
 	{

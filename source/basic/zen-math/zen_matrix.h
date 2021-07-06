@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -10,40 +10,60 @@
 #include <memory>
 
 namespace Zen {
-	union Matrix2 {
-		float m[4];
+	struct Matrix2 {
 		float c[2][2];
+		
+		float & operator[](size_t i) {
+			return c[0][i];
+		}
+		float const & operator[](size_t i) const {
+			return c[0][i];
+		}
 	};
-	union Matrix3 {
-		float m[9];
+	
+	struct Matrix3 {
 		float c[3][3];
+		
+		float & operator[](size_t i) {
+			return c[0][i];
+		}
+		float const & operator[](size_t i) const {
+			return c[0][i];
+		}
 	};
-	union Matrix4 {
-		float m[16];
+	
+	struct Matrix4 {
 		float c[4][4];
+		
+		float & operator[](size_t i) {
+			return c[0][i];
+		}
+		float const & operator[](size_t i) const {
+			return c[0][i];
+		}
 	};
 }
 
-inline Zen::Matrix3 operator+(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight);
-inline Zen::Matrix3 operator-(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight);
-inline Zen::Matrix3 operator*(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight);
-inline Zen::Matrix3 operator/(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight);
-inline Zen::Matrix4 operator+(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight);
-inline Zen::Matrix4 operator-(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight);
-inline Zen::Matrix4 operator*(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight);
-inline Zen::Matrix4 operator/(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight);
+inline Zen::Matrix3 operator+(Zen::Matrix3 mL, Zen::Matrix3 mR);
+inline Zen::Matrix3 operator-(Zen::Matrix3 mL, Zen::Matrix3 mR);
+inline Zen::Matrix3 operator*(Zen::Matrix3 mL, Zen::Matrix3 mR);
+inline Zen::Matrix3 operator/(Zen::Matrix3 mL, Zen::Matrix3 mR);
+inline Zen::Matrix4 operator+(Zen::Matrix4 mL, Zen::Matrix4 mR);
+inline Zen::Matrix4 operator-(Zen::Matrix4 mL, Zen::Matrix4 mR);
+inline Zen::Matrix4 operator*(Zen::Matrix4 mL, Zen::Matrix4 mR);
+inline Zen::Matrix4 operator/(Zen::Matrix4 mL, Zen::Matrix4 mR);
 
 namespace Zen {
 	inline Matrix3 Matrix3Make(float m00, float m01, float m02,
 							   float m10, float m11, float m12,
 							   float m20, float m21, float m22);
-
+	
 	inline Matrix3 Matrix3MakeIdentity(float v = 1);
-
+	
 	inline Matrix3 Matrix3MakeAndTranspose(float m00, float m01, float m02,
 										   float m10, float m11, float m12,
 										   float m20, float m21, float m22);
-
+	
 	inline Matrix3 Matrix3MakeWithRows(Vector3 row0,
 									   Vector3 row1,
 									   Vector3 row2);
@@ -52,7 +72,7 @@ namespace Zen {
 										  Vector3 column1,
 										  Vector3 column2);
 	
-	inline Matrix3 Matrix3MakeWithQuaternion(Quaternion quaternion);
+	inline Matrix3 Matrix3MakeWithQuaternion(Quaternion qua);
 	
 	inline Matrix3 Matrix3MakeScale(float sx, float sy, float sz);
 	inline Matrix3 Matrix3MakeRotation(float radians, float x, float y, float z);
@@ -73,8 +93,8 @@ namespace Zen {
 	inline Matrix3 Matrix3SetColumn(Matrix3 matrix, int column, Vector3 vector);
 	
 	inline Matrix3 Matrix3Transpose(Matrix3 matrix);
-
-	inline Matrix3 Matrix3Multiply(Matrix3 matrixLeft, Matrix3 matrixRight);
+	
+	inline Matrix3 Matrix3Multiply(Matrix3 mL, Matrix3 mR);
 	
 	inline Matrix3 Matrix3Scale(Matrix3 matrix, float sx, float sy, float sz);
 	inline Matrix3 Matrix3Scale(Matrix3 matrix, Vector3 scaleVector);
@@ -94,8 +114,8 @@ namespace Zen {
 	inline Matrix3 Matrix3RotateY(Matrix3 matrix, float radians);
 	inline Matrix3 Matrix3RotateZ(Matrix3 matrix, float radians);
 	
-	inline Vector3 Matrix3Multiply(Matrix3 matrixLeft, Vector3 vectorRight);
-
+	inline Vector3 Matrix3Multiply(Matrix3 mL, Vector3 vR);
+	
 	/*
 	 m30, m31, and m32 correspond to the translation values tx, ty, tz, respectively.
 	 */
@@ -103,8 +123,8 @@ namespace Zen {
 							   float m10, float m11, float m12, float m13,
 							   float m20, float m21, float m22, float m23,
 							   float m30, float m31, float m32, float m33);
-
-
+	
+	
 	inline Matrix4 Matrix4MakeIdentity(float v = 1);
 	/*
 	 m03, m13, and m23 correspond to the translation values tx, ty, tz, respectively.
@@ -113,7 +133,7 @@ namespace Zen {
 										   float m10, float m11, float m12, float m13,
 										   float m20, float m21, float m22, float m23,
 										   float m30, float m31, float m32, float m33);
-
+	
 	/*
 	 row0, row1, and row2's last component should correspond to the translation values tx, ty, and tz, respectively.
 	 */
@@ -121,7 +141,7 @@ namespace Zen {
 									   Vector4 row1,
 									   Vector4 row2,
 									   Vector4 row3);
-
+	
 	/*
 	 column3's first three components should correspond to the translation values tx, ty, and tz.
 	 */
@@ -129,46 +149,46 @@ namespace Zen {
 										  Vector4 column1,
 										  Vector4 column2,
 										  Vector4 column3);
-
+	
 	/*
-	 The quaternion will be normalized before conversion.
+	 The qua will be normalized before conversion.
 	 */
-	inline Matrix4 Matrix4MakeWithQuaternion(Quaternion quaternion);
-
+	inline Matrix4 Matrix4MakeWithQuaternion(Quaternion qua);
+	
 	inline Matrix4 Matrix4MakeTranslation(float tx, float ty, float tz);
 	inline Matrix4 Matrix4MakeScale(float sx, float sy, float sz);
 	inline Matrix4 Matrix4MakeRotation(float radians, float x, float y, float z);
-
+	
 	inline Matrix4 Matrix4MakeXRotation(float radians);
 	inline Matrix4 Matrix4MakeYRotation(float radians);
 	inline Matrix4 Matrix4MakeZRotation(float radians);
-
+	
 	/*
 	 Equivalent to gluPerspective.
 	 */
 	inline Matrix4 Matrix4MakePerspective(float fovyRadians, float aspect, float nearZ, float farZ);
-
+	
 	/*
 	 Equivalent to glFrustum.
 	 */
 	inline Matrix4 Matrix4MakeFrustum(float left, float right,
 									  float bottom, float top,
 									  float nearZ, float farZ);
-
+	
 	/*
 	 Equivalent to glOrtho.
 	 */
 	inline Matrix4 Matrix4MakeOrtho(float left, float right,
 									float bottom, float top,
 									float nearZ, float farZ);
-
+	
 	/*
 	 Equivalent to gluLookAt.
 	 */
 	inline Matrix4 Matrix4MakeLookAt(float eyeX, float eyeY, float eyeZ,
 									 float centerX, float centerY, float centerZ,
 									 float upX, float upY, float upZ);
-
+	
 	/*
 	 Returns the upper left 3x3 portion of the 4x4 matrix.
 	 */
@@ -177,7 +197,7 @@ namespace Zen {
 	 Returns the upper left 2x2 portion of the 4x4 matrix.
 	 */
 	inline Matrix2 Matrix4GetMatrix2(Matrix4 matrix);
-
+	
 	/*
 	 Matrix4GetRow returns vectors for rows 0, 1, and 2 whose last component will be the translation value tx, ty, and tz, respectively.
 	 Valid row values range from 0 to 3, inclusive.
@@ -188,7 +208,7 @@ namespace Zen {
 	 Valid column values range from 0 to 3, inclusive.
 	 */
 	inline Vector4 Matrix4GetColumn(Matrix4 matrix, int column);
-
+	
 	/*
 	 Matrix4SetRow expects that the vector for row 0, 1, and 2 will have a translation value as its last component.
 	 Valid row values range from 0 to 3, inclusive.
@@ -199,52 +219,52 @@ namespace Zen {
 	 Valid column values range from 0 to 3, inclusive.
 	 */
 	inline Matrix4 Matrix4SetColumn(Matrix4 matrix, int column, Vector4 vector);
-
+	
 	inline Matrix4 Matrix4Transpose(Matrix4 matrix);
-
-	inline Matrix4 Matrix4Multiply(Matrix4 matrixLeft, Matrix4 matrixRight);
-
-	inline Matrix4 Matrix4Add(Matrix4 matrixLeft, Matrix4 matrixRight);
-	inline Matrix4 Matrix4Subtract(Matrix4 matrixLeft, Matrix4 matrixRight);
-
+	
+	inline Matrix4 Matrix4Multiply(Matrix4 mL, Matrix4 mR);
+	
+	inline Matrix4 Matrix4Add(Matrix4 mL, Matrix4 mR);
+	inline Matrix4 Matrix4Subtract(Matrix4 mL, Matrix4 mR);
+	
 	inline Matrix4 Matrix4Translate(Matrix4 matrix, float tx, float ty, float tz);
 	inline Matrix4 Matrix4TranslateWithVector3(Matrix4 matrix, Vector3 translationVector);
 	/*
 	 The last component of the Vector4, translationVector, is ignored.
 	 */
 	inline Matrix4 Matrix4TranslateWithVector4(Matrix4 matrix, Vector4 translationVector);
-
+	
 	inline Matrix4 Matrix4Scale(Matrix4 matrix, float sx, float sy, float sz);
 	inline Matrix4 Matrix4ScaleWithVector3(Matrix4 matrix, Vector3 scaleVector);
 	/*
 	 The last component of the Vector4, scaleVector, is ignored.
 	 */
 	inline Matrix4 Matrix4ScaleWithVector4(Matrix4 matrix, Vector4 scaleVector);
-
+	
 	inline Matrix4 Matrix4Rotate(Matrix4 matrix, float radians, float x, float y, float z);
 	inline Matrix4 Matrix4RotateWithVector3(Matrix4 matrix, float radians, Vector3 axisVector);
 	/*
 	 The last component of the Vector4, axisVector, is ignored.
 	 */
 	inline Matrix4 Matrix4RotateWithVector4(Matrix4 matrix, float radians, Vector4 axisVector);
-
+	
 	inline Matrix4 Matrix4RotateX(Matrix4 matrix, float radians);
 	inline Matrix4 Matrix4RotateY(Matrix4 matrix, float radians);
 	inline Matrix4 Matrix4RotateZ(Matrix4 matrix, float radians);
-
+	
 	/*
 	 Assumes 0 in the w component.
 	 */
-	inline Vector3 Matrix4MultiplyVector3(Matrix4 matrixLeft, Vector3 vectorRight);
+	inline Vector3 Matrix4MultiplyVector3(Matrix4 mL, Vector3 vR);
 	/*
 	 Assumes 1 in the w component.
 	 */
-	inline Vector3 Matrix4MultiplyVector3WithTranslation(Matrix4 matrixLeft, Vector3 vectorRight);
+	inline Vector3 Matrix4MultiplyVector3WithTranslation(Matrix4 mL, Vector3 vR);
 	/*
 	 Assumes 1 in the w component and divides the resulting vector by w before returning.
 	 */
-	inline Vector3 Matrix4MultiplyAndProjectVector3(Matrix4 matrixLeft, Vector3 vectorRight);
-
+	inline Vector3 Matrix4MultiplyAndProjectVector3(Matrix4 mL, Vector3 vR);
+	
 	/*
 	 Assumes 0 in the w component.
 	 */
@@ -257,10 +277,10 @@ namespace Zen {
 	 Assumes 1 in the w component and divides the resulting vector by w before returning.
 	 */
 	inline void Matrix4MultiplyAndProjectVector3Array(Matrix4 matrix, Vector3 * vectors, size_t vectorCount);
-
-	inline Vector4 Matrix4MultiplyVector4(Matrix4 matrixLeft, Vector4 vectorRight);
-
-
+	
+	inline Vector4 Matrix4MultiplyVector4(Matrix4 mL, Vector4 vR);
+	
+	
 	inline Matrix3 Matrix3Make(float m00, float m01, float m02,
 							   float m10, float m11, float m12,
 							   float m20, float m21, float m22)
@@ -270,7 +290,7 @@ namespace Zen {
 			m20, m21, m22 };
 		return m;
 	}
-
+	
 	inline Matrix3 Matrix3MakeIdentity(float v)
 	{
 		return Matrix3{v, 0, 0, 0, v, 0, 0, 0, v};
@@ -290,9 +310,9 @@ namespace Zen {
 									   Vector3 row1,
 									   Vector3 row2)
 	{
-		Matrix3 m = { row0.v[0], row1.v[0], row2.v[0],
-			row0.v[1], row1.v[1], row2.v[1],
-			row0.v[2], row1.v[2], row2.v[2] };
+		Matrix3 m = { row0[0], row1[0], row2[0],
+			row0[1], row1[1], row2[1],
+			row0[2], row1[2], row2[2] };
 		return m;
 	}
 	
@@ -300,19 +320,19 @@ namespace Zen {
 										  Vector3 column1,
 										  Vector3 column2)
 	{
-		Matrix3 m = { column0.v[0], column0.v[1], column0.v[2],
-			column1.v[0], column1.v[1], column1.v[2],
-			column2.v[0], column2.v[1], column2.v[2] };
+		Matrix3 m = { column0[0], column0[1], column0[2],
+			column1[0], column1[1], column1[2],
+			column2[0], column2[1], column2[2] };
 		return m;
 	}
-	inline Matrix3 Matrix3MakeWithQuaternion(Quaternion quaternion)
+	inline Matrix3 Matrix3MakeWithQuaternion(Quaternion qua)
 	{
-		quaternion = QuaternionNormalize(quaternion);
+		qua = QuaternionNormalize(qua);
 		
-		float x = quaternion.q[0];
-		float y = quaternion.q[1];
-		float z = quaternion.q[2];
-		float w = quaternion.q[3];
+		float x = qua.q[0];
+		float y = qua.q[1];
+		float z = qua.q[2];
+		float w = qua.q[3];
 		
 		float _2x = x + x;
 		float _2y = y + y;
@@ -337,9 +357,9 @@ namespace Zen {
 	inline Matrix3 Matrix3MakeScale(float sx, float sy, float sz)
 	{
 		Matrix3 m = Matrix3MakeIdentity();
-		m.m[0] = sx;
-		m.m[4] = sy;
-		m.m[8] = sz;
+		m[0] = sx;
+		m[4] = sy;
+		m[8] = sz;
 		return m;
 	}
 	
@@ -350,17 +370,17 @@ namespace Zen {
 		float cosp = 1.0f - cos;
 		float sin = sinf(radians);
 		
-		Matrix3 m = { cos + cosp * v.v[0] * v.v[0],
-			cosp * v.v[0] * v.v[1] + v.v[2] * sin,
-			cosp * v.v[0] * v.v[2] - v.v[1] * sin,
+		Matrix3 m = { cos + cosp * v[0] * v[0],
+			cosp * v[0] * v[1] + v[2] * sin,
+			cosp * v[0] * v[2] - v[1] * sin,
 			
-			cosp * v.v[0] * v.v[1] - v.v[2] * sin,
-			cos + cosp * v.v[1] * v.v[1],
-			cosp * v.v[1] * v.v[2] + v.v[0] * sin,
+			cosp * v[0] * v[1] - v[2] * sin,
+			cos + cosp * v[1] * v[1],
+			cosp * v[1] * v[2] + v[0] * sin,
 			
-			cosp * v.v[0] * v.v[2] + v.v[1] * sin,
-			cosp * v.v[1] * v.v[2] - v.v[0] * sin,
-			cos + cosp * v.v[2] * v.v[2] };
+			cosp * v[0] * v[2] + v[1] * sin,
+			cosp * v[1] * v[2] - v[0] * sin,
+			cos + cosp * v[2] * v[2] };
 		
 		return m;
 	}
@@ -403,89 +423,89 @@ namespace Zen {
 	
 	inline Matrix2 Matrix3GetMatrix2(Matrix3 matrix)
 	{
-		Matrix2 m = { matrix.m[0], matrix.m[1],
-			matrix.m[3], matrix.m[4] };
+		Matrix2 m = { matrix[0], matrix[1],
+			matrix[3], matrix[4] };
 		return m;
 	}
 	
 	inline Vector3 Matrix3GetRow(Matrix3 matrix, int row)
 	{
-		Vector3 v = { matrix.m[row], matrix.m[3 + row], matrix.m[6 + row] };
+		Vector3 v = { matrix[row], matrix[3 + row], matrix[6 + row] };
 		return v;
 	}
 	
 	inline Vector3 Matrix3GetColumn(Matrix3 matrix, int column)
 	{
-		Vector3 v = { matrix.m[column * 3 + 0], matrix.m[column * 3 + 1], matrix.m[column * 3 + 2] };
+		Vector3 v = { matrix[column * 3 + 0], matrix[column * 3 + 1], matrix[column * 3 + 2] };
 		return v;
 	}
 	
 	inline Matrix3 Matrix3SetRow(Matrix3 matrix, int row, Vector3 vector)
 	{
-		matrix.m[row] = vector.v[0];
-		matrix.m[row + 3] = vector.v[1];
-		matrix.m[row + 6] = vector.v[2];
+		matrix[row] = vector[0];
+		matrix[row + 3] = vector[1];
+		matrix[row + 6] = vector[2];
 		
 		return matrix;
 	}
 	
 	inline Matrix3 Matrix3SetColumn(Matrix3 matrix, int column, Vector3 vector)
 	{
-		matrix.m[column * 3 + 0] = vector.v[0];
-		matrix.m[column * 3 + 1] = vector.v[1];
-		matrix.m[column * 3 + 2] = vector.v[2];
+		matrix[column * 3 + 0] = vector[0];
+		matrix[column * 3 + 1] = vector[1];
+		matrix[column * 3 + 2] = vector[2];
 		
 		return matrix;
 	}
 	
 	inline Matrix3 Matrix3Transpose(Matrix3 matrix)
 	{
-		Matrix3 m = { matrix.m[0], matrix.m[3], matrix.m[6],
-			matrix.m[1], matrix.m[4], matrix.m[7],
-			matrix.m[2], matrix.m[5], matrix.m[8] };
+		Matrix3 m = { matrix[0], matrix[3], matrix[6],
+			matrix[1], matrix[4], matrix[7],
+			matrix[2], matrix[5], matrix[8] };
 		return m;
 	}
 	
-	inline Matrix3 Matrix3Multiply(Matrix3 matrixLeft, Matrix3 matrixRight)
+	inline Matrix3 Matrix3Multiply(Matrix3 mL, Matrix3 mR)
 	{
 		Matrix3 m;
 		
-		m.m[0] = matrixLeft.m[0] * matrixRight.m[0] + matrixLeft.m[3] * matrixRight.m[1] + matrixLeft.m[6] * matrixRight.m[2];
-		m.m[3] = matrixLeft.m[0] * matrixRight.m[3] + matrixLeft.m[3] * matrixRight.m[4] + matrixLeft.m[6] * matrixRight.m[5];
-		m.m[6] = matrixLeft.m[0] * matrixRight.m[6] + matrixLeft.m[3] * matrixRight.m[7] + matrixLeft.m[6] * matrixRight.m[8];
+		m[0] = mL[0] * mR[0] + mL[3] * mR[1] + mL[6] * mR[2];
+		m[3] = mL[0] * mR[3] + mL[3] * mR[4] + mL[6] * mR[5];
+		m[6] = mL[0] * mR[6] + mL[3] * mR[7] + mL[6] * mR[8];
 		
-		m.m[1] = matrixLeft.m[1] * matrixRight.m[0] + matrixLeft.m[4] * matrixRight.m[1] + matrixLeft.m[7] * matrixRight.m[2];
-		m.m[4] = matrixLeft.m[1] * matrixRight.m[3] + matrixLeft.m[4] * matrixRight.m[4] + matrixLeft.m[7] * matrixRight.m[5];
-		m.m[7] = matrixLeft.m[1] * matrixRight.m[6] + matrixLeft.m[4] * matrixRight.m[7] + matrixLeft.m[7] * matrixRight.m[8];
+		m[1] = mL[1] * mR[0] + mL[4] * mR[1] + mL[7] * mR[2];
+		m[4] = mL[1] * mR[3] + mL[4] * mR[4] + mL[7] * mR[5];
+		m[7] = mL[1] * mR[6] + mL[4] * mR[7] + mL[7] * mR[8];
 		
-		m.m[2] = matrixLeft.m[2] * matrixRight.m[0] + matrixLeft.m[5] * matrixRight.m[1] + matrixLeft.m[8] * matrixRight.m[2];
-		m.m[5] = matrixLeft.m[2] * matrixRight.m[3] + matrixLeft.m[5] * matrixRight.m[4] + matrixLeft.m[8] * matrixRight.m[5];
-		m.m[8] = matrixLeft.m[2] * matrixRight.m[6] + matrixLeft.m[5] * matrixRight.m[7] + matrixLeft.m[8] * matrixRight.m[8];
+		m[2] = mL[2] * mR[0] + mL[5] * mR[1] + mL[8] * mR[2];
+		m[5] = mL[2] * mR[3] + mL[5] * mR[4] + mL[8] * mR[5];
+		m[8] = mL[2] * mR[6] + mL[5] * mR[7] + mL[8] * mR[8];
 		
 		return m;
 	}
 	
 	inline Matrix3 Matrix3Scale(Matrix3 matrix, float sx, float sy, float sz)
 	{
-		Matrix3 m = { matrix.m[0] * sx, matrix.m[1] * sx, matrix.m[2] * sx,
-			matrix.m[3] * sy, matrix.m[4] * sy, matrix.m[5] * sy,
-			matrix.m[6] * sz, matrix.m[7] * sz, matrix.m[8] * sz };
+		Matrix3 m = { matrix[0] * sx, matrix[1] * sx, matrix[2] * sx,
+			matrix[3] * sy, matrix[4] * sy, matrix[5] * sy,
+			matrix[6] * sz, matrix[7] * sz, matrix[8] * sz };
 		return m;
 	}
 	
 	inline Matrix3 Matrix3Scale(Matrix3 matrix, Vector3 scaleVector)
 	{
-		Matrix3 m = { matrix.m[0] * scaleVector.v[0], matrix.m[1] * scaleVector.v[0], matrix.m[2] * scaleVector.v[0],
-			matrix.m[3] * scaleVector.v[1], matrix.m[4] * scaleVector.v[1], matrix.m[5] * scaleVector.v[1],
-			matrix.m[6] * scaleVector.v[2], matrix.m[7] * scaleVector.v[2], matrix.m[8] * scaleVector.v[2] };
+		Matrix3 m = { matrix[0] * scaleVector[0], matrix[1] * scaleVector[0], matrix[2] * scaleVector[0],
+			matrix[3] * scaleVector[1], matrix[4] * scaleVector[1], matrix[5] * scaleVector[1],
+			matrix[6] * scaleVector[2], matrix[7] * scaleVector[2], matrix[8] * scaleVector[2] };
 		return m;
 	}
 	
 	inline Matrix3 Matrix3Scale(Matrix3 matrix, Vector4 scaleVector)
 	{
-		Matrix3 m = { matrix.m[0] * scaleVector.v[0], matrix.m[1] * scaleVector.v[0], matrix.m[2] * scaleVector.v[0],
-			matrix.m[3] * scaleVector.v[1], matrix.m[4] * scaleVector.v[1], matrix.m[5] * scaleVector.v[1],
-			matrix.m[6] * scaleVector.v[2], matrix.m[7] * scaleVector.v[2], matrix.m[8] * scaleVector.v[2] };
+		Matrix3 m = { matrix[0] * scaleVector[0], matrix[1] * scaleVector[0], matrix[2] * scaleVector[0],
+			matrix[3] * scaleVector[1], matrix[4] * scaleVector[1], matrix[5] * scaleVector[1],
+			matrix[6] * scaleVector[2], matrix[7] * scaleVector[2], matrix[8] * scaleVector[2] };
 		return m;
 	}
 	
@@ -497,13 +517,13 @@ namespace Zen {
 	
 	inline Matrix3 Matrix3Rotate(Matrix3 matrix, float radians, Vector3 axisVector)
 	{
-		Matrix3 rm = Matrix3MakeRotation(radians, axisVector.v[0], axisVector.v[1], axisVector.v[2]);
+		Matrix3 rm = Matrix3MakeRotation(radians, axisVector[0], axisVector[1], axisVector[2]);
 		return Matrix3Multiply(matrix, rm);
 	}
 	
 	inline Matrix3 Matrix3Rotate(Matrix3 matrix, float radians, Vector4 axisVector)
 	{
-		Matrix3 rm = Matrix3MakeRotation(radians, axisVector.v[0], axisVector.v[1], axisVector.v[2]);
+		Matrix3 rm = Matrix3MakeRotation(radians, axisVector[0], axisVector[1], axisVector[2]);
 		return Matrix3Multiply(matrix, rm);
 	}
 	
@@ -525,16 +545,16 @@ namespace Zen {
 		return Matrix3Multiply(matrix, rm);
 	}
 	
-	inline Vector3 Matrix3Multiply(Matrix3 matrixLeft, Vector3 vectorRight)
+	inline Vector3 Matrix3Multiply(Matrix3 mL, Vector3 vR)
 	{
-		Vector3 v = { matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[3] * vectorRight.v[1] + matrixLeft.m[6] * vectorRight.v[2],
-			matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[4] * vectorRight.v[1] + matrixLeft.m[7] * vectorRight.v[2],
-			matrixLeft.m[2] * vectorRight.v[0] + matrixLeft.m[5] * vectorRight.v[1] + matrixLeft.m[8] * vectorRight.v[2] };
+		Vector3 v = { mL[0] * vR[0] + mL[3] * vR[1] + mL[6] * vR[2],
+			mL[1] * vR[0] + mL[4] * vR[1] + mL[7] * vR[2],
+			mL[2] * vR[0] + mL[5] * vR[1] + mL[8] * vR[2] };
 		return v;
 	}
-
-	#pragma mark Implementations
-
+	
+#pragma mark Implementations
+	
 	inline Matrix4 Matrix4Make(float m00, float m01, float m02, float m03,
 							   float m10, float m11, float m12, float m13,
 							   float m20, float m21, float m22, float m23,
@@ -546,12 +566,12 @@ namespace Zen {
 			m30, m31, m32, m33 };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeIdentity(float v)
 	{
-		return Matrix4{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+		return Matrix4{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	}
-
+	
 	inline Matrix4 Matrix4MakeAndTranspose(float m00, float m01, float m02, float m03,
 										   float m10, float m11, float m12, float m13,
 										   float m20, float m21, float m22, float m23,
@@ -563,45 +583,45 @@ namespace Zen {
 			m03, m13, m23, m33 };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeWithRows(Vector4 row0,
 									   Vector4 row1,
 									   Vector4 row2,
 									   Vector4 row3)
 	{
-		Matrix4 m = { row0.v[0], row1.v[0], row2.v[0], row3.v[0],
-			row0.v[1], row1.v[1], row2.v[1], row3.v[1],
-			row0.v[2], row1.v[2], row2.v[2], row3.v[2],
-			row0.v[3], row1.v[3], row2.v[3], row3.v[3] };
+		Matrix4 m = { row0[0], row1[0], row2[0], row3[0],
+			row0[1], row1[1], row2[1], row3[1],
+			row0[2], row1[2], row2[2], row3[2],
+			row0[3], row1[3], row2[3], row3[3] };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeWithColumns(Vector4 column0,
 										  Vector4 column1,
 										  Vector4 column2,
 										  Vector4 column3)
 	{
-		Matrix4 m = { column0.v[0], column0.v[1], column0.v[2], column0.v[3],
-			column1.v[0], column1.v[1], column1.v[2], column1.v[3],
-			column2.v[0], column2.v[1], column2.v[2], column2.v[3],
-			column3.v[0], column3.v[1], column3.v[2], column3.v[3] };
+		Matrix4 m = { column0[0], column0[1], column0[2], column0[3],
+			column1[0], column1[1], column1[2], column1[3],
+			column2[0], column2[1], column2[2], column2[3],
+			column3[0], column3[1], column3[2], column3[3] };
 		return m;
 	}
-
-	inline Matrix4 Matrix4MakeWithQuaternion(Quaternion quaternion)
+	
+	inline Matrix4 Matrix4MakeWithQuaternion(Quaternion qua)
 	{
-		quaternion = QuaternionNormalize(quaternion);
-
-		float x = quaternion.q[0];
-		float y = quaternion.q[1];
-		float z = quaternion.q[2];
-		float w = quaternion.q[3];
-
+		qua = QuaternionNormalize(qua);
+		
+		float x = qua.q[0];
+		float y = qua.q[1];
+		float z = qua.q[2];
+		float w = qua.q[3];
+		
 		float _2x = x + x;
 		float _2y = y + y;
 		float _2z = z + z;
 		float _2w = w + w;
-
+		
 		Matrix4 m = { 1.0f - _2y * y - _2z * z,
 			_2x * y + _2w * z,
 			_2x * z - _2w * y,
@@ -618,110 +638,116 @@ namespace Zen {
 			0.0f,
 			0.0f,
 			1.0f };
-
+		
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeTranslation(float tx, float ty, float tz)
 	{
 		Matrix4 m = {
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		tx, ty, tz, 1,
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			tx, ty, tz, 1,
 		};
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeScale(float sx, float sy, float sz)
 	{
 		Matrix4 m = {
-		sx, 0, 0, 0,
-		0, sy, 0, 0,
-		0, 0, sz, 0,
-		0, 0, 0, 1,
+			sx, 0, 0, 0,
+			0, sy, 0, 0,
+			0, 0, sz, 0,
+			0, 0, 0, 1,
 		};
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeRotation(float radians, float x, float y, float z)
 	{
-		Vector3 v = Vector3Normalize(Vector3Make(x, y, z));
-		float cos = cosf(radians);
-		float cosp = 1.0f - cos;
-		float sin = sinf(radians);
-
-		Matrix4 m = { cos + cosp * v.v[0] * v.v[0],
-			cosp * v.v[0] * v.v[1] + v.v[2] * sin,
-			cosp * v.v[0] * v.v[2] - v.v[1] * sin,
-			0.0f,
-			cosp * v.v[0] * v.v[1] - v.v[2] * sin,
-			cos + cosp * v.v[1] * v.v[1],
-			cosp * v.v[1] * v.v[2] + v.v[0] * sin,
-			0.0f,
-			cosp * v.v[0] * v.v[2] + v.v[1] * sin,
-			cosp * v.v[1] * v.v[2] - v.v[0] * sin,
-			cos + cosp * v.v[2] * v.v[2],
-			0.0f,
-			0.0f,
-			0.0f,
-			0.0f,
-			1.0f };
-
-		return m;
+		//		Vector3 v = Vector3Normalize(axis);
+		//		float cos = cosf(radians);
+		//		float cosp = 1.0f - cos;
+		//		float sin = sinf(radians);
+		
+		Vector3 axis = Vector3Normalize(Vector3{x, y, z});
+		float ct = cosf(radians);
+		float st = sinf(radians);
+		float ci = 1 - ct;
+		x = axis.x; y = axis.y; z = axis.z;
+		
+		return Matrix4{
+			ct + x * x * ci, y * x * ci + z * st, z * x * ci - y * st, 0,
+			x * y * ci - z * st, ct + y * y * ci, z * y * ci + x * st, 0,
+			x * z * ci + y * st, y * z * ci - x * st, ct + z * z * ci, 0,
+			0, 0, 0, 1,
+		};
 	}
-
+	
 	inline Matrix4 Matrix4MakeXRotation(float radians)
 	{
 		float cos = cosf(radians);
 		float sin = sinf(radians);
-
+		
 		Matrix4 m = { 1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, cos, sin, 0.0f,
 			0.0f, -sin, cos, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f };
-
+		
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeYRotation(float radians)
 	{
 		float cos = cosf(radians);
 		float sin = sinf(radians);
-
+		
 		Matrix4 m = { cos, 0.0f, -sin, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			sin, 0.0f, cos, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f };
-
+		
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeZRotation(float radians)
 	{
 		float cos = cosf(radians);
 		float sin = sinf(radians);
-
+		
 		Matrix4 m = { cos, sin, 0.0f, 0.0f,
 			-sin, cos, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f };
-
+		
 		return m;
 	}
-
-	inline Matrix4 Matrix4MakePerspective(float fovyRadians, float aspect, float nearZ, float farZ)
+	
+	inline Matrix4 Matrix4MakePerspective(float fovyRadians, float aspect, float /*nearZ*/ n, float /*farZ*/ f)
 	{
-		float cotan = 1.0f / tanf(fovyRadians / 2.0f);
-
-		Matrix4 m = { cotan / aspect, 0.0f, 0.0f, 0.0f,
-			0.0f, cotan, 0.0f, 0.0f,
-			0.0f, 0.0f, (farZ + nearZ) / (nearZ - farZ), -1.0f,
-			0.0f, 0.0f, (2.0f * farZ * nearZ) / (nearZ - farZ), 0.0f };
-
-		return m;
+		float ys = 1 / tanf(fovyRadians * 0.5);
+		float xs = ys / aspect;
+		float dz = n - f;
+		float zs = (n+f) / dz;
+		
+		return {
+			xs, 0, 0, 0,
+			0, ys, 0, 0,
+			0, 0, zs, -1,
+			0, 0, 2 * f * n / dz, 0// 2 * f * n / dz - zs * n, +n,
+		};
+		
+		/* move nearZ to zero.
+		 return {
+		 xs, 0, 0, 0,
+		 0, ys, 0, 0,
+		 0, 0, zs, -1,
+		 0, 0, 2 * f * n / dz + 2 * f * n / dz - zs * n, +n,
+		 };
+		 */
 	}
-
+	
 	inline Matrix4 Matrix4MakeFrustum(float left, float right,
 									  float bottom, float top,
 									  float nearZ, float farZ)
@@ -732,15 +758,15 @@ namespace Zen {
 		float tab = top + bottom;
 		float fan = farZ + nearZ;
 		float fsn = farZ - nearZ;
-
+		
 		Matrix4 m = { 2.0f * nearZ / rsl, 0.0f, 0.0f, 0.0f,
 			0.0f, 2.0f * nearZ / tsb, 0.0f, 0.0f,
 			ral / rsl, tab / tsb, -fan / fsn, -1.0f,
 			0.0f, 0.0f, (-2.0f * farZ * nearZ) / fsn, 0.0f };
-
+		
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeOrtho(float left, float right,
 									float bottom, float top,
 									float nearZ, float farZ)
@@ -751,15 +777,15 @@ namespace Zen {
 		float tsb = top - bottom;
 		float fan = farZ + nearZ;
 		float fsn = farZ - nearZ;
-
+		
 		Matrix4 m = { 2.0f / rsl, 0.0f, 0.0f, 0.0f,
 			0.0f, 2.0f / tsb, 0.0f, 0.0f,
 			0.0f, 0.0f, -2.0f / fsn, 0.0f,
 			-ral / rsl, -tab / tsb, -fan / fsn, 1.0f };
-
+		
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4MakeLookAt(float eyeX, float eyeY, float eyeZ,
 									 float centerX, float centerY, float centerZ,
 									 float upX, float upY, float upZ)
@@ -770,430 +796,430 @@ namespace Zen {
 		Vector3 n = Vector3Normalize(ev - cv);
 		Vector3 u = Vector3Normalize(Vector3CrossProduct(uv, n));
 		Vector3 v = Vector3CrossProduct(n, u);
-
-		Matrix4 m = { u.v[0], v.v[0], n.v[0], 0.0f,
-			u.v[1], v.v[1], n.v[1], 0.0f,
-			u.v[2], v.v[2], n.v[2], 0.0f,
+		
+		Matrix4 m = { u[0], v[0], n[0], 0.0f,
+			u[1], v[1], n[1], 0.0f,
+			u[2], v[2], n[2], 0.0f,
 			Vector3DotProduct(-(u), ev),
 			Vector3DotProduct(-(v), ev),
 			Vector3DotProduct(-(n), ev),
 			1.0f };
-
+		
 		return m;
 	}
-
+	
 	inline Matrix3 Matrix4GetMatrix3(Matrix4 matrix)
 	{
-		Matrix3 m = { matrix.m[0], matrix.m[1], matrix.m[2],
-			matrix.m[4], matrix.m[5], matrix.m[6],
-			matrix.m[8], matrix.m[9], matrix.m[10] };
+		Matrix3 m = { matrix[0], matrix[1], matrix[2],
+			matrix[4], matrix[5], matrix[6],
+			matrix[8], matrix[9], matrix[10] };
 		return m;
 	}
-
+	
 	inline Matrix2 Matrix4GetMatrix2(Matrix4 matrix)
 	{
-		Matrix2 m = { matrix.m[0], matrix.m[1],
-			matrix.m[4], matrix.m[5] };
+		Matrix2 m = { matrix[0], matrix[1],
+			matrix[4], matrix[5] };
 		return m;
 	}
-
+	
 	inline Vector4 Matrix4GetRow(Matrix4 matrix, int row)
 	{
-		Vector4 v = { matrix.m[row], matrix.m[4 + row], matrix.m[8 + row], matrix.m[12 + row] };
+		Vector4 v = { matrix[row], matrix[4 + row], matrix[8 + row], matrix[12 + row] };
 		return v;
 	}
-
+	
 	inline Vector4 Matrix4GetColumn(Matrix4 matrix, int column)
 	{
-		Vector4 v = { matrix.m[column * 4 + 0], matrix.m[column * 4 + 1], matrix.m[column * 4 + 2], matrix.m[column * 4 + 3] };
+		Vector4 v = { matrix[column * 4 + 0], matrix[column * 4 + 1], matrix[column * 4 + 2], matrix[column * 4 + 3] };
 		return v;
 	}
-
+	
 	inline Matrix4 Matrix4SetRow(Matrix4 matrix, int row, Vector4 vector)
 	{
-		matrix.m[row] = vector.v[0];
-		matrix.m[row + 4] = vector.v[1];
-		matrix.m[row + 8] = vector.v[2];
-		matrix.m[row + 12] = vector.v[3];
-
+		matrix[row] = vector[0];
+		matrix[row + 4] = vector[1];
+		matrix[row + 8] = vector[2];
+		matrix[row + 12] = vector[3];
+		
 		return matrix;
 	}
-
+	
 	inline Matrix4 Matrix4SetColumn(Matrix4 matrix, int column, Vector4 vector)
 	{
-		matrix.m[column * 4 + 0] = vector.v[0];
-		matrix.m[column * 4 + 1] = vector.v[1];
-		matrix.m[column * 4 + 2] = vector.v[2];
-		matrix.m[column * 4 + 3] = vector.v[3];
-
+		matrix[column * 4 + 0] = vector[0];
+		matrix[column * 4 + 1] = vector[1];
+		matrix[column * 4 + 2] = vector[2];
+		matrix[column * 4 + 3] = vector[3];
+		
 		return matrix;
 	}
-
+	
 	inline Matrix4 Matrix4Transpose(Matrix4 matrix)
 	{
-		Matrix4 m = { matrix.m[0], matrix.m[4], matrix.m[8], matrix.m[12],
-			matrix.m[1], matrix.m[5], matrix.m[9], matrix.m[13],
-			matrix.m[2], matrix.m[6], matrix.m[10], matrix.m[14],
-			matrix.m[3], matrix.m[7], matrix.m[11], matrix.m[15] };
+		Matrix4 m = { matrix[0], matrix[4], matrix[8], matrix[12],
+			matrix[1], matrix[5], matrix[9], matrix[13],
+			matrix[2], matrix[6], matrix[10], matrix[14],
+			matrix[3], matrix[7], matrix[11], matrix[15] };
 		return m;
 	}
-
-	inline Matrix4 Matrix4Multiply(Matrix4 matrixLeft, Matrix4 matrixRight)
+	
+	inline Matrix4 Matrix4Multiply(Matrix4 mL, Matrix4 mR)
 	{
 		Matrix4 m;
-
-		m.m[0]  = matrixLeft.m[0] * matrixRight.m[0]  + matrixLeft.m[4] * matrixRight.m[1]  + matrixLeft.m[8] * matrixRight.m[2]   + matrixLeft.m[12] * matrixRight.m[3];
-		m.m[4]  = matrixLeft.m[0] * matrixRight.m[4]  + matrixLeft.m[4] * matrixRight.m[5]  + matrixLeft.m[8] * matrixRight.m[6]   + matrixLeft.m[12] * matrixRight.m[7];
-		m.m[8]  = matrixLeft.m[0] * matrixRight.m[8]  + matrixLeft.m[4] * matrixRight.m[9]  + matrixLeft.m[8] * matrixRight.m[10]  + matrixLeft.m[12] * matrixRight.m[11];
-		m.m[12] = matrixLeft.m[0] * matrixRight.m[12] + matrixLeft.m[4] * matrixRight.m[13] + matrixLeft.m[8] * matrixRight.m[14]  + matrixLeft.m[12] * matrixRight.m[15];
-
-		m.m[1]  = matrixLeft.m[1] * matrixRight.m[0]  + matrixLeft.m[5] * matrixRight.m[1]  + matrixLeft.m[9] * matrixRight.m[2]   + matrixLeft.m[13] * matrixRight.m[3];
-		m.m[5]  = matrixLeft.m[1] * matrixRight.m[4]  + matrixLeft.m[5] * matrixRight.m[5]  + matrixLeft.m[9] * matrixRight.m[6]   + matrixLeft.m[13] * matrixRight.m[7];
-		m.m[9]  = matrixLeft.m[1] * matrixRight.m[8]  + matrixLeft.m[5] * matrixRight.m[9]  + matrixLeft.m[9] * matrixRight.m[10]  + matrixLeft.m[13] * matrixRight.m[11];
-		m.m[13] = matrixLeft.m[1] * matrixRight.m[12] + matrixLeft.m[5] * matrixRight.m[13] + matrixLeft.m[9] * matrixRight.m[14]  + matrixLeft.m[13] * matrixRight.m[15];
-
-		m.m[2]  = matrixLeft.m[2] * matrixRight.m[0]  + matrixLeft.m[6] * matrixRight.m[1]  + matrixLeft.m[10] * matrixRight.m[2]  + matrixLeft.m[14] * matrixRight.m[3];
-		m.m[6]  = matrixLeft.m[2] * matrixRight.m[4]  + matrixLeft.m[6] * matrixRight.m[5]  + matrixLeft.m[10] * matrixRight.m[6]  + matrixLeft.m[14] * matrixRight.m[7];
-		m.m[10] = matrixLeft.m[2] * matrixRight.m[8]  + matrixLeft.m[6] * matrixRight.m[9]  + matrixLeft.m[10] * matrixRight.m[10] + matrixLeft.m[14] * matrixRight.m[11];
-		m.m[14] = matrixLeft.m[2] * matrixRight.m[12] + matrixLeft.m[6] * matrixRight.m[13] + matrixLeft.m[10] * matrixRight.m[14] + matrixLeft.m[14] * matrixRight.m[15];
-
-		m.m[3]  = matrixLeft.m[3] * matrixRight.m[0]  + matrixLeft.m[7] * matrixRight.m[1]  + matrixLeft.m[11] * matrixRight.m[2]  + matrixLeft.m[15] * matrixRight.m[3];
-		m.m[7]  = matrixLeft.m[3] * matrixRight.m[4]  + matrixLeft.m[7] * matrixRight.m[5]  + matrixLeft.m[11] * matrixRight.m[6]  + matrixLeft.m[15] * matrixRight.m[7];
-		m.m[11] = matrixLeft.m[3] * matrixRight.m[8]  + matrixLeft.m[7] * matrixRight.m[9]  + matrixLeft.m[11] * matrixRight.m[10] + matrixLeft.m[15] * matrixRight.m[11];
-		m.m[15] = matrixLeft.m[3] * matrixRight.m[12] + matrixLeft.m[7] * matrixRight.m[13] + matrixLeft.m[11] * matrixRight.m[14] + matrixLeft.m[15] * matrixRight.m[15];
-
+		
+		m[0] = mL[0] * mR[0] + mL[4] * mR[1] + mL[8] * mR[2] + mL[12] * mR[3];
+		m[4] = mL[0] * mR[4] + mL[4] * mR[5] + mL[8] * mR[6] + mL[12] * mR[7];
+		m[8] = mL[0] * mR[8] + mL[4] * mR[9] + mL[8] * mR[10] + mL[12] * mR[11];
+		m[12] = mL[0] * mR[12] + mL[4] * mR[13] + mL[8] * mR[14] + mL[12] * mR[15];
+		
+		m[1] = mL[1] * mR[0] + mL[5] * mR[1] + mL[9] * mR[2] + mL[13] * mR[3];
+		m[5] = mL[1] * mR[4] + mL[5] * mR[5] + mL[9] * mR[6] + mL[13] * mR[7];
+		m[9] = mL[1] * mR[8] + mL[5] * mR[9] + mL[9] * mR[10] + mL[13] * mR[11];
+		m[13] = mL[1] * mR[12] + mL[5] * mR[13] + mL[9] * mR[14] + mL[13] * mR[15];
+		
+		m[2] = mL[2] * mR[0] + mL[6] * mR[1] + mL[10] * mR[2] + mL[14] * mR[3];
+		m[6] = mL[2] * mR[4] + mL[6] * mR[5] + mL[10] * mR[6] + mL[14] * mR[7];
+		m[10] = mL[2] * mR[8] + mL[6] * mR[9] + mL[10] * mR[10] + mL[14] * mR[11];
+		m[14] = mL[2] * mR[12] + mL[6] * mR[13] + mL[10] * mR[14] + mL[14] * mR[15];
+		
+		m[3] = mL[3] * mR[0] + mL[7] * mR[1] + mL[11] * mR[2] + mL[15] * mR[3];
+		m[7] = mL[3] * mR[4] + mL[7] * mR[5] + mL[11] * mR[6] + mL[15] * mR[7];
+		m[11] = mL[3] * mR[8] + mL[7] * mR[9] + mL[11] * mR[10] + mL[15] * mR[11];
+		m[15] = mL[3] * mR[12] + mL[7] * mR[13] + mL[11] * mR[14] + mL[15] * mR[15];
+		
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4Translate(Matrix4 matrix, float tx, float ty, float tz)
 	{
-		Matrix4 m = { matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[3],
-			matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[7],
-			matrix.m[8], matrix.m[9], matrix.m[10], matrix.m[11],
-			matrix.m[0] * tx + matrix.m[4] * ty + matrix.m[8] * tz + matrix.m[12],
-			matrix.m[1] * tx + matrix.m[5] * ty + matrix.m[9] * tz + matrix.m[13],
-			matrix.m[2] * tx + matrix.m[6] * ty + matrix.m[10] * tz + matrix.m[14],
-			matrix.m[3] * tx + matrix.m[7] * ty + matrix.m[11] * tz + matrix.m[15] };
+		Matrix4 m = { matrix[0], matrix[1], matrix[2], matrix[3],
+			matrix[4], matrix[5], matrix[6], matrix[7],
+			matrix[8], matrix[9], matrix[10], matrix[11],
+			matrix[0] * tx + matrix[4] * ty + matrix[8] * tz + matrix[12],
+			matrix[1] * tx + matrix[5] * ty + matrix[9] * tz + matrix[13],
+			matrix[2] * tx + matrix[6] * ty + matrix[10] * tz + matrix[14],
+			matrix[3] * tx + matrix[7] * ty + matrix[11] * tz + matrix[15] };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4TranslateWithVector3(Matrix4 matrix, Vector3 translationVector)
 	{
-		Matrix4 m = { matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[3],
-			matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[7],
-			matrix.m[8], matrix.m[9], matrix.m[10], matrix.m[11],
-			matrix.m[0] * translationVector.v[0] + matrix.m[4] * translationVector.v[1] + matrix.m[8] * translationVector.v[2] + matrix.m[12],
-			matrix.m[1] * translationVector.v[0] + matrix.m[5] * translationVector.v[1] + matrix.m[9] * translationVector.v[2] + matrix.m[13],
-			matrix.m[2] * translationVector.v[0] + matrix.m[6] * translationVector.v[1] + matrix.m[10] * translationVector.v[2] + matrix.m[14],
-			matrix.m[3] * translationVector.v[0] + matrix.m[7] * translationVector.v[1] + matrix.m[11] * translationVector.v[2] + matrix.m[15] };
+		Matrix4 m = { matrix[0], matrix[1], matrix[2], matrix[3],
+			matrix[4], matrix[5], matrix[6], matrix[7],
+			matrix[8], matrix[9], matrix[10], matrix[11],
+			matrix[0] * translationVector[0] + matrix[4] * translationVector[1] + matrix[8] * translationVector[2] + matrix[12],
+			matrix[1] * translationVector[0] + matrix[5] * translationVector[1] + matrix[9] * translationVector[2] + matrix[13],
+			matrix[2] * translationVector[0] + matrix[6] * translationVector[1] + matrix[10] * translationVector[2] + matrix[14],
+			matrix[3] * translationVector[0] + matrix[7] * translationVector[1] + matrix[11] * translationVector[2] + matrix[15] };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4TranslateWithVector4(Matrix4 matrix, Vector4 translationVector)
 	{
-		Matrix4 m = { matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[3],
-			matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[7],
-			matrix.m[8], matrix.m[9], matrix.m[10], matrix.m[11],
-			matrix.m[0] * translationVector.v[0] + matrix.m[4] * translationVector.v[1] + matrix.m[8] * translationVector.v[2] + matrix.m[12],
-			matrix.m[1] * translationVector.v[0] + matrix.m[5] * translationVector.v[1] + matrix.m[9] * translationVector.v[2] + matrix.m[13],
-			matrix.m[2] * translationVector.v[0] + matrix.m[6] * translationVector.v[1] + matrix.m[10] * translationVector.v[2] + matrix.m[14],
-			matrix.m[3] * translationVector.v[0] + matrix.m[7] * translationVector.v[1] + matrix.m[11] * translationVector.v[2] + matrix.m[15] };
+		Matrix4 m = { matrix[0], matrix[1], matrix[2], matrix[3],
+			matrix[4], matrix[5], matrix[6], matrix[7],
+			matrix[8], matrix[9], matrix[10], matrix[11],
+			matrix[0] * translationVector[0] + matrix[4] * translationVector[1] + matrix[8] * translationVector[2] + matrix[12],
+			matrix[1] * translationVector[0] + matrix[5] * translationVector[1] + matrix[9] * translationVector[2] + matrix[13],
+			matrix[2] * translationVector[0] + matrix[6] * translationVector[1] + matrix[10] * translationVector[2] + matrix[14],
+			matrix[3] * translationVector[0] + matrix[7] * translationVector[1] + matrix[11] * translationVector[2] + matrix[15] };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4Scale(Matrix4 matrix, float sx, float sy, float sz)
 	{
-		Matrix4 m = { matrix.m[0] * sx, matrix.m[1] * sx, matrix.m[2] * sx, matrix.m[3] * sx,
-			matrix.m[4] * sy, matrix.m[5] * sy, matrix.m[6] * sy, matrix.m[7] * sy,
-			matrix.m[8] * sz, matrix.m[9] * sz, matrix.m[10] * sz, matrix.m[11] * sz,
-			matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
+		Matrix4 m = { matrix[0] * sx, matrix[1] * sx, matrix[2] * sx, matrix[3] * sx,
+			matrix[4] * sy, matrix[5] * sy, matrix[6] * sy, matrix[7] * sy,
+			matrix[8] * sz, matrix[9] * sz, matrix[10] * sz, matrix[11] * sz,
+			matrix[12], matrix[13], matrix[14], matrix[15] };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4ScaleWithVector3(Matrix4 matrix, Vector3 scaleVector)
 	{
-		Matrix4 m = { matrix.m[0] * scaleVector.v[0], matrix.m[1] * scaleVector.v[0], matrix.m[2] * scaleVector.v[0], matrix.m[3] * scaleVector.v[0],
-			matrix.m[4] * scaleVector.v[1], matrix.m[5] * scaleVector.v[1], matrix.m[6] * scaleVector.v[1], matrix.m[7] * scaleVector.v[1],
-			matrix.m[8] * scaleVector.v[2], matrix.m[9] * scaleVector.v[2], matrix.m[10] * scaleVector.v[2], matrix.m[11] * scaleVector.v[2],
-			matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
+		Matrix4 m = { matrix[0] * scaleVector[0], matrix[1] * scaleVector[0], matrix[2] * scaleVector[0], matrix[3] * scaleVector[0],
+			matrix[4] * scaleVector[1], matrix[5] * scaleVector[1], matrix[6] * scaleVector[1], matrix[7] * scaleVector[1],
+			matrix[8] * scaleVector[2], matrix[9] * scaleVector[2], matrix[10] * scaleVector[2], matrix[11] * scaleVector[2],
+			matrix[12], matrix[13], matrix[14], matrix[15] };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4ScaleWithVector4(Matrix4 matrix, Vector4 scaleVector)
 	{
-		Matrix4 m = { matrix.m[0] * scaleVector.v[0], matrix.m[1] * scaleVector.v[0], matrix.m[2] * scaleVector.v[0], matrix.m[3] * scaleVector.v[0],
-			matrix.m[4] * scaleVector.v[1], matrix.m[5] * scaleVector.v[1], matrix.m[6] * scaleVector.v[1], matrix.m[7] * scaleVector.v[1],
-			matrix.m[8] * scaleVector.v[2], matrix.m[9] * scaleVector.v[2], matrix.m[10] * scaleVector.v[2], matrix.m[11] * scaleVector.v[2],
-			matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
+		Matrix4 m = { matrix[0] * scaleVector[0], matrix[1] * scaleVector[0], matrix[2] * scaleVector[0], matrix[3] * scaleVector[0],
+			matrix[4] * scaleVector[1], matrix[5] * scaleVector[1], matrix[6] * scaleVector[1], matrix[7] * scaleVector[1],
+			matrix[8] * scaleVector[2], matrix[9] * scaleVector[2], matrix[10] * scaleVector[2], matrix[11] * scaleVector[2],
+			matrix[12], matrix[13], matrix[14], matrix[15] };
 		return m;
 	}
-
+	
 	inline Matrix4 Matrix4Rotate(Matrix4 matrix, float radians, float x, float y, float z)
 	{
 		Matrix4 rm = Matrix4MakeRotation(radians, x, y, z);
 		return Matrix4Multiply(matrix, rm);
 	}
-
+	
 	inline Matrix4 Matrix4RotateWithVector3(Matrix4 matrix, float radians, Vector3 axisVector)
 	{
-		Matrix4 rm = Matrix4MakeRotation(radians, axisVector.v[0], axisVector.v[1], axisVector.v[2]);
+		Matrix4 rm = Matrix4MakeRotation(radians, axisVector[0], axisVector[1], axisVector[2]);
 		return Matrix4Multiply(matrix, rm);
 	}
-
+	
 	inline Matrix4 Matrix4RotateWithVector4(Matrix4 matrix, float radians, Vector4 axisVector)
 	{
-		Matrix4 rm = Matrix4MakeRotation(radians, axisVector.v[0], axisVector.v[1], axisVector.v[2]);
+		Matrix4 rm = Matrix4MakeRotation(radians, axisVector[0], axisVector[1], axisVector[2]);
 		return Matrix4Multiply(matrix, rm);
 	}
-
+	
 	inline Matrix4 Matrix4RotateX(Matrix4 matrix, float radians)
 	{
 		Matrix4 rm = Matrix4MakeXRotation(radians);
 		return Matrix4Multiply(matrix, rm);
 	}
-
+	
 	inline Matrix4 Matrix4RotateY(Matrix4 matrix, float radians)
 	{
 		Matrix4 rm = Matrix4MakeYRotation(radians);
 		return Matrix4Multiply(matrix, rm);
 	}
-
+	
 	inline Matrix4 Matrix4RotateZ(Matrix4 matrix, float radians)
 	{
 		Matrix4 rm = Matrix4MakeZRotation(radians);
 		return Matrix4Multiply(matrix, rm);
 	}
-
-	inline Vector3 Matrix4MultiplyVector3(Matrix4 matrixLeft, Vector3 vectorRight)
+	
+	inline Vector3 Matrix4MultiplyVector3(Matrix4 mL, Vector3 vR)
 	{
-		Vector4 v4 = Matrix4MultiplyVector4(matrixLeft, Vector4Make(vectorRight.v[0], vectorRight.v[1], vectorRight.v[2], 0.0f));
-		return Vector3Make(v4.v[0], v4.v[1], v4.v[2]);
+		Vector4 v4 = Matrix4MultiplyVector4(mL, Vector4Make(vR[0], vR[1], vR[2], 0.0f));
+		return Vector3Make(v4[0], v4[1], v4[2]);
 	}
-
-	inline Vector3 Matrix4MultiplyVector3WithTranslation(Matrix4 matrixLeft, Vector3 vectorRight)
+	
+	inline Vector3 Matrix4MultiplyVector3WithTranslation(Matrix4 mL, Vector3 vR)
 	{
-		Vector4 v4 = Matrix4MultiplyVector4(matrixLeft, Vector4Make(vectorRight.v[0], vectorRight.v[1], vectorRight.v[2], 1.0f));
-		return Vector3Make(v4.v[0], v4.v[1], v4.v[2]);
+		Vector4 v4 = Matrix4MultiplyVector4(mL, Vector4Make(vR[0], vR[1], vR[2], 1.0f));
+		return Vector3Make(v4[0], v4[1], v4[2]);
 	}
-
-	inline Vector3 Matrix4MultiplyAndProjectVector3(Matrix4 matrixLeft, Vector3 vectorRight)
+	
+	inline Vector3 Matrix4MultiplyAndProjectVector3(Matrix4 mL, Vector3 vR)
 	{
-		Vector4 v4 = Matrix4MultiplyVector4(matrixLeft, Vector4Make(vectorRight.v[0], vectorRight.v[1], vectorRight.v[2], 1.0f));
-		return Vector3Make(v4.v[0], v4.v[1], v4.v[2]) * 1.0f / v4.v[3];
+		Vector4 v4 = Matrix4MultiplyVector4(mL, Vector4Make(vR[0], vR[1], vR[2], 1.0f));
+		return Vector3Make(v4[0], v4[1], v4[2]) * 1.0f / v4[3];
 	}
-
+	
 	inline void Matrix4MultiplyVector3ArrayWithTranslation(Matrix4 matrix, Vector3 * vectors, size_t vectorCount)
 	{
 		int i;
 		for (i=0; i < vectorCount; i++)
 			vectors[i] = Matrix4MultiplyVector3WithTranslation(matrix, vectors[i]);
 	}
-
+	
 	inline void Matrix4MultiplyAndProjectVector3Array(Matrix4 matrix, Vector3 * vectors, size_t vectorCount)
 	{
 		int i;
 		for (i=0; i < vectorCount; i++)
 			vectors[i] = Matrix4MultiplyAndProjectVector3(matrix, vectors[i]);
 	}
-
-	inline Vector4 Matrix4MultiplyVector4(Matrix4 matrixLeft, Vector4 vectorRight)
+	
+	inline Vector4 Matrix4MultiplyVector4(Matrix4 mL, Vector4 vR)
 	{
-		Vector4 v = { matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[4] * vectorRight.v[1] + matrixLeft.m[8] * vectorRight.v[2] + matrixLeft.m[12] * vectorRight.v[3],
-			matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[5] * vectorRight.v[1] + matrixLeft.m[9] * vectorRight.v[2] + matrixLeft.m[13] * vectorRight.v[3],
-			matrixLeft.m[2] * vectorRight.v[0] + matrixLeft.m[6] * vectorRight.v[1] + matrixLeft.m[10] * vectorRight.v[2] + matrixLeft.m[14] * vectorRight.v[3],
-			matrixLeft.m[3] * vectorRight.v[0] + matrixLeft.m[7] * vectorRight.v[1] + matrixLeft.m[11] * vectorRight.v[2] + matrixLeft.m[15] * vectorRight.v[3] };
+		Vector4 v = { mL[0] * vR[0] + mL[4] * vR[1] + mL[8] * vR[2] + mL[12] * vR[3],
+			mL[1] * vR[0] + mL[5] * vR[1] + mL[9] * vR[2] + mL[13] * vR[3],
+			mL[2] * vR[0] + mL[6] * vR[1] + mL[10] * vR[2] + mL[14] * vR[3],
+			mL[3] * vR[0] + mL[7] * vR[1] + mL[11] * vR[2] + mL[15] * vR[3] };
 		return v;
 	}
-
+	
 	inline void Matrix4MultiplyVector4Array(Matrix4 matrix, Vector4 * vectors, size_t vectorCount)
 	{
 		int i;
 		for (i=0; i < vectorCount; i++)
 			vectors[i] = Matrix4MultiplyVector4(matrix, vectors[i]);
 	}
-
-}
-
-inline Zen::Matrix3 operator+(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
-{
-	Zen::Matrix3 m;
-
-	m.m[0] = matrixLeft.m[0] + matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] + matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] + matrixRight.m[2];
 	
-	m.m[3] = matrixLeft.m[3] + matrixRight.m[3];
-	m.m[4] = matrixLeft.m[4] + matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] + matrixRight.m[5];
-
-	m.m[6] = matrixLeft.m[6] + matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] + matrixRight.m[7];
-	m.m[8] = matrixLeft.m[8] + matrixRight.m[8];
-
-	return m;
 }
 
-inline Zen::Matrix3 operator-(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
+inline Zen::Matrix3 operator+(Zen::Matrix3 mL, Zen::Matrix3 mR)
 {
 	Zen::Matrix3 m;
-
-	m.m[0] = matrixLeft.m[0] - matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] - matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] - matrixRight.m[2];
-
-	m.m[3] = matrixLeft.m[3] - matrixRight.m[3];
-	m.m[4] = matrixLeft.m[4] - matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] - matrixRight.m[5];
-
-	m.m[6] = matrixLeft.m[6] - matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] - matrixRight.m[7];
-	m.m[8] = matrixLeft.m[8] - matrixRight.m[8];
-
+	
+	m[0] = mL[0] + mR[0];
+	m[1] = mL[1] + mR[1];
+	m[2] = mL[2] + mR[2];
+	
+	m[3] = mL[3] + mR[3];
+	m[4] = mL[4] + mR[4];
+	m[5] = mL[5] + mR[5];
+	
+	m[6] = mL[6] + mR[6];
+	m[7] = mL[7] + mR[7];
+	m[8] = mL[8] + mR[8];
+	
 	return m;
 }
-inline Zen::Matrix3 operator*(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
+
+inline Zen::Matrix3 operator-(Zen::Matrix3 mL, Zen::Matrix3 mR)
 {
 	Zen::Matrix3 m;
-
-	m.m[0] = matrixLeft.m[0] * matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] * matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] * matrixRight.m[2];
-
-	m.m[3] = matrixLeft.m[3] * matrixRight.m[3];
-	m.m[4] = matrixLeft.m[4] * matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] * matrixRight.m[5];
-
-	m.m[6] = matrixLeft.m[6] * matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] * matrixRight.m[7];
-	m.m[8] = matrixLeft.m[8] * matrixRight.m[8];
-
+	
+	m[0] = mL[0] - mR[0];
+	m[1] = mL[1] - mR[1];
+	m[2] = mL[2] - mR[2];
+	
+	m[3] = mL[3] - mR[3];
+	m[4] = mL[4] - mR[4];
+	m[5] = mL[5] - mR[5];
+	
+	m[6] = mL[6] - mR[6];
+	m[7] = mL[7] - mR[7];
+	m[8] = mL[8] - mR[8];
+	
 	return m;
 }
-
-inline Zen::Matrix3 operator/(Zen::Matrix3 matrixLeft, Zen::Matrix3 matrixRight)
+inline Zen::Matrix3 operator*(Zen::Matrix3 mL, Zen::Matrix3 mR)
 {
 	Zen::Matrix3 m;
-
-	m.m[0] = matrixLeft.m[0] / matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] / matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] / matrixRight.m[2];
-
-	m.m[3] = matrixLeft.m[3] / matrixRight.m[3];
-	m.m[4] = matrixLeft.m[4] / matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] / matrixRight.m[5];
-
-	m.m[6] = matrixLeft.m[6] / matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] / matrixRight.m[7];
-	m.m[8] = matrixLeft.m[8] / matrixRight.m[8];
-
+	
+	m[0] = mL[0] * mR[0];
+	m[1] = mL[1] * mR[1];
+	m[2] = mL[2] * mR[2];
+	
+	m[3] = mL[3] * mR[3];
+	m[4] = mL[4] * mR[4];
+	m[5] = mL[5] * mR[5];
+	
+	m[6] = mL[6] * mR[6];
+	m[7] = mL[7] * mR[7];
+	m[8] = mL[8] * mR[8];
+	
 	return m;
 }
 
-inline Zen::Matrix4 operator+(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
+inline Zen::Matrix3 operator/(Zen::Matrix3 mL, Zen::Matrix3 mR)
 {
-	Zen::Matrix4 m;
-
-	m.m[0] = matrixLeft.m[0] + matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] + matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] + matrixRight.m[2];
-	m.m[3] = matrixLeft.m[3] + matrixRight.m[3];
-
-	m.m[4] = matrixLeft.m[4] + matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] + matrixRight.m[5];
-	m.m[6] = matrixLeft.m[6] + matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] + matrixRight.m[7];
-
-	m.m[8] = matrixLeft.m[8] + matrixRight.m[8];
-	m.m[9] = matrixLeft.m[9] + matrixRight.m[9];
-	m.m[10] = matrixLeft.m[10] + matrixRight.m[10];
-	m.m[11] = matrixLeft.m[11] + matrixRight.m[11];
-
-	m.m[12] = matrixLeft.m[12] + matrixRight.m[12];
-	m.m[13] = matrixLeft.m[13] + matrixRight.m[13];
-	m.m[14] = matrixLeft.m[14] + matrixRight.m[14];
-	m.m[15] = matrixLeft.m[15] + matrixRight.m[15];
-
+	Zen::Matrix3 m;
+	
+	m[0] = mL[0] / mR[0];
+	m[1] = mL[1] / mR[1];
+	m[2] = mL[2] / mR[2];
+	
+	m[3] = mL[3] / mR[3];
+	m[4] = mL[4] / mR[4];
+	m[5] = mL[5] / mR[5];
+	
+	m[6] = mL[6] / mR[6];
+	m[7] = mL[7] / mR[7];
+	m[8] = mL[8] / mR[8];
+	
 	return m;
 }
 
-inline Zen::Matrix4 operator-(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
+inline Zen::Matrix4 operator+(Zen::Matrix4 mL, Zen::Matrix4 mR)
 {
 	Zen::Matrix4 m;
-
-	m.m[0] = matrixLeft.m[0] - matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] - matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] - matrixRight.m[2];
-	m.m[3] = matrixLeft.m[3] - matrixRight.m[3];
-
-	m.m[4] = matrixLeft.m[4] - matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] - matrixRight.m[5];
-	m.m[6] = matrixLeft.m[6] - matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] - matrixRight.m[7];
-
-	m.m[8] = matrixLeft.m[8] - matrixRight.m[8];
-	m.m[9] = matrixLeft.m[9] - matrixRight.m[9];
-	m.m[10] = matrixLeft.m[10] - matrixRight.m[10];
-	m.m[11] = matrixLeft.m[11] - matrixRight.m[11];
-
-	m.m[12] = matrixLeft.m[12] - matrixRight.m[12];
-	m.m[13] = matrixLeft.m[13] - matrixRight.m[13];
-	m.m[14] = matrixLeft.m[14] - matrixRight.m[14];
-	m.m[15] = matrixLeft.m[15] - matrixRight.m[15];
-
+	
+	m[0] = mL[0] + mR[0];
+	m[1] = mL[1] + mR[1];
+	m[2] = mL[2] + mR[2];
+	m[3] = mL[3] + mR[3];
+	
+	m[4] = mL[4] + mR[4];
+	m[5] = mL[5] + mR[5];
+	m[6] = mL[6] + mR[6];
+	m[7] = mL[7] + mR[7];
+	
+	m[8] = mL[8] + mR[8];
+	m[9] = mL[9] + mR[9];
+	m[10] = mL[10] + mR[10];
+	m[11] = mL[11] + mR[11];
+	
+	m[12] = mL[12] + mR[12];
+	m[13] = mL[13] + mR[13];
+	m[14] = mL[14] + mR[14];
+	m[15] = mL[15] + mR[15];
+	
 	return m;
 }
 
-inline Zen::Matrix4 operator*(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
+inline Zen::Matrix4 operator-(Zen::Matrix4 mL, Zen::Matrix4 mR)
 {
 	Zen::Matrix4 m;
-
-	m.m[0] = matrixLeft.m[0] * matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] * matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] * matrixRight.m[2];
-	m.m[3] = matrixLeft.m[3] * matrixRight.m[3];
-
-	m.m[4] = matrixLeft.m[4] * matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] * matrixRight.m[5];
-	m.m[6] = matrixLeft.m[6] * matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] * matrixRight.m[7];
-
-	m.m[8] = matrixLeft.m[8] * matrixRight.m[8];
-	m.m[9] = matrixLeft.m[9] * matrixRight.m[9];
-	m.m[10] = matrixLeft.m[10] * matrixRight.m[10];
-	m.m[11] = matrixLeft.m[11] * matrixRight.m[11];
-
-	m.m[12] = matrixLeft.m[12] * matrixRight.m[12];
-	m.m[13] = matrixLeft.m[13] * matrixRight.m[13];
-	m.m[14] = matrixLeft.m[14] * matrixRight.m[14];
-	m.m[15] = matrixLeft.m[15] * matrixRight.m[15];
-
+	
+	m[0] = mL[0] - mR[0];
+	m[1] = mL[1] - mR[1];
+	m[2] = mL[2] - mR[2];
+	m[3] = mL[3] - mR[3];
+	
+	m[4] = mL[4] - mR[4];
+	m[5] = mL[5] - mR[5];
+	m[6] = mL[6] - mR[6];
+	m[7] = mL[7] - mR[7];
+	
+	m[8] = mL[8] - mR[8];
+	m[9] = mL[9] - mR[9];
+	m[10] = mL[10] - mR[10];
+	m[11] = mL[11] - mR[11];
+	
+	m[12] = mL[12] - mR[12];
+	m[13] = mL[13] - mR[13];
+	m[14] = mL[14] - mR[14];
+	m[15] = mL[15] - mR[15];
+	
 	return m;
 }
 
-inline Zen::Matrix4 operator/(Zen::Matrix4 matrixLeft, Zen::Matrix4 matrixRight)
+inline Zen::Matrix4 operator*(Zen::Matrix4 mL, Zen::Matrix4 mR)
 {
 	Zen::Matrix4 m;
+	
+	m[0] = mL[0] * mR[0];
+	m[1] = mL[1] * mR[1];
+	m[2] = mL[2] * mR[2];
+	m[3] = mL[3] * mR[3];
+	
+	m[4] = mL[4] * mR[4];
+	m[5] = mL[5] * mR[5];
+	m[6] = mL[6] * mR[6];
+	m[7] = mL[7] * mR[7];
+	
+	m[8] = mL[8] * mR[8];
+	m[9] = mL[9] * mR[9];
+	m[10] = mL[10] * mR[10];
+	m[11] = mL[11] * mR[11];
+	
+	m[12] = mL[12] * mR[12];
+	m[13] = mL[13] * mR[13];
+	m[14] = mL[14] * mR[14];
+	m[15] = mL[15] * mR[15];
+	
+	return m;
+}
 
-	m.m[0] = matrixLeft.m[0] / matrixRight.m[0];
-	m.m[1] = matrixLeft.m[1] / matrixRight.m[1];
-	m.m[2] = matrixLeft.m[2] / matrixRight.m[2];
-	m.m[3] = matrixLeft.m[3] / matrixRight.m[3];
-
-	m.m[4] = matrixLeft.m[4] / matrixRight.m[4];
-	m.m[5] = matrixLeft.m[5] / matrixRight.m[5];
-	m.m[6] = matrixLeft.m[6] / matrixRight.m[6];
-	m.m[7] = matrixLeft.m[7] / matrixRight.m[7];
-
-	m.m[8] = matrixLeft.m[8] / matrixRight.m[8];
-	m.m[9] = matrixLeft.m[9] / matrixRight.m[9];
-	m.m[10] = matrixLeft.m[10] / matrixRight.m[10];
-	m.m[11] = matrixLeft.m[11] / matrixRight.m[11];
-
-	m.m[12] = matrixLeft.m[12] / matrixRight.m[12];
-	m.m[13] = matrixLeft.m[13] / matrixRight.m[13];
-	m.m[14] = matrixLeft.m[14] / matrixRight.m[14];
-	m.m[15] = matrixLeft.m[15] / matrixRight.m[15];
-
+inline Zen::Matrix4 operator/(Zen::Matrix4 mL, Zen::Matrix4 mR)
+{
+	Zen::Matrix4 m;
+	
+	m[0] = mL[0] / mR[0];
+	m[1] = mL[1] / mR[1];
+	m[2] = mL[2] / mR[2];
+	m[3] = mL[3] / mR[3];
+	
+	m[4] = mL[4] / mR[4];
+	m[5] = mL[5] / mR[5];
+	m[6] = mL[6] / mR[6];
+	m[7] = mL[7] / mR[7];
+	
+	m[8] = mL[8] / mR[8];
+	m[9] = mL[9] / mR[9];
+	m[10] = mL[10] / mR[10];
+	m[11] = mL[11] / mR[11];
+	
+	m[12] = mL[12] / mR[12];
+	m[13] = mL[13] / mR[13];
+	m[14] = mL[14] / mR[14];
+	m[15] = mL[15] / mR[15];
+	
 	return m;
 }
 

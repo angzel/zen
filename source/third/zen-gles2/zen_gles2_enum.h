@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -22,7 +22,7 @@
 #   include <OpenGLES/ES2/glext.h>
 
 #elif defined(ZEN_OS_ANDROID)
-#   define ZEN_GL_2D_ANY_SZ 0
+#   define ZEN_GL_2D_ANY_SZ 1
 #   include "GLES2/gl2.h"
 #   include "GLES2/gl2ext.h"
 #   include "GLES2/gl2platform.h"
@@ -47,7 +47,7 @@ namespace Zen { namespace GL {
 		Float  = GL_FLOAT,
 		Fixed  = GL_FIXED,
 	};
-
+	
 #if 0
 	enum class ePixel
 	{
@@ -59,7 +59,7 @@ namespace Zen { namespace GL {
 		LumiAlpha = GL_LUMINANCE_ALPHA,
 	};
 #endif
-
+	
 	enum class eVertexMode
 	{
 		Point         = GL_POINTS,
@@ -68,7 +68,9 @@ namespace Zen { namespace GL {
 		LineStrip     = GL_LINE_STRIP,
 		Triangle      = GL_TRIANGLES,
 		TriangleStrip = GL_TRIANGLE_STRIP,
+#if 0
 		TriangleFan   = GL_TRIANGLE_FAN,
+#endif
 	};
 	
 	// SrcBlend * srcColor + DstBlend * destColor

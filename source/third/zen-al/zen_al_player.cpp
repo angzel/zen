@@ -1,13 +1,13 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #include "zen_al_player.h"
 #include "zen_exception.h"
 
 namespace Zen { namespace AL {
-	Player * Player::GetDefault()
+	Player * Player::Get()
 	{
 		static Player * me = new Player();
 		return me;

@@ -20,6 +20,8 @@ namespace Zen { namespace Metal {
 		SourceAlphaSaturated = 10,
 		None = 0xffff,
 	};
+	typedef eBlendFactor eBF;
+	
 	enum class eVertexMode
 	{
 		Point = 0,

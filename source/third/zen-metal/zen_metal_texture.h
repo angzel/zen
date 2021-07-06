@@ -13,13 +13,13 @@ namespace Zen { namespace Metal {
 		Texture();
 		virtual ~Texture();
 		
-		TextureID * getID() const;
+		std::shared_ptr<TextureID> getID() const;
 
 		void create
 		(size_t width, size_t height,
 		 bool is_a8, void const * data_null, int level);
 	public:
-		TextureID * m_id = nullptr;
+		std::shared_ptr<TextureID> m_id = nullptr;
 		ePixel m_format = ePixel::None;
 	};
 

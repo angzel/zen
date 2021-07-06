@@ -11,6 +11,7 @@
 		8D19865123922EE100515178 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D19865023922EE100515178 /* AppKit.framework */; };
 		8D1986552392303900515178 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D1986542392303900515178 /* IOKit.framework */; };
 		8D1987B52392379B00515178 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D1987B42392379B00515178 /* libz.tbd */; };
+		8D27B8EC2689BC19008A7ABE /* font_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DF824D9254D451C0034130C /* font_debug.cpp */; };
 		8D4BC1FD25654C1000B3AB05 /* libfreetype-mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D4BC1FA25654C1000B3AB05 /* libfreetype-mac.a */; };
 		8D4BC1FE25654C1000B3AB05 /* libjpeg-mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D4BC1FB25654C1000B3AB05 /* libjpeg-mac.a */; };
 		8D4BC1FF25654C1000B3AB05 /* libpng-mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D4BC1FC25654C1000B3AB05 /* libpng-mac.a */; };
@@ -39,7 +40,6 @@
 		8DF15B59258DDD0200B7D9BF /* zen_poll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DF15B1D258DDD0200B7D9BF /* zen_poll.cpp */; };
 		8DF15B5A258DDD0200B7D9BF /* zen_socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DF15B1F258DDD0200B7D9BF /* zen_socket.cpp */; };
 		8DF15B5C258DDF8600B7D9BF /* libmysqlclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF15B5B258DDF8600B7D9BF /* libmysqlclient.a */; };
-		8DF824ED254D81ED0034130C /* mysql_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DF824DA254D451C0034130C /* mysql_debug.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -172,7 +172,6 @@
 		8DF824D1254D451C0034130C /* localization_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = localization_debug.cpp; sourceTree = "<group>"; };
 		8DF824D2254D451C0034130C /* math_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = math_debug.cpp; sourceTree = "<group>"; };
 		8DF824D3254D451C0034130C /* md5_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = md5_debug.cpp; sourceTree = "<group>"; };
-		8DF824D4254D451C0034130C /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		8DF824D5254D451C0034130C /* buffer_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = buffer_debug.cpp; sourceTree = "<group>"; };
 		8DF824D6254D451C0034130C /* audio_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = audio_debug.cpp; sourceTree = "<group>"; };
 		8DF824D7254D451C0034130C /* bez_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bez_debug.cpp; sourceTree = "<group>"; };
@@ -570,7 +569,6 @@
 				8DF824D1254D451C0034130C /* localization_debug.cpp */,
 				8DF824D2254D451C0034130C /* math_debug.cpp */,
 				8DF824D3254D451C0034130C /* md5_debug.cpp */,
-				8DF824D4254D451C0034130C /* main.mm */,
 				8DF824D5254D451C0034130C /* buffer_debug.cpp */,
 				8DF824D6254D451C0034130C /* audio_debug.cpp */,
 				8DF824D7254D451C0034130C /* bez_debug.cpp */,
@@ -641,7 +639,6 @@
 			files = (
 				8DF15B42258DDD0200B7D9BF /* zen_db_query.cpp in Sources */,
 				8DF15B45258DDD0200B7D9BF /* zen_ft_render.cpp in Sources */,
-				8DF824ED254D81ED0034130C /* mysql_debug.cpp in Sources */,
 				8DF15B25258DDD0200B7D9BF /* zen_utils_mac.mm in Sources */,
 				8DF15B53258DDD0200B7D9BF /* zen_image_raw.cpp in Sources */,
 				8DF15B41258DDD0200B7D9BF /* zen_db_connection.cpp in Sources */,
@@ -650,6 +647,7 @@
 				8DF15B26258DDD0200B7D9BF /* Utils.java in Sources */,
 				8DF15B55258DDD0200B7D9BF /* zen_md5.cpp in Sources */,
 				8DF15B4C258DDD0200B7D9BF /* zen_al_player.cpp in Sources */,
+				8D27B8EC2689BC19008A7ABE /* font_debug.cpp in Sources */,
 				8DF15B59258DDD0200B7D9BF /* zen_poll.cpp in Sources */,
 				8DF15B54258DDD0200B7D9BF /* zen_audio_player.cpp in Sources */,
 				8DF15B40258DDD0200B7D9BF /* zen_image_png.cpp in Sources */,

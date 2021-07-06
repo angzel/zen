@@ -6,11 +6,24 @@
 #include <map>
 
 namespace Zen { namespace Metal {
-
+	
+	typedef std::string VShader;
+	typedef std::string FShader;
+	
 	template<typename _TypePipe>
-	std::shared_ptr<_TypePipe> ShaderCreate
-	(VertexShader const & vertex, FragmentShader const & fragment,
-	eBlendFactor src, eBlendFactor dst)
+	std::shared_ptr<_TypePipe> sCreatePipe
+	(VShader const & vertex, FShader const & fragment,
+	 eBF src, eBF dst, eBF srcA, eBF dstA)
+	{
+		auto a = std::shared_ptr<_TypePipe>(new _TypePipe);
+		a->getID()->create(vertex, fragment, src, dst, srcA, dstA);
+		return a;
+	}
+	
+	template<typename _TypePipe>
+	std::shared_ptr<_TypePipe> sCreatePipe
+	(VShader const & vertex, FShader const & fragment,
+	 eBF src, eBF dst)
 	{
 		auto a = std::shared_ptr<_TypePipe>(new _TypePipe);
 		a->getID()->create(vertex, fragment, src, dst);
@@ -18,8 +31,8 @@ namespace Zen { namespace Metal {
 	}
 	
 	template<typename _TypePipe>
-	std::shared_ptr<_TypePipe> ShaderCreate
-	(VertexShader const & vertex, FragmentShader const & fragment)
+	std::shared_ptr<_TypePipe> sCreatePipe
+	(VShader const & vertex, FShader const & fragment)
 	{
 		auto a = std::shared_ptr<_TypePipe>(new _TypePipe);
 		a->getID()->create(vertex, fragment);
@@ -28,82 +41,100 @@ namespace Zen { namespace Metal {
 }}
 
 namespace Zen { namespace Metal {
-
-	static const int S_ColorShaderCount = 2;
-	static const int S_SamplerShaderCount = 4;
-	static const int S_ParticleShaderCount = 4;
-
-	static std::map<uint64_t, std::shared_ptr<ColorPipe> > S_color_shaders[S_ColorShaderCount];
-	static std::map<uint64_t, std::shared_ptr<SamplerPipe> > S_sampler_shaders[S_SamplerShaderCount];
-	static std::map<uint64_t, std::shared_ptr<ParticlePipe> > S_particle_shaders[S_ParticleShaderCount];
-
-	inline static int sGetIndex(bool to_grey)
-	{
-		return (to_grey?1:0);
-	}
-	inline static int sGetIndex(bool to_grey, bool only_alpha)
-	{
-		return (only_alpha?2:0) | (to_grey?1:0);
-	}
-	inline static uint64_t sGetKey(eBlendFactor src, eBlendFactor dst)
-	{
-		auto i = (uint64_t)src;
-		auto j = (uint64_t)dst;
-		return (i<<32) | j;
-	}
-
-	static std::string S_color_funs[S_ColorShaderCount][2] = {
-		{ "VertexShaderColor", "FragmentShaderColor" },
-		{ "VertexShaderColor", "FragmentShaderColorGrey" },
-	};
-
-	static std::string S_sam_funs[S_SamplerShaderCount][2] = {
-		{ "VertexShaderSampler", "FragmentShaderSampler_RGBA" },
-		{ "VertexShaderSampler", "FragmentShaderSampler_RGBA_GA" },
-		{ "VertexShaderSampler", "FragmentShaderSampler_A" },
-		{ "VertexShaderSampler", "FragmentShaderSampler_A_G" },
-	};
-
-	static std::string S_par_funs[S_ParticleShaderCount][2] = {
-		{ "VertexShaderParticle", "FragmentShaderParticle_RGBA" },
-		{ "VertexShaderParticle", "FragmentShaderParticle_RGBA_GA" },
-		{ "VertexShaderParticle", "FragmentShaderParticle_A" },
-		{ "VertexShaderParticle", "FragmentShaderParticle_A_G" },
-	};
 	
-	std::shared_ptr<ColorPipe> ColorPipe::GetShared(bool to_grey, eBlendFactor src, eBlendFactor dst)
+	static std::map<uint64_t, std::shared_ptr<PipeC> > s_pipeC_map[2];
+	static std::map<uint64_t, std::shared_ptr<PipeT> > s_pipeT_map[4];
+	static std::map<uint64_t, std::shared_ptr<PipeP> > s_pipeP_map[2];
+	static std::map<uint64_t, std::shared_ptr<PipePT> > s_pipePT_map[4];
+	
+	inline static int sGetIndex(bool grayfy)
 	{
-		auto index = sGetIndex(to_grey);
-		auto key = sGetKey(src, dst);
-		auto & sh = S_color_shaders[index][key];
+		return (grayfy?1:0);
+	}
+	inline static int sGetIndex(bool grayfy, ePixel fomrat)
+	{
+		return (fomrat==ePixel::Grey?2:0) | (grayfy?1:0);
+	}
+	inline static uint64_t sGetBFKey(eBF src, eBF dst, eBF srcA, eBF dstA)
+	{
+		if(src == eBF::None || dst == eBF::None) return (uint64_t)-1;
+		
+		if(srcA == eBF::None || dstA == eBF::None)
+			return ((uint64_t)src << 48) | ((uint64_t)dst << 32) | 0xffffffffULL;
+		
+		return ((uint64_t)src << 48) | ((uint64_t)dst << 32) |
+		((uint64_t)srcA << 16) | (uint64_t)dstA;
+	}
+	
+	std::shared_ptr<PipeC> PipeC::GetShared(bool grayfy, eBF src, eBF dst, eBF srcA, eBF dstA)
+	{
+		static std::string s_pipe_funcs[2][2] = {
+			{ "VShaderC", "FShaderC" },
+			{ "VShaderC", "FShaderC_G" },
+		};
+		
+		auto index = sGetIndex(grayfy);
+		auto key = sGetBFKey(src, dst, srcA, dstA);
+		auto & sh = s_pipeC_map[index][key];
 		if(sh == nullptr)
 		{
-			sh = ShaderCreate<ColorPipe>(S_color_funs[index][0], S_color_funs[index][1], src, dst);
+			sh = sCreatePipe<PipeC>(s_pipe_funcs[index][0], s_pipe_funcs[index][1], src, dst, srcA, dstA);
+		}
+		return sh;
+	}
+	
+	std::shared_ptr<PipeT> PipeT::GetShared(bool grayfy, ePixel fomrat, eBF src, eBF dst, eBF srcA, eBF dstA)
+	{
+		static std::string s_pipe_funcs[4][2] = {
+			{ "VShaderT", "FShaderT_RGBA" },
+			{ "VShaderT", "FShaderT_RGBA_GA" },
+			{ "VShaderT", "FShaderT_A" },
+			{ "VShaderT", "FShaderT_A_G" },
+		};
+		
+		auto index = sGetIndex(grayfy, fomrat);
+		auto key = sGetBFKey(src, dst, srcA, dstA);
+		auto & sh = s_pipeT_map[index][key];
+		if(sh == nullptr)
+		{
+			sh = sCreatePipe<PipeT>(s_pipe_funcs[index][0], s_pipe_funcs[index][1], src, dst, srcA, dstA);
+		}
+		return sh;
+	}
+	
+	std::shared_ptr<PipePT> PipePT::GetShared(bool grayfy, ePixel fomrat, eBF src, eBF dst, eBF srcA, eBF dstA)
+	{
+		static std::string s_pipe_funcs[4][2] = {
+			{ "VShaderP", "FShaderPT_RGBA" },
+			{ "VShaderP", "FShaderPT_RGBA_GA" },
+			{ "VShaderP", "FShaderPT_A" },
+			{ "VShaderP", "FShaderPT_A_G" },
+		};
+		auto index = sGetIndex(grayfy, fomrat);
+		auto key = sGetBFKey(src, dst, srcA, dstA);
+		auto & sh = s_pipePT_map[index][key];
+		if(sh == nullptr)
+		{
+			sh = sCreatePipe<PipePT>(s_pipe_funcs[index][0], s_pipe_funcs[index][1], src, dst, srcA, dstA);
+		}
+		return sh;
+	}
+	
+	
+	std::shared_ptr<PipeP> PipeP::GetShared(bool grayfy, eBF src, eBF dst, eBF srcA, eBF dstA)
+	{
+		static std::string s_pipe_funcs[2][2] = {
+			{ "VShaderP", "FShaderP" },
+			{ "VShaderP", "FShaderP_G" },
+		};
+		auto index = sGetIndex(grayfy);
+		auto key = sGetBFKey(src, dst, srcA, dstA);
+		auto & sh = s_pipeP_map[index][key];
+		if(sh == nullptr)
+		{
+			sh = sCreatePipe<PipeP>(s_pipe_funcs[index][0], s_pipe_funcs[index][1], src, dst, srcA, dstA);
 		}
 		return sh;
 	}
 
-	std::shared_ptr<SamplerPipe> SamplerPipe::GetShared(bool to_grey, bool only_alpha, eBlendFactor src, eBlendFactor dst)
-	{
-		auto index = sGetIndex(to_grey, only_alpha);
-		auto key = sGetKey(src, dst);
-		auto & sh = S_sampler_shaders[index][key];
-		if(sh == nullptr)
-		{
-			sh = ShaderCreate<SamplerPipe>(S_sam_funs[index][0], S_sam_funs[index][1], src, dst);
-		}
-		return sh;
-	}
-
-	std::shared_ptr<ParticlePipe> ParticlePipe::GetShared(bool to_grey, bool only_alpha, eBlendFactor src, eBlendFactor dst)
-	{
-		auto index = sGetIndex(to_grey, only_alpha);
-		auto key = sGetKey(src, dst);
-		auto & sh = S_particle_shaders[index][key];
-		if(sh == nullptr)
-		{
-			sh = ShaderCreate<ParticlePipe>(S_par_funs[index][0], S_par_funs[index][1], src, dst);
-		}
-		return sh;
-	}
 }}

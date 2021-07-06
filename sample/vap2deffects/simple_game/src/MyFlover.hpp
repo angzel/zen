@@ -5,7 +5,7 @@
 
 #include "MyConfig.h"
 
-class MyFlover : public Zen::Vap2d::Sprite {
+class MyFlover : public Zen::Vap::Sprite {
 public:
 	MyFlover()
 	{

@@ -5,6 +5,6 @@
 namespace Zen { namespace Metal {
 	struct TextureID
 	{
-		id <MTLTexture> color_map;
+		id <MTLTexture> mtl_texture;
 	};
 }}

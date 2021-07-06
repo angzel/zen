@@ -17,11 +17,16 @@ namespace Zen { namespace Metal {
 		(std::string const & vertex_func,
 		 std::string const & fragment_func);
 		
+		
 		void create
 		(std::string const & vertex_func,
 		 std::string const & fragment_func,
-		 eBlendFactor src_factor,
-		 eBlendFactor dst_factor);
+		 eBF src, eBF dst);
+		
+		void create
+		(std::string const & vertex_func,
+		 std::string const & fragment_func,
+		 eBF srcC, eBF dstC, eBF srcA, eBF dstA);
 		
 		void create
 		(NSString * vertex_func_name,
@@ -30,8 +35,13 @@ namespace Zen { namespace Metal {
 		void create
 		(NSString * vertex_func_name,
 		 NSString * fragment_func_name,
-		 MTLBlendFactor src_factor,
-		 MTLBlendFactor dst_factor);
+		 MTLBlendFactor src, MTLBlendFactor dst);
+		
+		void create
+		(NSString * vertex_func_name,
+		 NSString * fragment_func_name,
+		 MTLBlendFactor srcC, MTLBlendFactor dstC,
+		 MTLBlendFactor srcA, MTLBlendFactor dstA);
 	};
 	
 }}

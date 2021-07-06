@@ -6,40 +6,50 @@
 #include "zen_metal_type.h"
 
 namespace Zen { namespace Metal {
-
-	typedef std::string VertexShader;
-	typedef std::string FragmentShader;
-	
-	class ColorPipe : public Pipe
+	class PipeC : public Pipe
 	{
 	public:
 		static
-		std::shared_ptr<ColorPipe> GetShared(bool to_grey, eBlendFactor src, eBlendFactor dst);
+		std::shared_ptr<PipeC>
+		GetShared(bool grayfy, eBF src, eBF dst, eBF srcA = eBF::None, eBF dstA = eBF::None);
 		
-		static const int VertexIndex = 0;
-		static const int VertexExtraIndex = 1;
+		static const int VertAttribIndex = 0;
+		static const int UniformIndex = 1;
 	};
 	
-	class SamplerPipe : public Pipe
+	class PipeT : public Pipe
 	{
 	public:
 		static
-		std::shared_ptr<SamplerPipe> GetShared(bool to_grey, bool only_alpha, eBlendFactor src, eBlendFactor dst);
+		std::shared_ptr<PipeT>
+		GetShared(bool grayfy, ePixel fomrat, eBF src, eBF dst, eBF srcA = eBF::None, eBF dstA = eBF::None);
 		
-		static const int VertexIndex = 0;
-		static const int VertexExtraIndex = 1;
+		static const int VertAttribIndex = 0;
+		static const int UniformIndex = 1;
 		static const int TextureIndex = 0;
 	};
 	
-	class ParticlePipe : public Pipe
+	class PipePT : public Pipe
 	{
 	public:
 		static
-		std::shared_ptr<ParticlePipe> GetShared(bool to_grey, bool only_alpha, eBlendFactor src, eBlendFactor dst);
+		std::shared_ptr<PipePT>
+		GetShared(bool grayfy, ePixel fomrat, eBF src, eBF dst, eBF srcA = eBF::None, eBF dstA = eBF::None);
 		
-		static const int VertexIndex = 0;
-		static const int VertexExtraIndex = 1;
+		static const int VertAttribIndex = 0;
+		static const int UniformIndex = 1;
 		static const int TextureIndex = 0;
+	};
+	
+	class PipeP : public Pipe
+	{
+	public:
+		static
+		std::shared_ptr<PipeP>
+		GetShared(bool grayfy, eBF src, eBF dst, eBF srcA = eBF::None, eBF dstA = eBF::None);
+		
+		static const int VertAttribIndex = 0;
+		static const int UniformIndex = 1;
 	};
 
 }}

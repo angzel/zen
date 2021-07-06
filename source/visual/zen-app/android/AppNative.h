@@ -4,12 +4,12 @@
 
 namespace Zen {
 	namespace Android {
-		JNIEnv * GetMainEnv();
-		JNIEnv * GetGLEnv();
-		bool IsGLThread();
-		bool IsMainThread();
-
-		JNIEnv * GetCurrentEnv();
+//		JNIEnv * GetMainEnv();
+//		JNIEnv * GetGLEnv();
+//		bool IsGLThread();
+//		bool IsMainThread();
+//
+//		JNIEnv * GetCurrentEnv();
 
 		void SetFramePerSecond(float fps);
 	}

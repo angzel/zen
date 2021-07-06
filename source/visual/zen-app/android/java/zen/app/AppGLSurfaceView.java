@@ -161,6 +161,7 @@ class AppGLSurfaceView extends GLSurfaceView
 		}
 		public void onDrawFrame(GL10 gl)
 		{
+//			Log.v(TAG, "on Step");
 			AppNative.OnStep();
 		}
 

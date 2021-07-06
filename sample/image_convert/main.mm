@@ -146,8 +146,6 @@ public:
 
 
 int main(int argc, const char * argv[]) {
-	auto c = std::shared_ptr<ImageJPGCoder>(new ImageJPGCoder);
-	std::shared_ptr<ImageDecoder> d = c;
 	ImageConvert convert;
 	convert.run(argc, argv);
 	return 0;

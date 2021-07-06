@@ -28,17 +28,20 @@ int main(int argc, const char * argv[]) {
 		cout << con->error() << "\n";
 	}
 	auto state = Zen::DBStatement::Create(con);
-	state->prepare("select * from `logs`");
+	state->prepare("select * from `logs` where ctime=?");
 	MYSQL_TIME time;
 	::memset(&time, 0, sizeof(time));
 	time.year = 2019;
 	time.month = 12;
 	time.day = 1;
 	time.time_type = MYSQL_TIMESTAMP_DATETIME;
+	
 	auto count = state->getParamCount();
 	cout << "param:" << count << endl;
+	
 		//	state.bindParam(0, "2019-12-3 12:0:0");
 		//	state.bindParam(1, "hello");
+	
 	cout << "exe:" << state->execute() << endl;
 	Zen::DBResult result;
 	cout << "fetch:" << state->fetchResult(result) << endl;

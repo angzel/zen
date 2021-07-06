@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -45,43 +45,18 @@
 #define ZEN_LOGS_PRIORITY 0xff
 #endif
 
-#if defined(ZEN_P_LOGS_STYLE)
-#define ZEN_LOGS_STYLE ZEN_P_LOGS_STYLE
-#else
-#define ZEN_LOGS_STYLE 0
-#endif
-
 namespace Zen {
 	inline void _PrintLog(ZEN_LOG_TYPE type, char const * fmt, va_list va)
 	{
 #ifdef ZEN_OS_ANDROID
 		__android_log_vprint(type, ZEN_LOGS_TAG, fmt, va);
 #else
-		
-#	if ZEN_LOGS_STYLE == 2
-		time_t ti = ::time(0);
-		tm * timeStruct = localtime(&ti);
-		fprintf(stdout, "%c/%s[%04d-%02d-%02d %02d:%02d:%02d]:",
-				type, ZEN_LOGS_TAG,
-				timeStruct->tm_year + 1900,
-				timeStruct->tm_mon + 1,
-				timeStruct->tm_mday,
-				timeStruct->tm_hour,
-				timeStruct->tm_min,
-				timeStruct->tm_sec);
-#	elif ZEN_LOGS_STYLE == 1
-		time_t ti = ::time(0);
-		tm * timeStruct = localtime(&ti);
-		fprintf(stdout, "%c/%s[%02d:%02d:%02d]:",
-				type, ZEN_LOGS_TAG,
-				timeStruct->tm_hour,
-				timeStruct->tm_min,
-				timeStruct->tm_sec);
-#	else
-		fprintf(stdout, "%c> ", type);
-#	endif
-		vfprintf(stdout, fmt, va);
-		fprintf(stdout, "\n");
+		std::string fmts;
+		fmts.push_back(type);
+		fmts.push_back(':');
+		fmts.append(fmt);
+		fmts.append("\n");
+		vfprintf(stdout, fmts.c_str(), va);
 		fflush(stdout);
 #endif
 	}

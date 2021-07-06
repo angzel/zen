@@ -48,7 +48,7 @@ ZEN_P_AUDIO_TRACK_LIMIT <= 1024
 	public:
 		AudioPlayerInner()
 		{
-			mEntity = Zen::AL::Player::GetDefault();
+			mEntity = Zen::AL::Player::Get();
 			mTracks.resize(AudioTrackLimit);
 
 			for(size_t i = 0; i < mTracks.size(); ++i)
@@ -72,7 +72,7 @@ ZEN_P_AUDIO_TRACK_LIMIT <= 1024
 			}
 		}
 
-		static AudioPlayerInner * GetDefault()
+		static AudioPlayerInner * Get()
 		{
 			static auto me = new AudioPlayerInner;
 			return me;
@@ -270,12 +270,12 @@ ZEN_P_AUDIO_TRACK_LIMIT <= 1024
 			mAudioDecoders.clear();
 		}
 
-		virtual AudioTrackID play(std::string const & file, bool loop) override
-		{
-			return this->play3D(file, loop, 1.f, 1.f, {0, 0, 0}, {0, 0, 0});
-		}
+//		virtual AudioTrackID play(std::string const & file, bool loop) override
+//		{
+//			return this->play3D(file, loop, 1.f, 1.f, {0, 0, 0}, {0, 0, 0});
+//		}
 
-		Zen::AudioTrackID play3D(const std::string &file, bool loop, float volume, float pitch, Zen::Point3 position, Zen::Point3 velocity) override
+		Zen::AudioTrackID play(const std::string &file, bool loop, float volume, float pitch, Zen::Point3 position, Zen::Point3 velocity) override
 		{
 			if(mIsPaused && !loop) return EMPTY_TRACK_ID;
 
@@ -351,8 +351,8 @@ ZEN_P_AUDIO_TRACK_LIMIT <= 1024
 		bool mIsPaused = false;
 	};
 
-	AudioPlayer * AudioPlayer::GetDefault()
+	AudioPlayer * AudioPlayer::Get()
 	{
-		return AudioPlayerInner::GetDefault();
+		return AudioPlayerInner::Get();
 	}
 }

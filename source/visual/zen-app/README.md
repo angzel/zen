@@ -4,7 +4,7 @@ zen-app
 This is an application model for games.
 If you create your own application, dont include this part.
 
-The 'Vap2d' depends this.
+The 'Vap' depends this.
 
 # choose graphics engine
 

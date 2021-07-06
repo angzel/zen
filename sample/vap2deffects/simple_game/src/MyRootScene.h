@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "zen_vap2d.h"
+#include "zen_vap.h"
 
 #include "MyConfig.h"
 #include "MyBGLayer.h"
@@ -9,7 +9,7 @@
 
 
 using namespace Zen;
-using namespace Zen::Vap2d;
+using namespace Zen::Vap;
 
 class MyRootScene : public Layer
 {
@@ -18,7 +18,6 @@ class MyRootScene : public Layer
 public:
 	MyRootScene()
 	{
-
 		auto bg = new BGLayer;
 		this->addNode(bg);
 

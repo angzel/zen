@@ -14,7 +14,7 @@ namespace Zen {
 	class AudioPlayer : public Zen::Object
 	{
 	public:
-		static AudioPlayer * GetDefault();
+		static AudioPlayer * Get();
 
 		virtual void releaseCache() = 0;
 
@@ -26,12 +26,12 @@ namespace Zen {
 
 		virtual void clearAudioDecoders() = 0;
 
-		virtual AudioTrackID play(std::string const & file, bool loop) = 0;
+//		virtual AudioTrackID play(std::string const & file, bool loop) = 0;
 
-		virtual AudioTrackID play3D(std::string const & file, bool loop,
-									float volume, float pitch,
-									Zen::Point3 position,
-									Zen::Point3 velocity) = 0;
+		virtual AudioTrackID play(std::string const & file, bool loop,
+								  float volume = 1.f, float pitch = 1.f,
+								  Zen::Point3 position = { 0, 0, 0 },
+								  Zen::Point3 velocity = { 0, 0, 0 }) = 0;
 
 		virtual bool resetVolume(AudioTrackID, float v) = 0;
 		virtual bool resetPitch(AudioTrackID, float p) = 0;

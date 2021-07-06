@@ -26,5 +26,9 @@ namespace Zen {
 		virtual std::vector<uint8_t> loadURL(std::string const & url) = 0;
 
 		virtual std::string getSystemLanguage() = 0;
+		
+		virtual std::string getDocumentPath(std::string const & path) = 0;
+	protected:
+		Utils() = default;
 	};
 }

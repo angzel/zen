@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -15,29 +15,34 @@
 #include <map>
 
 namespace Zen { namespace GL { 
-
+	
 	class Render {
 	public:
 		Render() = default;
-			// ShaderProgram
+		// ShaderProgram
 		inline void activeProgram(GLuint program_id);
-
-			// buffer
+		
+		// buffer
 		inline void enableBuffer(GLint buffer);
-
-			// vertex.
-			//setVertexAttribData
+		
+		// vertex.
+		//setVertexAttribData
 		inline void setVertexData(GLint attrib, size_t size, eType type, bool normalize, size_t stride, void const * data);
-			//setVertexAttribBuffer
+		//setVertexAttribBuffer
 		inline void setVertexBuffer(GLint attrib, size_t size, eType type, bool normalize, size_t stride, size_t off);
+		
+		inline void setVertex(GLint loc, GLfloat x);
+		
+		inline void setVertex(GLint loc, GLfloat x, GLfloat y);
+		
+		inline void setVertex(GLint loc, GLfloat x, GLfloat y, GLfloat z);
+		
+		inline void setVertex(GLint loc, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+		
+		inline void setVertex(GLint loc, Vector4 const & v);
+		inline void setVertex(GLint loc, Vector3 const & v);
+		inline void setVertex(GLint loc, Vector2 const & v);
 
-		inline void setVertex(GLint loc, GLfloat valu);
-
-		inline void setVertex(GLint loc, GLfloat v0, GLfloat v1);
-
-		inline void setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2);
-
-		inline void setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
 		/**
 		 more
 		 glEnableVertexAttribArray
@@ -49,15 +54,22 @@ namespace Zen { namespace GL {
 		 ...
 		 glVertexAttrib4fv
 		 */
-			// uniform
+		// uniform
 		inline void setSampler(GLint unif, int sampler, GLuint texture);
-
+		
 		inline void setUniform(GLint unif, Matrix3 const & mat);
-
+		
 		inline void setUniform(GLint unif, Matrix4 const & mat);
-
+		
 		inline void setUniform(GLint unif, float x, float y, float z, float w);
-
+		inline void setUniform(GLint unif, float x, float y, float z);
+		inline void setUniform(GLint unif, float x, float y);
+		inline void setUniform(GLint unif, float x);
+		
+		inline void setUniform(GLint unif, Vector4 const & v);
+		inline void setUniform(GLint unif, Vector3 const & v);
+		inline void setUniform(GLint unif, Vector2 const & v);
+		
 		/**
 		 more
 		 ...
@@ -67,113 +79,141 @@ namespace Zen { namespace GL {
 		 glUniform4fv
 		 ...
 		 */
-
-			// draw
+		
+		// draw
 		inline void drawArray(eVertexMode mode, size_t first, size_t count);
-
+		
 		inline void drawElements(eVertexMode mode, GLint buffer, size_t count, uint8_t const * indices);
-
+		
 		inline void drawElements(eVertexMode mode, GLint buffer, size_t count, uint16_t const * indices);
-
+		
 		inline void drawElements(eVertexMode mode, GLint buffer, size_t count, uint32_t const * indices);
-
-			// clear
-			// ClearWithColor = SetClearColor + Clear
+		
+		// clear
+		// ClearWithColor = SetClearColor + Clear
 		inline void clearWithColor(Zen::Color4f);
-
+		
 		inline void setClearColor(Zen::Color4f);
-
+		
 		inline void clear();
-
-			// depth.
+		
+		// depth.
 		inline void clearDepthBuffer();
-
+		
 		inline void enableDepthTest(bool);
-
+		
 		inline bool isDepthTestEnabled();
-
+		
 		inline void setDepthFunc(eDepthFunc);
-
+		
 		inline void setClearDepth(float z);
-
+		
 		inline void enableDepthMask(bool on);
-
-			// blend.
+		
+		// blend.
 		inline bool isBlendEnable();
-
+		
 		inline void enableBlend();
-
+		
 		inline void disableBlend();
-
-		inline void enableBlendFunction(eSrcBlend sf, eDstBlend df);
-
+		
+		inline void setBlendFunction(eSrcBlend sf, eDstBlend df);
+		
+		inline void setBlendFunction(eSrcBlend sc, eDstBlend dc, eSrcBlend sa, eDstBlend da);
+		
 		inline void setBlendColor(float r, float g, float b, float a);
-
-			// face.
+		
+		// face.
 		inline void cullFace(bool front, bool back);
-
+		
 		inline void setClockwiseAsFront(bool);
-
-	protected:
-		eSrcBlend m_src_blend = eSrcBlend::One;
-		eDstBlend m_dst_blend = eDstBlend::Zero;
-		bool m_blend_enabled = false;
 	};
 }}
 
-	//-------------------------------------------
+//-------------------------------------------
 
 namespace Zen { namespace GL {
-
+	
 	inline void Render::activeProgram(GLuint program_id)
 	{
 		glUseProgram(program_id);
 	}
-
+	
 	inline void Render::enableBuffer(GLint buffer)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	}
-		//	inline void Render::activeFrame(GLuint frame_id)
-		//	{
-		//		throw __FUNCTION__;
-		//	}
-
+	//	inline void Render::activeFrame(GLuint frame_id)
+	//	{
+	//		throw __FUNCTION__;
+	//	}
+	
 	inline void Render::setVertex(GLint loc, GLfloat value)
 	{
 		glDisableVertexAttribArray((GLuint)loc);
-
+		
 		glVertexAttrib1f((GLuint)loc, value);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
 #endif
 	}
-	inline void Render::setVertex(GLint loc, GLfloat v0, GLfloat v1)
+	inline void Render::setVertex(GLint loc, GLfloat x, GLfloat y)
 	{
 		glDisableVertexAttribArray((GLuint)loc);
-
-		glVertexAttrib2f((GLuint)loc, v0, v1);
+		
+		glVertexAttrib2f((GLuint)loc, x, y);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
 #endif
 	}
-	inline void Render::setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2)
+	inline void Render::setVertex(GLint loc, GLfloat x, GLfloat y, GLfloat z)
 	{
 		glDisableVertexAttribArray((GLuint)loc);
-
-		glVertexAttrib3f((GLuint)loc, v0, v1, v2);
+		
+		glVertexAttrib3f((GLuint)loc, x, y, z);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
 #endif
 	}
-	inline void Render::setVertex(GLint loc, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
+	inline void Render::setVertex(GLint loc, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
 	{
 		glDisableVertexAttribArray((GLuint)loc);
-
-		glVertexAttrib4f((GLuint)loc, v0, v1, v2, v3);
+		
+		glVertexAttrib4f((GLuint)loc, x, y, z, w);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
+#endif
+	}
+	
+	inline void Render::setVertex(GLint loc, Vector4 const & v)
+	{
+		glDisableVertexAttribArray((GLuint)loc);
+		
+		glVertexAttrib4f((GLuint)loc, v.x, v.y, v.z, v.w);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
+#endif
+	}
+	inline void Render::setVertex(GLint loc, Vector3 const & v)
+	{
+		glDisableVertexAttribArray((GLuint)loc);
+		
+		glVertexAttrib3f((GLuint)loc, v.x, v.y, v.z);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
+#endif
+	}
+	inline void Render::setVertex(GLint loc, Vector2 const & v)
+	{
+		glDisableVertexAttribArray((GLuint)loc);
+		
+		glVertexAttrib2f((GLuint)loc, v.x, v.y);
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set gl vertex attrib", eno);
@@ -197,7 +237,7 @@ namespace Zen { namespace GL {
 		mustsn(eno == GL_NO_ERROR, "failed to set vertex attrib array", eno);
 #endif
 	}
-
+	
 	inline void Render::drawArray(eVertexMode mode, size_t first, size_t count)
 	{
 		glDrawArrays((GLenum)mode, (GLint)first, (GLsizei)count);
@@ -226,13 +266,13 @@ namespace Zen { namespace GL {
 		glActiveTexture(GLenum(GL_TEXTURE0 + sampler));
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glUniform1i(unif, sampler);
-
+		
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to active texture", eno);
 #endif
 	}
-
+	
 	inline void Render::setUniform(GLint unif, Matrix3 const & mat)
 	{
 		glUniformMatrix3fv(unif, 1, GL_FALSE, (GLfloat const *)&mat);
@@ -249,9 +289,61 @@ namespace Zen { namespace GL {
 		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
 #endif
 	}
+	inline void Render::setUniform(GLint unif, float x)
+	{
+		glUniform1f(unif, x);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+#endif
+	}
+	inline void Render::setUniform(GLint unif, float x, float y)
+	{
+		glUniform2f(unif, x, y);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+#endif
+	}
+	inline void Render::setUniform(GLint unif, float x, float y, float z)
+	{
+		glUniform3f(unif, x, y, z);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+#endif
+	}
 	inline void Render::setUniform(GLint unif, float x, float y, float z, float w)
 	{
 		glUniform4f(unif, x, y, z, w);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+#endif
+	}
+	inline void Render::setUniform(GLint unif, Vector4 const & v)
+	{
+		glUniform4f(unif, v.x, v.y, v.z, v.w);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+#endif
+	}
+	inline void Render::setUniform(GLint unif, Vector3 const & v)
+	{
+		glUniform3f(unif, v.x, v.y, v.z);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+#endif
+	}
+	inline void Render::setUniform(GLint unif, Vector2 const & v)
+	{
+		glUniform2f(unif, v.x, v.y);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set gl uniform", eno);
+#endif
 	}
 }}
 
@@ -315,19 +407,23 @@ namespace Zen { namespace GL {
 		mustsn(eno == GL_NO_ERROR, "failed to set blend color", eno);
 #endif
 	}
-	inline  void Render::enableBlendFunction(eSrcBlend sf, eDstBlend df)
+	inline void Render::setBlendFunction(eSrcBlend sf, eDstBlend df)
 	{
-		this->enableBlend();
-		if(m_src_blend == sf && m_dst_blend == df) return;
-		
 		glBlendFunc((GLenum)sf, (GLenum)df);
-		m_src_blend = sf;
-		m_dst_blend = df;
 #if ZEN_DEBUG
 		auto eno = (int)glGetError();
 		mustsn(eno == GL_NO_ERROR, "failed to set blend func", eno);
 #endif
 	}
+	inline void Render::setBlendFunction(eSrcBlend sc, eDstBlend dc, eSrcBlend sa, eDstBlend da)
+	{
+		glBlendFuncSeparate((GLenum)sc, (GLenum)dc, (GLenum)sa, (GLenum)da);
+#if ZEN_DEBUG
+		auto eno = (int)glGetError();
+		mustsn(eno == GL_NO_ERROR, "failed to set blend func separate", eno);
+#endif
+	}
+	
 	inline void Render::cullFace(bool front, bool back)
 	{
 		if(!front && !back)
@@ -339,7 +435,7 @@ namespace Zen { namespace GL {
 			glCullFace(front?(back?GL_FRONT_AND_BACK:GL_FRONT):GL_BACK);
 			glEnable(GL_CULL_FACE);
 		}
-
+		
 	}
 	inline void Render::setClockwiseAsFront(bool f)
 	{

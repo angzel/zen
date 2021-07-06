@@ -23,58 +23,47 @@ int main(int argc, const char * argv[])
 	player->setAudioDecoder("wav", std::shared_ptr<AudioDecoder>(new AudioWavCoder));
 
 	player->play("bee.wav", 0);
-	int a = 0;
+	
+	string a;
 	Zen::AudioTrackID loopId = 0;
-	while((a = cin.get()))
+	while(cin>>a)
 	{
-		if(a <= 0)
-		{
-			fflush(stdin);
-			cin.clear();
-		}
-		if(a == 'a')
+		if(a == "stop")
 		{
 			player->stopAllTracks();
 		}
-		else if(a == 'b')
+		else if(a == "play")
 		{
 			player->play("bee.wav", 0);
 		}
-		else if(a == 'e')
+		else if(a == "loop")
 		{
 			loopId = player->play("bee.wav", 1);
 		}
-		else if(a == 'c')
+		else if(a == "pause")
 		{
 			player->pausePlayer();
 		}
-		else if(a == 'd')
+		else if(a == "resume")
 		{
 			player->resumePlayer();
 		}
-		else if(a == 'p')
+		else if(a == "ploop")
 		{
 			player->pause(loopId);
 		}
-		else if(a == 'r')
+		else if(a == "rloop")
 		{
 			player->resume(loopId);
 		}
-		else if(a == 's')
+		else if(a == "stop-loop")
 		{
 			player->stop(loopId);
 		}
+		else {
+			cout << "command list: \n play/stop/loop/pause/resume/ploop/rloop/sloop" << endl;
+		}
 	}
-//	if(argc != 3) {
-//		exit(-1);
-//	}
-//	std::string src = argv[1];
-//	std::string dst = argv[2];
-//	auto data = Zen::LoadFileToBuffer(src);
-//	Zen::AudioRawCoder raw;
-//	Zen::AudioWavCoder wav;
-//	auto audio = raw.decode(data);
-//	data = wav.encode(*audio);
-//	Zen::WriteBufferToFile(dst, data);
+
 	return 0;
 }

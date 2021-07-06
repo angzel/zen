@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -8,7 +8,10 @@
 #include <cstdint>
 
 namespace Zen {
-
+	
+	/// decode utf8 to unicode string.
+	/// @param utf8 source string.
+	/// @return <u32string> unicode string.
 	std::u32string UTF8ToUnicode(std::string const & utf8)
 	{
 		if (utf8.empty())
@@ -66,11 +69,14 @@ namespace Zen {
 
 		return res;
 	}
-
-	std::string UnicodeToUTF8(std::u32string const & strRes)
+	
+	/// encode unicode string to utf8
+	/// @param uniStr source unicode string.
+	/// @return utf8 string.
+	std::string UnicodeToUTF8(std::u32string const & uniStr)
 	{
 		std::string utf8;
-		for (char32_t c : strRes)
+		for (char32_t c : uniStr)
 		{
 			auto i = (uint32_t)c;
 			if (i < 0x80)

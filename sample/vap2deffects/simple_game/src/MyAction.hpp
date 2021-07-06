@@ -5,11 +5,11 @@
 class MyActionBreathe : public ActionRepeat
 {
 public:
-	static std::shared_ptr<Action> Create(View * target, float sx_var, float sy_var, float period)
+	static std::shared_ptr<Action> Create(View2d * target, float sx_var, float sy_var, float period)
 	{
-		auto act1 = ActionScale::Create(target, period, {sx_var, sy_var}, {0, 0});
+		auto act1 = ActionScale2d::Create(target, period, {sx_var, sy_var}, {0, 0});
 		
-		auto act2 = ActionScale::Create(target, period, {-sx_var, -sy_var}, {0, 0});
+		auto act2 = ActionScale2d::Create(target, period, {-sx_var, -sy_var}, {0, 0});
 		
 		auto act0 = ActionCall::Create([target](float)->bool { target->setScale(1, 0.8); return false; }, 1);
 		
@@ -20,19 +20,19 @@ public:
 	}
 };
 
-class MyActionJumping : public ActionDuration, public ActionOnView_
+class MyActionJumping : public ActionDuration, public ActionView2d
 {
 	Point2 m_range;
 	float m_times;
 	Point2 m_range_var = {0, 0};
 public:
-	static std::shared_ptr<Action> Create(View * target, Point2 range, float duration, int times)
+	static std::shared_ptr<Action> Create(View2d * target, Point2 range, float duration, int times)
 	{
 		auto act = new MyActionJumping;
 		act->init(target, range, duration, times);
 		return std::shared_ptr<Action>(act);
 	}
-	void init(View * target, Point2 range, float duration, int times)
+	void init(View2d * target, Point2 range, float duration, int times)
 	{
 		m_range = range;
 		m_times = times;

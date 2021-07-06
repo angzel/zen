@@ -1,5 +1,6 @@
 # ignore library reference.
 /external
+/mysql
 
 # for mac/iOS
 xcuserdata

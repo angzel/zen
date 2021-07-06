@@ -5,11 +5,10 @@
 namespace Zen { namespace Metal {
 	Texture::Texture()
 	{
-		m_id = new TextureID;
+		m_id.reset(new TextureID);
 	}
 	Texture::~Texture()
 	{
-		delete m_id;
 	}
 	
 	void Texture::create(size_t width, size_t height, bool is_a8, void const * data, int level)
@@ -23,7 +22,7 @@ namespace Zen { namespace Metal {
 //		desc.storageMode = MTLStorageModeShared;
 		desc.cpuCacheMode = MTLCPUCacheModeWriteCombined;
 
-		m_id->color_map = [Device::Get()->getID()->device newTextureWithDescriptor:desc];
+		m_id->mtl_texture = [Device::Get()->getID()->device newTextureWithDescriptor:desc];
 //		id<MTLDevice> d;
 //		[d newTextureWithDescriptor:nil];
 		
@@ -32,14 +31,14 @@ namespace Zen { namespace Metal {
 			MTLRegion region = MTLRegionMake2D
 			(0, 0, (NSUInteger)width, (NSUInteger)height);
 
-			[m_id->color_map replaceRegion:region
+			[m_id->mtl_texture replaceRegion:region
 							   mipmapLevel:level
 								 withBytes:data
 							   bytesPerRow:(is_a8? width: width*4)];
 		}
 	}
 	
-	TextureID * Texture::getID() const
+	std::shared_ptr<TextureID> Texture::getID() const
 	{
 		return m_id;
 	}

@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 #include "zen_app_config.h"
 
@@ -33,7 +33,7 @@ GLViewController * G_view_controller = nil;
 	GLKView *view = (GLKView *)self.view;
 
 	view.context = self.context;
-	view.drawableDepthFormat = GLKViewDrawableDepthFormatNone;
+	view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
 
 	self.view.multipleTouchEnabled = NO;
 	[self setFPS:DefaultFPS];

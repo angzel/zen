@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "zen_vap2d.h"
+#include "zen_vap.h"
 #include "MySprite.h"
 
 using namespace Zen;
-using namespace Zen::Vap2d;
+using namespace Zen::Vap;
 
 class BGLayer : public Layer
 {

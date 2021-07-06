@@ -1,23 +1,67 @@
 # zen
-This is some cpp codes that include several stuff, such as audio player, tcp server and game engine.
 
-It's a mixture of functions rather than a library.
+- [Brief](#brief)
 
-You can use Zen with it's resource files included into your projects.
+- [Structure](#structure)
 
-Not all codes can be compatible with the other, so just choose those files you need.
+- [Example](#example)
 
-## resource structure
+- [Lisence](#lisence)
 
-All codes are in the directory '/resource'.
+- [Author](#author)
 
-We have several parts (basic, system, media...), each part contains the similar modules.
-Module's directory was named like 'zen-xxx'.
+## Brief
 
-In the basic part, the 'zen-string' is the string module and has some useful functions for string operations. and the 'zen-math' is a simple math library.
+ The cpp library [Zen](#zen) is a cross-os library that contains many REUSABLE codes to expand the STANDARD library.
 
-In some special modules, a README file is there. Take it and get more informations.
+ Some basic and simple functions were provided in a single header files, while some were defined in a pair of header and source (cpp) files. And so far, some part contains several files and provides a complex system (such as [Vap](#vap) game library). For more details, please view the [structure](#structure) chapter.
 
-## example
+ This library is free ([LGPL v3](#https://www.gnu.org/licenses/lgpl-3.0.en.html)) for noncommercial projects.
 
-Some example projects are in the directory '/example'.
+## Structure
+
+In the root repository, you can see two directories named "sample" (contains some example projects, see reference to [Example](#example)) and "source".
+
+The "source" is the core part of the codes. Here are the introductions for the modules of the library.
+
+Source Tags
+
+Goto the pages to get more details.
+
+- [Basic](./source/basic/README.md)
+
+- [Platform](./source/platform/README.md)
+
+- [Network](./source/network/README.md)
+
+- [Third](./source/third/README.md)
+
+- [Visual](./source/visual/README.md)
+
+## Example
+
+In the `sample` directory, there are some example project and test cases.
+
+- [game](./sample/game)
+
+  a tu
+
+- [image convert](./sample/image_convert)
+
+  a command line program.
+
+  convert jpg/png to png/jpg. (a test case for `zen-jpg`, `zen-png`, `zen-image`)
+
+- [truetype](./sample/truetype)
+
+  a command line program.
+
+  render a string to image. (a test case for `zen-freetype`)
+  
+- [audio player](./sample/audio_player)
+
+  a command line program that test audio player (`zen-player`)
+
+## Lisence
+
+## Author

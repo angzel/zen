@@ -18,8 +18,8 @@ public class AppActivity extends Activity implements View.OnKeyListener, View.On
 	static final String TAG = "ZEN-ACTIVITY-JAVA";
 
 	@Override
-	protected void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		Log.v(TAG, "on create *****");
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// 全屏
@@ -27,6 +27,7 @@ public class AppActivity extends Activity implements View.OnKeyListener, View.On
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		Log.v(TAG, "Package Name:" + this.getPackageName());
+
 		Log.v(TAG, "Package Files Dir:" + this.getFilesDir().getAbsolutePath());
 		Log.v(TAG, "Package Data Dir:" + this.getApplicationInfo().dataDir);
 
@@ -35,9 +36,7 @@ public class AppActivity extends Activity implements View.OnKeyListener, View.On
 		view.setOnKeyListener(this);
 		view.setOnTouchListener(this);
 
-		zen.system.System.initialize(this);
-
-		Helper.initialize(this, view);
+		AppHelper.Initialize(this, view);
 
 		AppNative.OnActivityCreate();
 	}
@@ -47,7 +46,7 @@ public class AppActivity extends Activity implements View.OnKeyListener, View.On
 		super.onPause();
 		Log.v(TAG, "on pause *****");
 		this.stopTimer();
-		Helper.runInGL(new Runnable() {
+		AppHelper.RunInGL(new Runnable() {
 			@Override
 			public void run() {
 				AppNative.OnPause();
@@ -60,7 +59,7 @@ public class AppActivity extends Activity implements View.OnKeyListener, View.On
 		super.onResume();
 		Log.v(TAG, "on resume *****");
 		this.startTimer();
-		Helper.runInGL(new Runnable() {
+		AppHelper.RunInGL(new Runnable() {
 			@Override
 			public void run() {
 				AppNative.OnResume();
@@ -122,14 +121,14 @@ public class AppActivity extends Activity implements View.OnKeyListener, View.On
 		tr.y = y;
 		tr.no = no;
 		tr.mask = event.getActionMasked();
-		Helper.runInGL(tr);
+		AppHelper.RunInGL(tr);
 		return true;
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Helper.runInGL(new Runnable() {
+			AppHelper.RunInGL(new Runnable() {
 
 				@Override
 				public void run() {
@@ -164,11 +163,11 @@ public class AppActivity extends Activity implements View.OnKeyListener, View.On
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				Helper.S_view.requestRender();
+				AppHelper.s_view.requestRender();
 			}
 		};
-		mTimer.schedule(task, 0, 1000/Helper.S_frames_per_second);
-		Log.v(TAG, "timer period:" + (1000/Helper.S_frames_per_second));
+		mTimer.schedule(task, 0, (int)(1000/AppHelper.s_fps));
+		Log.v(TAG, "start timer period:" + (1000/AppHelper.s_fps));
 	}
 	void updateTimer()
 	{

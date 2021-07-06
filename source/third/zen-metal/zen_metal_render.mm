@@ -57,21 +57,21 @@ namespace Zen { namespace Metal {
 		m_id->encoder = nil;
 	}
 
-	void Render::activePipe(PipeID * pipe_id)
+	void Render::activePipe(std::shared_ptr<PipeID> pipe_id)
 	{
 		[m_id->encoder setRenderPipelineState:pipe_id->state];
 	}
 
-	void Render::setVertexBuffer(int index, BufferID * buffer, size_t off)
+	void Render::setVertexBuffer(int index, std::shared_ptr<BufferID> buffer, size_t off)
 	{
-		[m_id->encoder setVertexBuffer:buffer->data
+		[m_id->encoder setVertexBuffer:(buffer? buffer->data : nil)
 								offset:(NSUInteger)off
 							   atIndex:(NSUInteger)index];
 	}
 
-	void Render::setFragmentBuffer(int index, BufferID * buffer, size_t off)
+	void Render::setFragmentBuffer(int index, std::shared_ptr<BufferID> buffer, size_t off)
 	{
-		[m_id->encoder setFragmentBuffer:buffer->data
+		[m_id->encoder setFragmentBuffer: (buffer? buffer->data : nil)
 								  offset:(NSUInteger)off
 								 atIndex:(NSUInteger)index];
 	}
@@ -80,9 +80,9 @@ namespace Zen { namespace Metal {
 	{
 		[m_id->encoder setFragmentBytes:bytes length:(NSInteger)len atIndex:(NSInteger)index];
 	}
-	void Render::bindTexture(int index, TextureID * texture)
+	void Render::bindTexture(int index, std::shared_ptr<TextureID> texture)
 	{
-		[m_id->encoder setFragmentTexture:texture->color_map
+		[m_id->encoder setFragmentTexture:(texture? texture->mtl_texture : nil)
 								  atIndex:(NSUInteger)index];
 	}
 

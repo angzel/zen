@@ -4,14 +4,14 @@
 #include "MyConfig.h"
 
 using namespace Zen;
-using namespace Zen::Vap2d;
+using namespace Zen::Vap;
 
 class DoodlesLayer : public Layer
 {
 public:
 	DoodlesLayer()
 	{
-		auto size = gConfig.size;
+//		auto size = gConfig.size;
 		auto & ra = gConfig.ra;
 		auto doo = new FreeDoodle;
 		int count = 15;
@@ -20,7 +20,7 @@ public:
 			auto c = Color4b(ra.next()|0xff000000);
 			doo->addPoint({ra.nextf(), ra.nextf()}, c);
 		}
-		doo->setAreaSize(size);
+//		doo->setAreaSize(size);
 		doo->setLineMode(1);
 		this->addNode(doo);
 	}

@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2013 MeherTJ G. All rights reserved.
- License: Everybody can use these code freely.
+ License: LGPL for personnal study or free software.
  */
 
 #pragma once
@@ -35,9 +35,9 @@ namespace Zen { namespace GL {
 		GLuint mData;
 	};
 	
-	typedef tShader<GL_VERTEX_SHADER> VertexShader;
+	typedef tShader<GL_VERTEX_SHADER> VShader;
 	
-	typedef tShader<GL_FRAGMENT_SHADER> FragmentShader;;
+	typedef tShader<GL_FRAGMENT_SHADER> FShader;;
 } }
 
 
@@ -56,7 +56,7 @@ namespace Zen { namespace GL {
 		
 		void makeAttachAndLink(char const * vertexSrc, char const * fragmentSrc);
 		
-		void makeAttachAndLink(VertexShader const &, FragmentShader const &);
+		void makeAttachAndLink(VShader const &, FShader const &);
 		
 		/* @ isValidate 
 		 This is just for debug, it's so slowly.
@@ -150,13 +150,13 @@ namespace Zen { namespace GL {
 	}
 	inline void ShaderProgram::makeAttachAndLink(char const * vertexSrc, char const * fragmentSrc)
 	{
-		VertexShader vertex;
-		FragmentShader fragment;
+		VShader vertex;
+		FShader fragment;
 		vertex.compile(vertexSrc);
 		fragment.compile(fragmentSrc);
 		makeAttachAndLink(vertex, fragment);
 	}
-	inline void ShaderProgram::makeAttachAndLink(VertexShader const & vertex, FragmentShader const & fragment)
+	inline void ShaderProgram::makeAttachAndLink(VShader const & vertex, FShader const & fragment)
 	{
 		glAttachShader(mData, vertex.getID());
 		glAttachShader(mData, fragment.getID());
